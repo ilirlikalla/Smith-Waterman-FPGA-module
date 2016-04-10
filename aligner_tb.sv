@@ -6,7 +6,7 @@ module aligner_tb;
 
 
 /* function to encode neuclotides from ASCII to binary: */
-function automatic [1:0] ConvertToBase(input reg [7:0] base);
+function automatic [1:0] ConvertToBase(input logic [7:0] base);
 	case(base)
 		"A", "a": ConvertToBase = 2'b00;
 		"G", "g": ConvertToBase = 2'b01;
@@ -19,18 +19,18 @@ endfunction
 
 
 /* VARIABLES:  */
-	reg [7:0] char;
-	reg [1:0] base;
-	reg [0:`STRING_LENGTH*8-1] str;		// string of chars from the file kept here.
+	logic [7:0] char;
+	logic [1:0] base;
+	string str;		// string of chars from the file kept here.
 	integer fd, i,j,length;
-	reg [0:`STRING_LENGTH*2-1] query ; 	// query bit stream saved here!!!
+	logic [0:`STRING_LENGTH*2-1] query ; 	// query bit stream saved here!!!
 
 /* SIGNALS: */
-	reg clk,rst;
-	reg [5:0]query_length;
-	reg mode, valid_in;
-	wire valid;
-	wire signed [10:0] result;
+	logic clk,rst;
+	logic unsigned [6:0]query_length;
+	logic mode, valid_in;
+	logic valid;
+	logic signed [10:0] result;
 
 /* DUT instantiation: */
 
@@ -46,20 +46,19 @@ endfunction
              );
 
 /* function to encode a string to a bitstream: */
-function automatic [`STRING_LENGTH*50-1:0] StrToBit(input reg [`STRING_LENGTH*8-1:0] str);  // (input: file_descriptor,output: read_query, query_length)
+function automatic [`STRING_LENGTH*50-1:0] StrToBit(input string str);  // (input: file_descriptor,output: read_query, query_length)
  integer i,j;
  
  begin	
-	i= 0;
+	
 	j= 0;
-	while(str[i+:8]!=8'd0)
+	for(i= 0;i<str.len(); i++)
 	begin
-		StrToBit[j+:2]=ConvertToBase(str[i+:8]);
-		i= i+8;
+		StrToBit[j+:2]=ConvertToBase(str[i]);
 		j= j+2;
 	end
-	$display("query length: %d, %d",j,(j/2));
-	length= (j/2);
+	$display("query length: %d",str.len());
+	length= str.len();
 	//readQ=0;
 	//$fgetc(fd);
  end
@@ -94,7 +93,7 @@ begin: STIMULUS
 	$fscanf(fd,"%s",str);
 	$fscanf(fd,"%s",str);
 	query= StrToBit(str);
-	query_length = length;
+	query_length = length-1;
 	#clk_period;
 	while(!$feof(fd))
 	begin
@@ -102,15 +101,14 @@ begin: STIMULUS
 		
 		// read line and check if it is a DNA read or not
 		$fscanf(fd,"%s",str);
-		if( str[0+:8]==">")
+		if( str[0]==">")
 			$fscanf(fd,"%s",str); // read next database sequence;
 		// stream in the sequence base by base 
-		i=0;
-		while(str[i+:8]!=8'd0)
+		
+		for(i=0; i<str.len(); i++)
 		begin
-			base=ConvertToBase(str[i+:8]);
+			base=ConvertToBase(str[i]);
 		    valid_in=1;
-			i= i+1;
 			#clk_period;
 		end
 		valid_in=0;
