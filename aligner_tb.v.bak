@@ -1,0 +1,109 @@
+`define LF 8'h0A
+
+module aligner_tb;
+
+
+
+/* function to encode neuclotides from ASCII to binary: */
+function automatic [1:0] ConvertToBase(input reg [7:0] base);
+	case(base)
+		"A", "a": ConvertToBase = 2'b00;
+		"G", "g": ConvertToBase = 2'b01;
+		"T", "t": ConvertToBase = 2'b10;
+		"C", "c": ConvertToBase = 2'b11;
+	default: ConvertToBase = 2'bZZ;
+	endcase
+endfunction
+
+
+
+/* VARIABLES:  */
+reg [7:0] char;
+reg [1:0] base;
+reg [50*8:0] str;
+integer fd, i,length;
+reg [50*2-1:0] query ;
+
+/* function to get a query string: */
+ //function automatic [0:50*2-1] readQ(input integer fd);
+function readQ(input integer fd);  // (input: file_descriptor,output: read_query, query_length)
+ reg [7:0] ch;
+ integer i;
+ begin	
+	i= 0;
+	ch= $fgetc(fd);
+	while(ch!=`LF)
+	begin
+		query[i+:2]=ConvertToBase(ch);
+		i= i+2;
+		ch=$fgetc(fd);		
+	end
+	$display("query length: %d, %d",i,(i/2)+1);
+	length= (i/2)+1;
+	readQ=0;
+	//$fgetc(fd);
+end
+endfunction
+
+
+/* Signals: */
+	reg clk,rst;
+	reg [5:0]query_length;
+	reg mode, valid_in, 
+	wire valid;
+	signed [10:0] result;
+	
+	
+
+/* DUT instantiation: */
+
+ sw_gen_affine DUT(.clk(clk),
+             .rst(rst),
+             .i_query_length(query_length),
+				 .i_local(mode),
+             .query(query),
+             .i_vld(valid_in),
+             .i_data(base),
+             .o_vld(valid),
+             .m_result(result)
+                );
+
+parameter clk_period= 10;
+initial
+begin: CLOCK
+	clk=0;
+	#(clk_period) clk=~clk;
+end
+	
+
+
+
+initial
+begin: STIMULI
+    #10;
+	fd= $fopen("score_test.fa","r");
+	
+	#10;
+	i=0;
+	#10;
+	while(!$feof(fd))
+	begin
+	  	char=$fgetc(fd);
+		if(char == ">"  || char == `LF)
+		begin
+			$fscanf(fd,"%s",str); // discard line
+			char=$fgetc(fd);
+			char=$fgetc(fd); // discard new line character (twice)
+			if(str=="query")
+				$display(readQ(fd));				
+		end
+		$display("at time %t char is %c",$time, char);
+		base = ConvertToBase(char);
+		i= i+1;
+		#10;
+	end
+	$fclose(fd);
+	$stop;
+end
+
+endmodule
