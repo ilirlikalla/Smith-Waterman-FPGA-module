@@ -63,8 +63,8 @@ for (i=0; i < LENGTH; i = i + 1)
 				 .o_rst(reset[i]),
              .i_data(i_data[1:0]),
              .i_preload(query[1:0]),
-             .i_left_m(11'b10000000000),
-				 .i_left_i(11'b10000000000),
+             .i_left_m(11'b10000000000), //!!!!!
+				 .i_left_i(11'b10000000000),//!!!!
              .i_vld(i_vld),
 				 .i_local(i_local),
 				 .i_high(11'b0),

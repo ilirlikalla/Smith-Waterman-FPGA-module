@@ -57,7 +57,7 @@ reg [SCORE_WIDTH-1:0] final_score;
 assign o_vld = vld[3];
 //assign m_result = right[i_targ_length];
 
-assign target={N_G,N_C,N_C,N_C};
+assign target={N_A,N_G,N_G,N_T};
 //assign i_targ_length = 3;
 genvar i;
 
@@ -131,14 +131,14 @@ initial
         #22
         rst <= 1'b0;
         #100
-        i_data <= N_G;
+        i_data <= N_A;
         i_vld <= 1'b1;
         #20
         i_data <= N_G;
         #20
-        i_data <= N_G;
+        i_data <= N_T;
         #20
-        i_data <= N_C;
+        i_data <= N_T;
         #20
         i_vld <= 1'b0;
         #200

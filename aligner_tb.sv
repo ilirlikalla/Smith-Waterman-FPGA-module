@@ -21,7 +21,7 @@ endfunction
 /* VARIABLES:  */
 	logic [7:0] char;
 	logic [1:0] base;
-	string str;		// string of chars from the file kept here.
+	string str,db;		// string of chars from the file kept here.
 	integer fd, i,j,length;
 	logic [0:`STRING_LENGTH*2-1] query ; 	// query bit stream saved here!!!
 
@@ -81,7 +81,7 @@ begin: STIMULUS
 	fd= $fopen("score_test.fa","r");
 	rst= 0;
 	valid_in= 0;	// no data to send
-	mode=0; 		// set to local alignment mode (Smith-waterman mode)
+	mode=1; 		// set to local alignment mode (Smith-waterman mode)
 	#10;
 	// assert reset and wait for 3 cycles:
 	rst= 1;
@@ -102,17 +102,27 @@ begin: STIMULUS
 		// read line and check if it is a DNA read or not
 		$fscanf(fd,"%s",str);
 		if( str[0]==">")
+		begin
+			db=str;
 			$fscanf(fd,"%s",str); // read next database sequence;
+		end
 		// stream in the sequence base by base 
 		
 		for(i=0; i<str.len(); i++)
 		begin
+		    
 			base=ConvertToBase(str[i]);
 		    valid_in=1;
+			if(i==30)
+				$display("%s score:\t%d",db,result+1024);
 			#clk_period;
+			
 		end
+		
 		valid_in=0;
+		rst=1;
 		#clk_period;
+		rst=0;
 		// char=$fgetc(fd);
 		// if(char == ">"  || char == `LF)
 		// begin
@@ -130,6 +140,7 @@ begin: STIMULUS
 		// #clk_period;
 	end
 	$fclose(fd);
+	#((length+5)*clk_period);
 	$stop;
 end
 
