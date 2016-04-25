@@ -138,30 +138,37 @@ assign rightmax = (right_m_nxt > right_i_nxt) ? right_m_nxt : right_i_nxt;
 
 always@(posedge clk)
 begin
-	if (i_rst==1'b1)
+	if ((i_rst==1'b1) | (i_vld==1'b0))
 		o_high <= neutral_score;		//reset to "0"
 	else if (i_vld==1'b1)
 		o_high <= (o_high > rightmax) ? ( (o_high > i_high) ? o_high : i_high) : ((rightmax > i_high) ? rightmax : i_high);
 end
 
 
-always@(posedge clk) begin
-       if (i_rst==1'b1) begin
-								//This is where we initialize the matrix
-                        o_right_m <= i_local ? neutral_score : (i_left_m - (start ? GOPEN : GEXT));	//init m matrix
-                        o_right_i <= i_local ? neutral_score : (i_left_i - (start ? GOPEN : GEXT));	//init i matrix
-			o_data[1:0] <= 2'b00;
-                        l_diag_score_m <= start ? neutral_score : (i_local ? neutral_score : i_left_m);
-			l_diag_score_i <= start ? neutral_score : (i_local ? neutral_score : i_left_i);
-                      end
-       else if (i_vld==1'b1) begin
-                           o_data[1:0] <= i_data[1:0];
-                           o_right_m <= (i_local ? ((right_m_nxt > neutral_score) ? right_m_nxt : neutral_score) : right_m_nxt);
-			   o_right_i <= (i_local ? ((right_i_nxt > neutral_score) ? right_i_nxt : neutral_score) : right_i_nxt);
-			   l_diag_score_m <= start ?  (i_local ? neutral_score : (l_diag_score_m - GEXT)) : i_left_m ;
-			   l_diag_score_i <= start ?  (i_local ? neutral_score : (l_diag_score_i - GEXT)) : i_left_i ;									
-                        end
-                     end
+always@(posedge clk) 
+begin
+	if (i_rst==1'b1 | i_vld==1'b0) /* added valid control ilir*/ 
+	begin   		
+		//This is where we initialize the matrix
+		o_right_m <= i_local ? neutral_score : (i_left_m - (start ? GOPEN : GEXT));	//init m matrix
+		o_right_i <= i_local ? neutral_score : (i_left_i - (start ? GOPEN : GEXT));	//init i matrix
+		
+		o_data[1:0] <= 2'b00;
+		
+		l_diag_score_m <= start ? neutral_score : (i_local ? neutral_score : i_left_m);
+		l_diag_score_i <= start ? neutral_score : (i_local ? neutral_score : i_left_i);
+	end
+	else if (i_vld==1'b1) 
+	begin
+		o_data[1:0] <= i_data[1:0];
+		
+		o_right_m <= (i_local ? ((right_m_nxt > neutral_score) ? right_m_nxt : neutral_score) : right_m_nxt);
+		o_right_i <= (i_local ? ((right_i_nxt > neutral_score) ? right_i_nxt : neutral_score) : right_i_nxt);
+		
+		l_diag_score_m <= start ?  (i_local ? neutral_score : (l_diag_score_m - GEXT)) : i_left_m ;
+		l_diag_score_i <= start ?  (i_local ? neutral_score : (l_diag_score_i - GEXT)) : i_left_i ;									
+	end
+end
 
 always@(posedge clk) begin
     if (i_rst)

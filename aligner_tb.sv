@@ -120,7 +120,7 @@ begin: STIMULUS
 		end
 		
 		valid_in=0;
-		rst=1;
+		//rst=1;  // assert if valid doesn't work
 		#clk_period;
 		rst=0;
 		// char=$fgetc(fd);
