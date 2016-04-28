@@ -80,7 +80,7 @@ wire [SCORE_WIDTH-1:0] neutral_score;
 
 wire [SCORE_WIDTH-1:0] left_score_b;
 
-
+   
 //compute new score options
 
 assign neutral_score = 11'b10000000000;// !!!! NEEDS to be repaired (ilir)
