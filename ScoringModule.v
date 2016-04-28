@@ -36,10 +36,12 @@ module ScoringModule
 		vld
 		);
 
-function integer logb2 (input integer length); // calculates base 2 logarithm of  of 'length'
+function integer log2b ; // calculates base 2 logarithm of  of 'length'
+	input integer i;
 	begin 
-		for(logb2=0; length>0; logb2=logb2+1) 
-			length = length >>1; 
+		
+		for(log2b=0; i>0; log2b=log2b+1) 
+			i = i >>1; 
 	end 
 endfunction 		
 
@@ -86,7 +88,7 @@ wire [1:0] data_ [0:LENGTH-1];
 
 
 // output mux logic:
-assign {vld,result} = (vld[counter_in]==1'b1)? {vld[counter_in],result[counter_in]} : {1'b0, ZERO}; //  insert enable??? !X!
+assign {vld,result} = (vld_[counter_in]==1'b1)? {vld_[counter_in],high_[counter_in]} : {1'b0, ZERO}; //  insert enable??? !X!
 
 // instantiation of the systolic array of processing elements:
 genvar i;
