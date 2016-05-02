@@ -9,7 +9,7 @@ module ScoringModule
 		_G = 2'b01,        	//nucleotide "G"
 		_T = 2'b10,        	//nucleotide "T"
 		_C = 2'b11,        	//nucleotide "C"
-		ZERO  = $realtobits(2**SCORE_WIDTH) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
+		ZERO  = (2**SCORE_WIDTH) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
 	)(
 // inputs:
 		clk,
@@ -88,7 +88,7 @@ wire [1:0] data_ [0:LENGTH-1];
 
 
 // output mux logic:
-assign {vld,result} = (vld_[counter_in]==1'b1)? {vld_[counter_in],high_[counter_in]} : {1'b0, ZERO}; //  insert enable??? !X!
+assign {vld,result} = (vld_[counter_in]==1'b1)? {vld_[counter_in],high_[counter_in]} : {1'b0, ZERO}; //  insert enable??? !X!  ( counter -1) ???
 
 // instantiation of the systolic array of processing elements:
 genvar i;

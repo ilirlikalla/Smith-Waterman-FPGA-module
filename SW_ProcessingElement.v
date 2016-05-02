@@ -17,7 +17,7 @@ module SW_ProcessingElement
 		_G = 2'b01,        	//nucleotide "G"
 		_T = 2'b10,        	//nucleotide "T"
 		_C = 2'b11,        	//nucleotide "C"
-		ZERO  = $realtobits(2**SCORE_WIDTH) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
+		ZERO  = (2**SCORE_WIDTH) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
 	)(
 // inputs:
 		clk,
@@ -84,6 +84,15 @@ reg [SCORE_WIDTH-1:0] I_diag;		// score of the respective diagonal element in "I
 wire [SCORE_WIDTH-1:0] LUT;
 wire [SCORE_WIDTH-1:0] M_score; 		// keeps the "M" matrix score before comparison with ZERO
 wire [SCORE_WIDTH-1:0] M_bus; 			// the bus keeps the final "M" matrix score
+wire [SCORE_WIDTH-1:0] diag_max; 		// max diagonal between the "I" & "M" diagonals score
+wire [SCORE_WIDTH-1:0] I_max; 			// max between "I" left and up elements score
+wire [SCORE_WIDTH-1:0] M_max; 			// max between "M" left and up elements score
+wire [SCORE_WIDTH-1:0] M_open; 		// penalty for starting a new gap sequence
+wire [SCORE_WIDTH-1:0] I_extend; 		// penalty for extending an existing gap sequence
+wire [SCORE_WIDTH-1:0] I_bus; 			// the bus keeps the final "I" matrix score
+wire [SCORE_WIDTH-1:0] I_M_max; 		// max betwwen "I" & "M" scores
+
+
 /* ----- END of internal signals. ----- */
 						
 
@@ -137,19 +146,22 @@ begin: SEQ_STATE
 					High_out <= `MAX(High_in, I_M_max);	// compare current PE's high score with the left neighbour's 
 					M_diag <= M_in;   // score from left neighbour serves as diagonal score in the next cycle
 					I_diag <= I_in;		//  !X!  ->  gap_extend???
+					data_out <= data_in;
 					en_out <= 1'b1;
+					vld <= 1'b0;
 					/* incomplete! */	
 					state <= CALCULATE;
 				end
 				else begin // waiting for data
 				//set output to zero: 
-					// vld <= 1'b0;
-					// en_out <= 1'b0;
+					vld <= 1'b0;
+				    en_out <= 1'b0;
 					M_out <= ZERO;
 					I_out <= ZERO;
 					High_out <= ZERO;
 					M_diag <= ZERO;
 					I_diag <= ZERO;		//  !X!  ->  gap_extend???
+					data_out <= 2'b00;
 					/* incomplete! */
 				end
 				
@@ -157,7 +169,8 @@ begin: SEQ_STATE
 				if(en_in==1'b0) 
 				begin // show result.
 					vld <= 1'b1;
-					state <= RESULT;
+					en_out <= 1'b0;
+					state <= WAIT;
 				end
 				else begin // continue calculating.
 				/* incomplete! */
@@ -166,14 +179,15 @@ begin: SEQ_STATE
 					High_out <= `MAX(High_in, I_M_max);	// compare current PE's high score with the left neighbour's 
 					M_diag <= M_in;	 // score from left neighbour serves as diagonal score in the next cycle
 					I_diag <= I_in;		//  !X!  ->  gap_extend???
+					data_out <= data_in;
 				end
 				
-			RESULT:		// result is asserted in this state
-			begin
-				vld <= 1'b1;
-				en_out <= 1'b0;
-				state <= WAIT;
-			end
+			// RESULT:		// result is asserted in this state     !X! this state might be redundant
+			// begin
+				// vld <= 1'b1;
+				// en_out <= 1'b0;
+				// state <= WAIT;
+			// end
 				/* incomplete! */
 			default: state <= WAIT;  // in case of failure go to the "safe" state (reset)
 		endcase
