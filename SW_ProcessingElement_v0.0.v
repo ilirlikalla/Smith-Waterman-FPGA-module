@@ -8,16 +8,14 @@
 
 `define MAX(x,y)  ((x > y)? x :y)
 
-module SW_ProcessingElement
+module SW_ProcessingElement_v0_0
    #( parameter
-		SCORE_WIDTH = 12,	// 
-		//LENGTH=128,			// number of processing elements in the systolic array
-		//LOG2LENGTH = 8,		// element addressing width
+		SCORE_WIDTH = 12,	// result width in bits
 		_A = 2'b00,        	//nucleotide "A"
 		_G = 2'b01,        	//nucleotide "G"
 		_T = 2'b10,        	//nucleotide "T"
 		_C = 2'b11,        	//nucleotide "C"
-		ZERO  = (2**SCORE_WIDTH) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
+		ZERO  = (2**(SCORE_WIDTH-1)) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
 	)(
 // inputs:
 		clk,
@@ -71,8 +69,8 @@ output reg vld;		// valid flag, is set when sequence score has been calculated
 
 
 // state definition in one-hot encoding:
-localparam WAIT=3'b100, CALCULATE=3'b010, RESULT=3'b001; 
-reg [2:0] state;        // state register
+localparam WAIT=3'b10, CALCULATE=3'b01; //, RESULT=3'b001; 
+reg [1:0] state;        // state register
 
 
 /* -------- Internal signals: --------- */
@@ -96,7 +94,7 @@ wire [SCORE_WIDTH-1:0] I_M_max; 		// max betwwen "I" & "M" scores
 /* ----- END of internal signals. ----- */
 						
 
-/* ----------- Sequential part of score calculation:  ----------- */
+/* ----------- Combinational part of score calculation:  ----------- */
  //  - enable control should be added!!! more area???
 
 // "M" matrix logic:
@@ -109,14 +107,14 @@ assign	M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  // check if "M"
 // "I" matrix logic:
 assign	I_max = `MAX(I_in, I_out); //(I_in > I_out)? I_in : I_out; // calculate max between left and up neighbour in "I"
 assign M_max = `MAX(M_in, M_out); //(M_in > M_out)? M_in : M_out; // calculate max between left and up neighbour in "M"
-assign M_open = M_max + gap_open; // penalty to open gap in current alignment            !X!  ->  + gap_extend???
+assign M_open = M_max + gap_open+ gap_extend; // penalty to open gap in current alignment            !X!  ->  + gap_extend??? (this corrects some results in data1.fa)
 assign I_extend = I_max + gap_extend; // penalty to extend gap in current alignment			
 assign I_bus = `MAX(M_open, I_extend); //(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
 
 // Highest score logic:
 assign I_M_max = `MAX(I_bus, M_bus); // max between "I" and "M" matrices
 
-/* ------------------ END of Sequential part. ------------------  */
+/* ------------------ END of Combinational part. ------------------  */
 						
 									
 /*  Under construction !!!	
@@ -133,7 +131,7 @@ begin: SEQ_STATE
 		I_out <= ZERO;
 		High_out <= ZERO;
 		M_diag <= ZERO;
-		I_diag <= ZERO;			//  !X!  ->  gap_extend???
+		I_diag <= ZERO ;//+ gap_extend;			//  !X!  ->  gap_extend???
 	end
 	else begin
 		case(state)
@@ -145,7 +143,7 @@ begin: SEQ_STATE
 					I_out <= I_bus; 	 // connect score bus to output reg 
 					High_out <= `MAX(High_in, I_M_max);	// compare current PE's high score with the left neighbour's 
 					M_diag <= M_in;   // score from left neighbour serves as diagonal score in the next cycle
-					I_diag <= I_in;		//  !X!  ->  gap_extend???
+					I_diag <= I_in ;//+ gap_extend;		//  !X!  ->  gap_extend???
 					data_out <= data_in;
 					en_out <= 1'b1;
 					vld <= 1'b0;
@@ -154,13 +152,13 @@ begin: SEQ_STATE
 				end
 				else begin // waiting for data
 				//set output to zero: 
-					vld <= 1'b0;
-				    en_out <= 1'b0;
-					M_out <= ZERO;
-					I_out <= ZERO;
-					High_out <= ZERO;
+					// vld <= 1'b0;				    
+					// M_out <= ZERO;
+					// I_out <= ZERO;
+					// High_out <= ZERO;
+					en_out <= 1'b0;
 					M_diag <= ZERO;
-					I_diag <= ZERO;		//  !X!  ->  gap_extend???
+					I_diag <= ZERO ;//+ gap_extend;		//  !X!  ->  gap_extend???
 					data_out <= 2'b00;
 					/* incomplete! */
 				end
@@ -178,7 +176,7 @@ begin: SEQ_STATE
 					I_out <= I_bus; 	 // connect score bus to output reg 
 					High_out <= `MAX(High_in, I_M_max);	// compare current PE's high score with the left neighbour's 
 					M_diag <= M_in;	 // score from left neighbour serves as diagonal score in the next cycle
-					I_diag <= I_in;		//  !X!  ->  gap_extend???
+					I_diag <= I_in ;//+ gap_extend;		//  !X!  ->  gap_extend???
 					data_out <= data_in;
 				end
 				

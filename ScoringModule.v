@@ -1,5 +1,12 @@
 
 
+
+/* NOTES:
+	- coded based on VERILOG 2001 standard.
+	- possible faults are associated by the comment "!X!"
+*/
+
+
 module ScoringModule
    #( parameter
 		SCORE_WIDTH = 12,	// 
@@ -9,7 +16,7 @@ module ScoringModule
 		_G = 2'b01,        	//nucleotide "G"
 		_T = 2'b10,        	//nucleotide "T"
 		_C = 2'b11,        	//nucleotide "C"
-		ZERO  = (2**SCORE_WIDTH) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
+		ZERO  = (2**(SCORE_WIDTH-1)) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
 	)(
 // inputs:
 		clk,
@@ -94,8 +101,8 @@ assign {vld,result} = (vld_[counter_in]==1'b1)? {vld_[counter_in],high_[counter_
 genvar i;
 generate 
 	for(i=0; i<LENGTH; i=i+1)
-		if(i==0)	// if it's the first processing element assign proper initial inputs
-			SW_ProcessingElement      
+		if(i==0)	// instantiate the first processing element and assign proper initial inputs:
+			SW_ProcessingElement    
 		   #(
 				.SCORE_WIDTH(SCORE_WIDTH),	
 				._A(_A),        	
@@ -126,8 +133,8 @@ generate
 				.en_out(en_[i]),
 				.vld(vld_[i])
 				);
-		else
-			SW_ProcessingElement      
+		else // instantiate the rest of processing elements:
+			SW_ProcessingElement    
 		   #(
 				.SCORE_WIDTH(SCORE_WIDTH),	
 				._A(_A),        	

@@ -1,6 +1,15 @@
+
+
+
+
+
+
 `define LF 8'h0A
 `define STRING_LENGTH 50
 `timescale 1 ns / 100 ps
+// `define TEST_FILE "./data/score_test.fa" 
+// `define TEST_FILE "./data/data.fa"
+`define TEST_FILE "./data/data1.fa"
 module aligner_tb;
 
 
@@ -71,14 +80,14 @@ begin: CLOCK
 	forever #(clk_period/2) clk=~clk;
 end
 	
-
+integer count=0;
 
 
 initial
 begin: STIMULUS
 	
     #10;
-	fd= $fopen("score_test.fa","r");
+	fd= $fopen(`TEST_FILE,"r");
 	rst= 0;
 	valid_in= 0;	// no data to send
 	mode=1; 		// set to local alignment mode (Smith-waterman mode)
@@ -86,6 +95,7 @@ begin: STIMULUS
 	// assert reset and wait for 3 cycles:
 	rst= 1;
 	i=0;
+	j=0;
 	#(3*clk_period);
 	rst= 0;
 	
@@ -105,6 +115,7 @@ begin: STIMULUS
 		begin
 			db=str;
 			$fscanf(fd,"%s",str); // read next database sequence;
+			
 		end
 		// stream in the sequence base by base 
 		
@@ -112,13 +123,11 @@ begin: STIMULUS
 		begin
 		    
 			base=ConvertToBase(str[i]);
-		    valid_in=1;
-			if(i==30)
-				$display("%s score:\t%d",db,result+1024);
+		   valid_in=1;
 			#clk_period;
 			
 		end
-		
+		if(valid==1) count= count+1;
 		valid_in=0;
 		//rst=1;  // assert if valid doesn't work
 		#clk_period;
@@ -144,4 +153,17 @@ begin: STIMULUS
 	$stop;
 end
 
+always@(posedge clk)
+begin
+	if(valid==1)
+	begin
+		j=j+1;
+		if(j==31)
+			$display("db%d score:\t%d",count,result+1024);
+    end
+	else begin
+		j=0;
+		
+	end
+end
 endmodule

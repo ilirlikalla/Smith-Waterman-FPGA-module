@@ -1,11 +1,18 @@
 
+
+/* NOTES:
+	- this testbench serves for ScoringModule
+	- possible faults are associated by the comment "!X!"
+*/
 `define LF 8'h0A  // line feed char
 `define ZERO  (2**(12-1)) // biased zero for score width 12 bits
 `define STRING_LENGTH 50 
 `timescale 1 ns / 100 ps
 `define SCORE_WIDTH 12
 `define LENGTH 48
-`define TEST_FILE "score_test.fa"
+// `define TEST_FILE "./data/score_test.fa" //  "../data/data.fa"
+// `define TEST_FILE "../data/data.fa"
+`define TEST_FILE "../data/data1.fa"
 module ScoringModule_tb;
 
 /* function to encode neuclotides from ASCII to binary: */
@@ -24,8 +31,8 @@ endfunction
 /* VARIABLES:  */
 	logic [7:0] char;
 	logic [1:0] base;
-	string str,db;		// string of chars from the file kept here.
-	integer fd, i,j=1,length;
+	string str,db[100];		// string of chars from the file kept here.
+	integer fd, i,j=0,k=0,length;
 	logic [0:`STRING_LENGTH*2-1] query ; 	// query bit stream saved here!!!
 
 /* SIGNALS: */
@@ -74,16 +81,7 @@ ScoringModule
 		.vld(valid)
 		);
 
- // sw_gen_affine DUT(.clk(clk),
-             // .rst(rst),
-             // .i_query_length(query_length),
-				 // .i_local(mode),
-             // .query(query),
-             // .i_vld(enable),
-             // .i_data(base),
-             // .o_vld(valid),
-             // .m_result(result)
-             // );
+
 
 /* function to encode a string to a bitstream: */
 function automatic [`STRING_LENGTH*50-1:0] StrToBit(input string str);  // (input: file_descriptor,output: read_query, query_length)
@@ -116,9 +114,10 @@ end
   
 initial
 begin: STIMULUS
-	
+	$dumpfile("scoring_module.vcd");
+	$dumpvars;
     #10;
-	fd= $fopen(TEST_FILE,"r");
+	fd= $fopen(`TEST_FILE,"r");
 	rst= 1;
 	enable= 0;	// no data to send
 	mode=1; 		// set to local alignment mode (Smith-waterman mode)
@@ -145,9 +144,10 @@ begin: STIMULUS
 		$fscanf(fd,"%s",str);
 		if( str[0]==">")
 		begin
-			db=str;
+			db[k]=str;
+			k= k+1;
 			$fscanf(fd,"%s",str); // read next database sequence;
-		end
+		end else break;
 		 
 		// stream in the sequence base by base
 		for(i=0; i<str.len(); i++)
@@ -158,39 +158,21 @@ begin: STIMULUS
 			#clk_period;
 			
 		end
-		
 		enable=0;
-		//rst=1;  // reset if valid signal doesn't work
 		#clk_period;
-		//
-		//rst=1;
-		// char=$fgetc(fd);
-		// if(char == ">"  || char == `LF)
-		// begin
-		   
-			//
-			// $fscanf(fd,"%s",str); // discard line
-			// char=$fgetc(fd);
-			// char=$fgetc(fd); // discard new line character (twice)
-			// i=0;
-			// if(str=="query")
-				// $display(readQ(fd));				
-		// end
-		// $display("at time %t char is %c",$time, char);
-		// base = ConvertToBase(char);
-		// i= i+1;
-		// #clk_period;
+	
+
 	end
 	$fclose(fd);
 	#((length+5)*clk_period);
-
+     $fclose(fd);
 	$stop;
 end
 
-always@(posedge clk)
+always@(valid)
 	if(valid == 1)
 		begin
-			$display("db%d score:\t%d",j,result+`ZERO);
+			$display("%s score:\t%d",db[j],result+`ZERO);
 			j= j+1;
 		end
 
