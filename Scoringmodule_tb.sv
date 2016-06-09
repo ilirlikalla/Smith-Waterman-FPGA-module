@@ -41,13 +41,13 @@ endfunction
 	logic mode, enable;
 	logic valid;
 	logic signed [`SCORE_WIDTH-1:0] result;
-	logic [11:0] base_counter;
+	//logic [11:0] base_counter;
 
 /* DUT instantiation: */
 
 ScoringModule
    #(
-		.SCORE_WIDTH(`SCORE_WIDTH),	// 
+		.SCORE_WIDTH(`SCORE_WIDTH),	// result width in bits
 		.LENGTH(`LENGTH),			// number of processing elements in the systolic array
 		.LOG_LENGTH(),		// element addressing width
 		._A(),        	//nucleotide "A"
@@ -70,7 +70,7 @@ ScoringModule
 		.mismatch(-4),	// LUT
 		.gap_open(-12),	// LUT
 		.gap_extend(-4 ), // LUT
-		.counter_in(base_counter),	// base counter input
+		.output_select(31),	// select lines for output multiplexer
 // outputs:
 	    // data_out,
 		// M_out,
@@ -121,7 +121,7 @@ begin: STIMULUS
 	rst= 1;
 	enable= 0;	// no data to send
 	mode=1; 		// set to local alignment mode (Smith-waterman mode)
-	base_counter<= 31;
+	//base_counter<= 31;
 	#10;
 	// force reset and wait for 3 cycles:
 	rst= 0;

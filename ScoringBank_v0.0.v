@@ -7,10 +7,11 @@
 */
 
 
-module ScoringModule
+module ScoringBank
    #( parameter
 		SCORE_WIDTH = 12,	// result width in bits
 		LENGTH=128,			// number of processing elements in the systolic array
+		NR_MODULES= 4,				// number of scoring modules
 		LOG_LENGTH = log2b(LENGTH),		// element addressing width
 		_A = 2'b00,        	//nucleotide "A"
 		_G = 2'b01,        	//nucleotide "G"
@@ -28,11 +29,7 @@ module ScoringModule
 		// M_in,
 		// I_in,
 		// High_in,
-		match,			// LUT
-		mismatch,	// LUT
-		gap_open,	// LUT
-		gap_extend, // LUT
-		output_select,	// select lines for output multiplexer
+		counter_in,	// base counter input
 // outputs:
 	    // data_out,
 		// M_out,
@@ -58,91 +55,85 @@ input wire rst;
 input wire en_in;	//enable input
 // input wire first;	// flag that indicates if the processing cell is the first element of the systolic array
 input wire [1:0] data_in;		// target base input		  		
-input wire [(2*LENGTH)-1:0] query;			// query base input
-input wire [LOG_LENGTH-1:0] output_select;
+// input wire [(2*LENGTH)-1:0] query;			// query input
+input wire [LOG_LENGTH-1:0] counter_in;
 //
-// input wire [SCORE_WIDTH-1:0] M_in;	// "M": Match score matrix from left neighbour 
-// input wire [SCORE_WIDTH-1:0] I_in;	// "I": In-del score matrix from left neighbour
-// input wire [SCORE_WIDTH-1:0] High_in; 	// highest score from left neighbour
 
-// ---- LUT inputs: -------
-input wire [SCORE_WIDTH-1:0] match;		// match penalty from LUT
-input wire [SCORE_WIDTH-1:0] mismatch;	// mismatch penalty from LUT
-input wire [SCORE_WIDTH-1:0] gap_open; // gap open penalty from LUT
-input wire [SCORE_WIDTH-1:0] gap_extend;// gap extend penalty from LUT
-// ---- LUT inputs END.----
 
 /* -------- Outputs: ---------*/
 //
-// output reg [1:0] data_out;	// target base out to next cell
-// output reg [SCORE_WIDTH-1:0] M_out;	// match score out to right neighbour
-// output reg [SCORE_WIDTH-1:0] I_out;	// in-del score out to right neighbour
-// output reg [SCORE_WIDTH-1:0] High_out;	// highest score out to right neighbour
-// output reg en_out;	// enable signal for the right neighbour
-
 output wire [SCORE_WIDTH-1:0] result;	
 output wire vld;		// valid flag, is set when sequence score has been calculated
 
 
 
 /* --------- Internal signals: ---------- */
-wire [SCORE_WIDTH-1:0] high_ [0:LENGTH-1]; // bus holding all individual high scores of each PE
-wire [SCORE_WIDTH-1:0] M_ [0:LENGTH-1]; // bus holding all individual "M"scores of each PE
-wire [SCORE_WIDTH-1:0] I_ [0:LENGTH-1]; // bus holding all individual "I" scores of each PE
-wire [LENGTH-1:0] vld_; // bus holding all valid signals from each PE
-wire [LENGTH-1:0] en_;
+
+wire [NR_MODULES-1:0] vld_; // valid signals from each scoring module
+wire [NR_MODULES-1:0] en_; // enable signal for scoring modules
 wire [1:0] data_ [0:LENGTH-1];
+// registers:
+reg [(2*LENGTH)-1:0] query;		// query register
+reg [LENGTH-1:0] query_length;	// holds the length of the query
+reg  [1:0] target_base [NR_MODULES-1:0]; // holds bases that should be streamed in at the respective scoring modules
+// penalty registers (LUT signals):
+reg [SCORE_WIDTH-1:0] match;			// match penalty
+reg [SCORE_WIDTH-1:0] mismatch;	// mismatch penalty 
+reg [SCORE_WIDTH-1:0] gap_open;	// gap open penalty
+reg [SCORE_WIDTH-1:0] gap_extend;	// gap extend penalty 
 
-// reg [LOG_LENGTH-1:0] output_select;		// stores select signals for output mux
-// reg [LOG_LENGTH-1:0] base_counter;		// counts the target sequence length
-// parameter WAIT= 2'b01, COUNT= 2'b10; // counter states
-// reg [1:0] counter_state;	// counter state register
-// /* ---------- Base counter and output logic: -----------*/
-//output mux COMB logic:	!X! needs to be optimized!	!X! -> this might cause problems for sequences longer than the query sequence
-// assign {vld,result} = (vld_[output_select]==1'b1)? {vld_[output_select],high_[output_select]} : {1'b0, ZERO}; //  insert enable??? !X!  ( counter -1) ???
- assign {vld,result} = {vld_[output_select],high_[output_select]};
-// always@(posedge clk)	
-// begin: OUTPUT_SEL
-	// if(rst==1'b0)
-		// output_select <= 0;
-	// else if(en_in==1'b0)
-		// output_select <= base_counter;
-// end
-	
-//base counter logic:
-// always@(posedge clk)
-// begin: BASE_COUNT
-	// if(rst==1'b0)
-	// begin
-		// base_counter <= 0;
-		// counter_state <= WAIT;
-	// end
-	// else begin
-		// case(counter_state)
-		// WAIT:
-			// begin
-				// base_counter <=0;
-				// if(en_in == 1'b1)
-					// begin
-					// base_counter <= 0;
-					// counter_state <= COUNT;
-					// end
-			// end
-			
-		// COUNT:
-			// if(en_in == 1'b0)
-				// counter_state <= WAIT;
-			// else if( base_counter < LENGTH)
-				// base_counter <= base_counter + 1;
-				
-			// default: counter_state <= WAIT;  // in case of failure go to the "safe" state (reset)
-		// endcase
-		
-	// end
-// end
-		
 
-/* -------END of Base counter and output logic. --------*/
+/* -------- Component instantiations: -----------*/
+genvar i;
+generate
+	for( i=0; i<NR_MODULES; i++)
+ScoringModule
+   #(
+		.SCORE_WIDTH(SCORE_WIDTH),	// 
+		.LENGTH(LENGTH),			// number of processing elements in the systolic array
+		.LOG_LENGTH(),		// element addressing width
+		._A(),        	//nucleotide "A"
+		._G(),        	//nucleotide "G"
+		._T(),        	//nucleotide "T"
+		._C(),        	//nucleotide "C"
+		.ZERO(ZERO) // $realtobits(2**SCORE_WIDTH) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
+	) M(
+// inputs:
+		.clk(clk),
+		.rst(rst), 				// active low 
+		.en_in(en_[i]),
+		// first,
+		.data_in(base[i]),
+		.query(query),
+		// M_in,
+		// I_in,
+		// High_in,
+		.match(match),			// LUT
+		.mismatch(mismatch),	// LUT
+		.gap_open(gap_open),	// LUT
+		.gap_extend(gap_extend), // LUT
+		.counter_in(base_counter),	// base counter input
+// outputs:
+	    // data_out,
+		// M_out,
+		// I_out,
+		// High_out,
+		.result(result), 	// Smith-waterman result
+		//en_out,
+		.vld(valid)
+		);
+
+/* -------- END of Component instantiations. --------*/
+
+
+
+
+
+
+
+// output mux logic:
+assign {vld,result} = (vld_[counter_in]==1'b1)? {vld_[counter_in],high_[counter_in]} : {1'b0, ZERO}; //  insert enable??? !X!  ( counter -1) ???
+
 // instantiation of the systolic array of processing elements:
 genvar i;
 generate 

@@ -98,7 +98,7 @@ reg [SCORE_WIDTH-1:0] I_M_max; 		// max betwwen "I" & "M" scores
 /* ----------- Combinational part of score calculation:  ----------- */
 
 always@*
-begin
+begin: COMB_CALC
 	
 	LUT = 0; 
 	diag_max = 0;
