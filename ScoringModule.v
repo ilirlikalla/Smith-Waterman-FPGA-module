@@ -12,10 +12,10 @@ module ScoringModule
 		SCORE_WIDTH = 12,	// result width in bits
 		LENGTH=128,			// number of processing elements in the systolic array
 		LOG_LENGTH = log2b(LENGTH),		// element addressing width
-		_A = 2'b00,        	//nucleotide "A"
-		_G = 2'b01,        	//nucleotide "G"
-		_T = 2'b10,        	//nucleotide "T"
-		_C = 2'b11,        	//nucleotide "C"
+		_A = 2'b10,        	//nucleotide "A"
+		_G = 2'b11,        	//nucleotide "G"
+		_T = 2'b00,        	//nucleotide "T"
+		_C = 2'b01,        	//nucleotide "C"
 		ZERO  = (2**(SCORE_WIDTH-1)) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
 	)(
 // inputs:
