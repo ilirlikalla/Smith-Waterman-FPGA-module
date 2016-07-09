@@ -28,10 +28,10 @@ module SW_ProcessingElement
 		M_in,
 		I_in,
 		High_in,
-		match,			// LUT
-		mismatch,	// LUT
-		gap_open,	// LUT
-		gap_extend, // LUT
+		match,				// LUT
+		mismatch,			// LUT
+		gap_open,			// LUT
+		gap_extend, 		// LUT
 // outputs:
 	    data_out,
 		M_out,
@@ -169,10 +169,10 @@ begin: SEQ_STATE
 				end
 				else begin // waiting for data
 				//set output to zero: 
-					// vld <= 1'b0;				    
-					// M_out <= ZERO;
-					// I_out <= ZERO;
-					// High_out <= ZERO;
+					vld <= 1'b0;				    
+					M_out <= ZERO;
+					I_out <= ZERO;
+					High_out <= ZERO;
 					en_out <= 1'b0;
 					M_diag <= ZERO;
 					I_diag <= ZERO ;//+ gap_extend;		//  !X!  ->  gap_extend???

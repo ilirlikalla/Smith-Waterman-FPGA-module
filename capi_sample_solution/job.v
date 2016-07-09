@@ -327,9 +327,9 @@ module job (
   // Write port
   
   assign write_addr = wed_to;
-  assign write_size = 64'd8; //wed_size;  // ** write 8 bytes for the result (8 is the minimum for posix_memalign()
+  assign write_size = 64'd128; //wed_size;  // ** write 8 bytes for the result (8 is the minimum for posix_memalign()
   
-  // extra ports:
+  // extra ports: 
   
   assign endianess = little_endian;
 

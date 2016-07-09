@@ -307,11 +307,12 @@ module afu (
    
   // control signals:
   reg enable_s; 								// enables scoring module
-  reg enable_c;                 // enables base counter
+  //reg enable_c;                 // enables base counter
+	reg target_empty;							// is set if target sequence is not present in seq_reg[1]
   wire valid_s;  								// valid from scoring module
   wire [0:11] result_s;         // scoring module output
-  
-  reg [0:11] result_r;
+  wire [0:15] result_w;								
+  reg [0:15] result_r;
   reg [15:0] base_cnt;
   
   // FSM signals:
@@ -363,6 +364,7 @@ module afu (
 				result_r <= 16'd0;
 				index_s <= 1'b0;
 				scoring_state <= 4'b1000;
+				target_empty <= 1'b1;
 			end 
 			else begin
 				case(scoring_state)
@@ -382,6 +384,7 @@ module afu (
 				 					begin
 										seq_reg[index_s] <= sequence_w; // get sequence bases !X!
 										seq_length[index_s] <= length_w; // get sequenece length !X!
+										target_empty <= !index_s; // target is loaded
 										index_s <= ~ index_s; // increment register index (data is read in order from dma.v)
 									end
 								end
@@ -396,12 +399,17 @@ module afu (
 								end
 								else begin
 									seq_reg[1][463:0] <= {2'b00,seq_reg[1][463:2]}; // feed bases to scoring module, by shifting out the sequence !X!
+									if(base_cnt == seq_length[1]) 
+										target_empty <= 1'b1;
 								end
 							end  
 					sc_st_write_result: // send result and wait for it to be written by dma.v
 								if(write_ready) // jump to idle state
+								begin
+									index_s <= ~index_s;
 									scoring_state <= sc_st_idle;
-				
+								end
+
 					default: scoring_state <= 4'b1000; // jump to 'safe' state
 				endcase
 			end
@@ -412,7 +420,6 @@ module afu (
 		begin: STATE_COMBINATIONAL
 			// avoid latching:
 			enable_s = 1'b0;
-			enable_c = 1'b0;
 			read_ack = 1'b0;
 			write_data_out = 512'd0;
 			write_data_ack = 1'b0;
@@ -427,11 +434,10 @@ module afu (
 				
 				sc_st_calculate:
 						begin
-							enable_c = 1'b1;	// enable base counter
-							if(base_cnt == seq_length[1]) // if all the sequence has been feed to the scoring module
+							
+							if(target_empty | (base_cnt == seq_length[1])) // if all the sequence has been feed to the scoring module
 							begin
 								enable_s = 1'b0;	// stop the module 
-								enable_c = 1'b0;  // stop the base counter !X!
 							end
 						 	else
 								enable_s = 1'b1; // send enable to scoring module 
@@ -440,19 +446,19 @@ module afu (
 				sc_st_write_result:
 						if(write_data_ready)
 						begin
-							write_data_out= {500'd0,result_r}; // send result to dma.v write bus
+							write_data_out= (index_s == 1'b0)? {result_w,496'd0}: 512'h0; // send result to dma.v write bus
 							write_data_ack=1'b1;  // send write acknowledge
 						end
 						
-				//default: // do nothing 
+				//default: // do nothing  !X! 
 			endcase
 		end
 
 	// ---- base counter: ----
 	always@(posedge ha_pclock)
-	if(reset | valid_s)
+	if(reset | ~enable_s)
 		base_cnt <= 16'd0;
-	else if( enable_c)
+	else if( enable_s)
 		base_cnt <= base_cnt + 1;
 	
 	// ---- fix endianess of sequence_data: ----
@@ -471,8 +477,15 @@ module afu (
 		.little_endian(little_endian),
 		.data_out(sequence_w)
 	);
-
-
+	
+	endian_swap #(
+		.BYTES(2)
+	) endian_result (
+		.data_in(result_r),
+		.little_endian(little_endian),
+		.data_out(result_w)
+	);
+  
 
 // ============+=== END of sample logic ==========================
 
