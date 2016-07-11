@@ -1,5 +1,5 @@
 //   (C) Copyright International Business Machines 2014
-
+`define _DEBUGGING_
 module afu (
   // Command interface
   output         ah_cvalid,      // Command valid
@@ -348,7 +348,7 @@ module afu (
 	.mismatch(-4),			// mismatch penalty
 	.gap_open(-12),			// opening a new gap penalty 
 	.gap_extend(-4 ), 	// extending gap length penalty 
-	.output_select(seq_length[1]),	// select lines for output multiplexer ** to be set 
+	.output_select(seq_length[0]),	// select lines for output multiplexer ** to be set 
 	// outputs: 
 	.result(result_s), 	// Smith-waterman result
 	.vld(valid_s)
@@ -383,7 +383,7 @@ module afu (
 									if(read_data_ready) 
 				 					begin
 										seq_reg[index_s] <= sequence_w; // get sequence bases !X!
-										seq_length[index_s] <= length_w; // get sequenece length !X!
+										seq_length[index_s] <= length_w ; // get sequenece length !X!
 										target_empty <= !index_s; // target is loaded
 										index_s <= ~ index_s; // increment register index (data is read in order from dma.v)
 									end
@@ -485,7 +485,47 @@ module afu (
 		.little_endian(little_endian),
 		.data_out(result_w)
 	);
-  
+   
+   // ---- Debugging code: ----
+	`ifdef _DEBUGGING_
+	   
+	// find max & count scoring module clk 
+	time ts_s,te_s, tm_s;
+	integer st_sc=0, c_ID=0, elapsed,max=0;
+	always@*
+	begin
+		if(!st_sc)
+		begin
+			max = 0;
+			if(enable_s)
+			begin
+				max = result_s;
+				ts_s = $time;
+				st_sc = 1;
+				c_ID = c_ID +1;
+			end
+		end else if(st_sc)
+		begin 
+			if(result_s > max)
+			begin
+				max = result_s;
+				tm_s = $time;
+			end
+			if(valid_s)
+			begin
+				te_s = $time;
+				elapsed = (te_s-ts_s)/(4);
+				$display("@%6tns, max: %4d(%5d biased)",tm_s,max-2048,max);
+				$display("@%t, calculation #%d completed, runtime: %d cycles(%tns)",$time,c_ID,elapsed,(te_s-ts_s));
+				st_sc = 0;
+			end
+		end
+	end
+	 
+   `endif
+
+
+
 
 // ============+=== END of sample logic ==========================
 

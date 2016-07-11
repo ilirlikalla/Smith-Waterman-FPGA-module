@@ -93,14 +93,32 @@ wire [LENGTH-1:0] vld_; // bus holding all valid signals from each PE
 wire [LENGTH-1:0] en_;
 wire [1:0] data_ [0:LENGTH-1];
 
-// reg [LOG_LENGTH-1:0] output_select;		// stores select signals for output mux
+reg [LOG_LENGTH-1:0] output_select_r;		// stores select signals for output mux
 // reg [LOG_LENGTH-1:0] base_counter;		// counts the target sequence length
 // parameter WAIT= 2'b01, COUNT= 2'b10; // counter states
 // reg [1:0] counter_state;	// counter state register
+
+
+
+
 // /* ---------- Base counter and output logic: -----------*/
 //output mux COMB logic:	!X! needs to be optimized!	!X! -> this might cause problems for sequences longer than the query sequence
 // assign {vld,result} = (vld_[output_select]==1'b1)? {vld_[output_select],high_[output_select]} : {1'b0, ZERO}; //  insert enable??? !X!  ( counter -1) ???
+
+// ---- output logic: ----
+
+ // calculate the select signal:
+ always@(posedge clk) 
+ 	if(rst)
+		output_select_r <= 0;
+	else if(en_in)
+		output_select_r <= output_select - 1;
+ // select the corrent output: 		
  assign {vld,result} = {vld_[output_select],high_[output_select]};
+
+
+
+
 // always@(posedge clk)	
 // begin: OUTPUT_SEL
 	// if(rst==1'b0)
@@ -142,8 +160,7 @@ wire [1:0] data_ [0:LENGTH-1];
 // end
 		
 
-/* -------END of Base counter and output logic. --------*/
-// instantiation of the systolic array of processing elements:
+// ---- instantiation of the systolic array of processing elements: ----
 genvar i;
 generate 
 	for(i=0; i<LENGTH; i=i+1)
