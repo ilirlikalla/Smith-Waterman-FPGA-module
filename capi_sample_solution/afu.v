@@ -430,7 +430,7 @@ module afu (
 
 				sc_st_read_seq:
 							if(read_data_ready) 
-								read_ack <= 1'b1; // send acknowledge
+								read_ack = 1'b1; // send acknowledge
 				
 				sc_st_calculate:
 						begin
