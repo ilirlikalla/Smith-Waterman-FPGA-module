@@ -22,7 +22,6 @@ module SW_ProcessingElement_v_0_1
 		clk,
 		rst, 				// active low 
 		en_in,
-		first,
 		data_in,
 		query,
 		M_in,
@@ -47,7 +46,6 @@ module SW_ProcessingElement_v_0_1
 input wire clk;
 input wire rst;
 input wire en_in;						//enable input
-input wire first;						// flag that indicates if the processing cell is the first element of the systolic array
 input wire [1:0] data_in;				// target base input		  		
 input wire [1:0] query;					// query base input
 input wire [SCORE_WIDTH-1:0] M_in;		// "M": Match score matrix from left neighbour 

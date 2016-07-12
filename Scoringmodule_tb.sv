@@ -12,7 +12,7 @@
 `define LENGTH 48
 // `define TEST_FILE "./data/score_test.fa" //  "../data/data.fa"
 // `define TEST_FILE "../data/data.fa"
-`define TEST_FILE "../data/data1.fa"
+`define TEST_FILE "../data/data.fa"
 module ScoringModule_tb;
 
 /* function to encode neuclotides from ASCII to binary: */
