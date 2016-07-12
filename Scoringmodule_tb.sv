@@ -12,7 +12,7 @@
 `define LENGTH 48
 // `define TEST_FILE "./data/score_test.fa" //  "../data/data.fa"
 // `define TEST_FILE "../data/data.fa"
-`define TEST_FILE "../data/data.fa"
+`define TEST_FILE "../data/data1.fa"
 module ScoringModule_tb;
 
 /* function to encode neuclotides from ASCII to binary: */
@@ -70,7 +70,7 @@ ScoringModule
 		.mismatch(-4),	// LUT
 		.gap_open(-12),	// LUT
 		.gap_extend(-4 ), // LUT
-		.output_select(31),	// select lines for output multiplexer
+		.output_select(32),	// select lines for output multiplexer
 // outputs:
 	    // data_out,
 		// M_out,

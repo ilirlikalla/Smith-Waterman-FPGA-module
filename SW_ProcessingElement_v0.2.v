@@ -9,7 +9,7 @@
 
 `define MAX(x,y)  ((x > y)? x :y)
 
-module SW_ProcessingElement
+module SW_ProcessingElement_v_0_2
    #( parameter
 		SCORE_WIDTH = 12,	// result width in bits
 		_A = 2'b00,        	// nucleotide "A"
@@ -96,7 +96,7 @@ reg [SCORE_WIDTH-1:0] H_max; 		// max betwwen "I_M_max" & "High_out"
 						
 
 /* ----------- Combinational part of score calculation:  ----------- */
-
+ 
 always@*
 begin: COMB_CALC
 	// avoid latching:
@@ -112,43 +112,62 @@ begin: COMB_CALC
 	I_bus = 0;
 	I_M_max = 0;
 	
-	if(en_in==1'b1 & rst==1'b1)
-	begin
-		LUT = (data_in == query)? match : mismatch; //  the proper match penalty
-		if( state == WAIT)
-		begin 
-			// "M" matrix logic:
-			M_score = LUT + ZERO;
-			M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  // check if "M" matrix element is larger or equal to ZERO. This bus holds "M" score. !!! SKIP THIS STEP FOR GLOBAL ALIGNMENT !!!
-			
-			// "I" matrix logic:
-			M_open = ZERO + gap_open + gap_extend; 	// penalty to open gap in current alignment            !X!  ->  + gap_extend??? (this corrects some results in data1.fa)
-			I_extend = ZERO + gap_extend;			// penalty to extend gap in current alignment			
-			I_bus = `MAX(M_open, I_extend); 		//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
-
-			// Highest score logic:
-			I_M_max = `MAX(I_bus, M_bus); 			// max between "I" and "M" matrices
-			H_max =  (I_M_max[SCORE_WIDTH-1] == 1'b1)? I_M_max :ZERO; //`MAX(ZERO, I_M_max);  // check if I_M_max is greater than zero
-		end else if( state == CALCULATE )
-		begin
-			// "M" matrix logic:			
-			diag_max = `MAX(M_diag, I_diag); 		// (M_diag > I_diag)? M_diag : I_diag; // find max between the two matrices diagonals
-			M_score = LUT + diag_max;
-			M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  // check if "M" matrix element is larger or equal to ZERO. This bus holds "M" score. !!! SKIP THIS STEP FOR GLOBAL ALIGNMENT !!!
 	
-			// "I" matrix logic:
-			I_max = `MAX(I_in, I_out); 				//(I_in > I_out)? I_in : I_out; // calculate max between left and up neighbour in "I"
-			M_max = `MAX(M_in, M_out); 				//(M_in > M_out)? M_in : M_out; // calculate max between left and up neighbour in "M"
-			M_open = M_max + gap_open + gap_extend; // penalty to open gap in current alignment            !X!  ->  + gap_extend??? (this corrects some results in data1.fa)
-			I_extend = I_max + gap_extend; 			// penalty to extend gap in current alignment			
-			I_bus = `MAX(M_open, I_extend); 		//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
+	LUT = (data_in == query)? match : mismatch; //  the proper match penalty
+	if( state == WAIT)
+	begin 
+		// "M" matrix logic:
+		M_score = LUT + ZERO;
+		M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  // check if "M" matrix element is larger or equal to ZERO. This bus holds "M" score. !!! SKIP THIS STEP FOR GLOBAL ALIGNMENT !!!
+		
+		// "I" matrix logic:
+		M_open = ZERO + gap_open + gap_extend; 	// penalty to open gap in current alignment            !X!  ->  + gap_extend??? (this corrects some results in data1.fa)
+		I_extend = ZERO + gap_extend;			// penalty to extend gap in current alignment			
+		I_bus = `MAX(M_open, I_extend); 		//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
 
-			// Highest score logic:
-			I_M_max = `MAX(I_bus, M_bus); // max between "I" and "M" matrices
-			H_max = `MAX(High_in, I_M_max);
-		end
+		// Highest score logic:
+		I_M_max = `MAX(I_bus, M_bus); 			// max between "I" and "M" matrices
+		H_max =  (I_M_max[SCORE_WIDTH-1] == 1'b1)? I_M_max :ZERO; //`MAX(ZERO, I_M_max);  // check if I_M_max is greater than zero
+	end else if( state == CALCULATE )
+	begin
+		// "M" matrix logic:			
+		diag_max = `MAX(M_diag, I_diag); 		// (M_diag > I_diag)? M_diag : I_diag; // find max between the two matrices diagonals
+		M_score = LUT + diag_max;
+		M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  // check if "M" matrix element is larger or equal to ZERO. This bus holds "M" score. !!! SKIP THIS STEP FOR GLOBAL ALIGNMENT !!!
+
+		// "I" matrix logic:
+		I_max = `MAX(I_in, I_out); 				//(I_in > I_out)? I_in : I_out; // calculate max between left and up neighbour in "I"
+		M_max = `MAX(M_in, M_out); 				//(M_in > M_out)? M_in : M_out; // calculate max between left and up neighbour in "M"
+		M_open = M_max + gap_open + gap_extend; // penalty to open gap in current alignment            !X!  ->  + gap_extend??? (this corrects some results in data1.fa)
+		I_extend = I_max + gap_extend; 			// penalty to extend gap in current alignment			
+		I_bus = `MAX(M_open, I_extend); 		//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
+
+		// Highest score logic:
+		I_M_max = `MAX(I_bus, M_bus); // max between "I" and "M" matrices
+		H_max = `MAX(High_in, I_M_max);
 	end
+
 end
+ /* 
+// "M" matrix logic:
+assign	LUT = (data_in == query)? match : mismatch; // assign the proper match penalty
+assign	diag_max = `MAX(M_diag, I_diag); // (M_diag > I_diag)? M_diag : I_diag; // find max between the two matrices diagonals
+assign	M_score = LUT + ((state[1])? ZERO : diag_max); // if state wait initialize with zero
+assign	M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  // check if "M" matrix element is larger or equal to ZERO. This bus holds "M" score. !!! SKIP THIS STEP FOR GLOBAL ALIGNMENT !!!
+	// assign M_bus = (M_score > ZERO)? M_score :`ZERO;
+	
+// "I" matrix logic:
+assign I_max = `MAX(I_in, I_out); //(I_in > I_out)? I_in : I_out; // calculate max between left and up neighbour in "I"
+assign M_max = `MAX(M_in, M_out); //(M_in > M_out)? M_in : M_out; // calculate max between left and up neighbour in "M"
+assign M_open = ((state[1])? ZERO : M_max) + gap_open+ gap_extend; // penalty to open gap in current alignment            !X!  ->  + gap_extend??? (this corrects some results in data1.fa)
+assign I_extend = ((state[1])? ZERO : I_max) + gap_extend; // penalty to extend gap in current alignment			
+assign I_bus = `MAX(M_open, I_extend); //(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
+
+// Highest score logic:
+assign I_M_max = `MAX(I_bus, M_bus); // max between "I" and "M" matrices
+assign H_max = (state[1])? ((I_M_max[SCORE_WIDTH-1] == 1'b1)? I_M_max :ZERO) : `MAX(High_in, I_M_max);
+ 
+  */
 /* ------------------ END of Combinational part. ------------------  */
 						
 									
