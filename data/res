@@ -1,0 +1,161 @@
+# fasta36 datal.fa data.fa
+FASTA searches a protein or DNA sequence data bank
+ version 36.3.8d Apr, 2016(preload9)
+Please cite:
+ W.R. Pearson & D.J. Lipman PNAS (1988) 85:2444-2448
+
+Query: datal.fa
+  1>>>query - 32 nt
+Library: data.fa
+      544 residues in    17 sequences
+
+Statistics: (shuffled [456]) MLE statistics: Lambda= 0.2248;  K=0.3704
+ statistics sampled from 9 (9) to 456 sequences
+Algorithm: FASTA (3.8 Nov 2011) [optimized]
+Parameters: +5/-4 matrix (5:-4), open/ext: -12/-4
+ ktup: 2, E-join: 0.25 (1), E-opt: 0.05 (0.382), width:  16
+ Scan time:  0.010
+
+The best scores are:                                      opt bits E(17)
+query                                          (  32) [f]  160 55.3   4e-13
+query                                          (  32) [r]   50 19.6   0.022
+db16                                           (  32) [r]   40 16.4    0.21
+db15                                           (  32) [f]   38 15.7    0.32
+db16                                           (  32) [f]   37 15.4     0.4
+db1                                            (  32) [f]   36 15.1     0.5
+db1                                            (  32) [r]   34 14.4    0.78
+db9                                            (  32) [f]   34 14.4    0.78
+db12                                           (  32) [f]   33 14.1    0.97
+db6                                            (  32) [f]   31 13.4     1.5
+db14                                           (  32) [f]   31 13.4     1.5
+db2                                            (  32) [r]   30 13.1     1.9
+
+>>query                                                   (32 nt)
+ initn: 160 init1: 160 opt: 160  Z-score: 290.2  bits: 55.3 E(17): 4e-13
+banded Smith-Waterman score: 160; 100.0% identity (100.0% similar) in 32 nt overlap (1-32:1-32)
+
+               10        20        30  
+query  CGTCCAGGTAATGGCTGTTAAGTCAGTCCCTG
+       ::::::::::::::::::::::::::::::::
+query  CGTCCAGGTAATGGCTGTTAAGTCAGTCCCTG
+               10        20        30  
+
+>>query                                                   (32 nt)
+rev-comp initn:  50 init1:  50 opt:  50  Z-score: 97.4  bits: 19.6 E(17): 0.022
+banded Smith-Waterman score: 50; 64.3% identity (64.3% similar) in 28 nt overlap (32-5:5-32)
+
+            30        20        10         
+query-     CAGGGACTGACTTAACAGCCATTACCTGGACG
+           :::: : :: ::    :: :: : ::::    
+query  CGTCCAGGTAATGGCTGTTAAGTCAGTCCCTG    
+               10        20        30      
+
+>>db16                                                    (32 nt)
+rev-comp initn:  40 init1:  40 opt:  40  Z-score: 79.9  bits: 16.4 E(17): 0.21
+banded Smith-Waterman score: 40; 100.0% identity (100.0% similar) in 8 nt overlap (31-24:9-16)
+
+               30        20        10         
+query-        CAGGGACTGACTTAACAGCCATTACCTGGACG
+               ::::::::                       
+db16   GCCTGGTAAGGGACTGGGGGAAACAAGGAAAC       
+               10        20        30         
+
+>>db15                                                    (32 nt)
+ initn:  36 init1:  36 opt:  38  Z-score: 76.4  bits: 15.7 E(17): 0.32
+banded Smith-Waterman score: 38; 76.9% identity (76.9% similar) in 13 nt overlap (3-15:1-13)
+
+               10        20        30    
+query  CGTCCAGGTAATGGCTGTTAAGTCAGTCCCTG  
+         : : ::::: :::                   
+db15     TTCCGGTAAGGGCATACCGCCTACCGGGGGCC
+                 10        20        30  
+
+>>db16                                                    (32 nt)
+ initn:  37 init1:  37 opt:  37  Z-score: 74.6  bits: 15.4 E(17):  0.4
+banded Smith-Waterman score: 37; 81.8% identity (81.8% similar) in 11 nt overlap (4-14:2-12)
+
+               10        20        30    
+query  CGTCCAGGTAATGGCTGTTAAGTCAGTCCCTG  
+          :: ::::: ::                    
+db16     GCCTGGTAAGGGACTGGGGGAAACAAGGAAAC
+                 10        20        30  
+
+>>db1                                                     (32 nt)
+ initn:  33 init1:  33 opt:  36  Z-score: 72.9  bits: 15.1 E(17):  0.5
+banded Smith-Waterman score: 36; 66.7% identity (66.7% similar) in 18 nt overlap (5-22:8-25)
+
+                  10        20        30  
+query     CGTCCAGGTAATGGCTGTTAAGTCAGTCCCTG
+              ::  ::::: :: : : :          
+db1    AGGGCGTCATTTAATGACTATCATGGTGCAAT   
+               10        20        30     
+
+>>db1                                                     (32 nt)
+rev-comp initn:  34 init1:  34 opt:  34  Z-score: 69.3  bits: 14.4 E(17): 0.78
+banded Smith-Waterman score: 34; 71.4% identity (71.4% similar) in 14 nt overlap (31-18:1-14)
+
+        30        20        10          
+query- CAGGGACTGACTTAACAGCCATTACCTGGACG 
+        ::::  : : ::::                  
+db1     AGGGCGTCATTTAATGACTATCATGGTGCAAT
+                10        20        30  
+
+>>db9                                                     (32 nt)
+ initn:  32 init1:  32 opt:  34  Z-score: 69.3  bits: 14.4 E(17): 0.78
+banded Smith-Waterman score: 34; 71.4% identity (71.4% similar) in 14 nt overlap (13-26:2-15)
+
+               10        20        30             
+query  CGTCCAGGTAATGGCTGTTAAGTCAGTCCCTG           
+                   : : :: :::: ::                 
+db9               GGCCCGTGAAGTTAGGTTGGATCTGAGTGGTT
+                          10        20        30  
+
+>>db12                                                    (32 nt)
+ initn:  33 init1:  33 opt:  33  Z-score: 67.6  bits: 14.1 E(17): 0.97
+banded Smith-Waterman score: 33; 75.0% identity (75.0% similar) in 12 nt overlap (1-12:10-21)
+
+                        10        20        30  
+query           CGTCCAGGTAATGGCTGTTAAGTCAGTCCCTG
+                ::  ::::: ::                    
+db12   CGGCTTATTCGCTCAGGTGATTAGTTAGCGAT         
+               10        20        30           
+
+>>db6                                                     (32 nt)
+ initn:  31 init1:  31 opt:  31  Z-score: 64.1  bits: 13.4 E(17):  1.5
+banded Smith-Waterman score: 31; 87.5% identity (87.5% similar) in 8 nt overlap (7-14:7-14)
+
+               10        20        30  
+query  CGTCCAGGTAATGGCTGTTAAGTCAGTCCCTG
+             :::: :::                  
+db6    GTACGTGGTATTGGTCCACGCTCAGGACGTAC
+               10        20        30  
+
+>>db14                                                    (32 nt)
+ initn:  31 init1:  31 opt:  31  Z-score: 64.1  bits: 13.4 E(17):  1.5
+banded Smith-Waterman score: 31; 87.5% identity (87.5% similar) in 8 nt overlap (19-26:21-28)
+
+                 10        20        30  
+query    CGTCCAGGTAATGGCTGTTAAGTCAGTCCCTG
+                           :::: :::      
+db14   GGTCCCAGACGACCTTCCACTAAGGCAGCAGA  
+               10        20        30    
+
+>>db2                                                     (32 nt)
+rev-comp initn:  30 init1:  30 opt:  30  Z-score: 62.3  bits: 13.1 E(17):  1.9
+banded Smith-Waterman score: 30; 100.0% identity (100.0% similar) in 6 nt overlap (10-5:6-11)
+
+        30        20        10                          
+query- CAGGGACTGACTTAACAGCCATTACCTGGACG                 
+                             ::::::                     
+db2                     TTACATACCTGCGTCCTTAAGCTTTCCGCGAT
+                                10        20        30  
+
+
+
+32 residues in 1 query   sequences
+544 residues in 17 library sequences
+ Tcomplib [36.3.8d Apr, 2016(preload9)] (8 proc in memory [0G])
+ start: Tue Jul 12 01:17:53 2016 done: Tue Jul 12 01:17:53 2016
+ Total Scan time:  0.010 Total Display time:  0.010
+
+Function used was FASTA [36.3.8d Apr, 2016(preload9)]
