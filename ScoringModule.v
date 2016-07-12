@@ -109,12 +109,12 @@ reg [LOG_LENGTH-1:0] output_select_r;		// stores select signals for output mux
 
  // calculate the select signal:
  always@(posedge clk) 
- 	if(rst)
+ 	if(!rst)
 		output_select_r <= 0;
 	else if(en_in)
-		output_select_r <= output_select - 1;
+		output_select_r <= output_select - 1; // possible hardware fault for lengths outside 1..128 !X!
  // select the corrent output: 		
- assign {vld,result} = {vld_[output_select],high_[output_select]};
+ assign {vld,result} = {vld_[output_select_r],high_[output_select_r]};
 
 
 
@@ -178,11 +178,10 @@ generate
 				.clk(clk),
 				.rst(rst), 				// active low 
 				.en_in(en_in),
-				.first(1'b1),	// not used!!! (28.04.16)
 				.data_in(data_in),
 				.query(query[1:0]),
 				.M_in(ZERO),
-				.I_in(ZERO),		//  gap_open???   !X!
+				.I_in(ZERO),			//  gap_open???   !X!
 				.High_in(ZERO),
 				.match(match),			// LUT
 				.mismatch(mismatch),	// LUT
@@ -210,7 +209,6 @@ generate
 				.clk(clk),
 				.rst(rst), 				// active low 
 				.en_in(en_[i-1]),
-				.first(1'b0),	// not used!!! (28.04.16)
 				.data_in(data_[i-1]),
 				.query(query[2*i+1:2*i]),
 				.M_in(M_[i-1]),
