@@ -9,7 +9,7 @@
 
 `define MAX(x,y)  ((x > y)? x :y)
 
-module SW_ProcessingElement_v_0_1
+module SW_ProcessingElement
    #( parameter
 		SCORE_WIDTH = 12,	// result width in bits
 		_A = 2'b00,        	// nucleotide "A"
