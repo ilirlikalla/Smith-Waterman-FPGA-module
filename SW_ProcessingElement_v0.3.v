@@ -219,10 +219,10 @@ reg [SCORE_WIDTH-1:0] H_max; 		// max betwwen "I_M_max" & "High_out"
 		I_M_max = 0;
 		
         I_M_max = `MAX(M_out, I_out); 			// max between "I" and "M" matrices
-		if(state_hs == hs_idle)
-			H_max =  (I_M_max[SCORE_WIDTH-1] == 1'b1)? I_M_max :ZERO; //`MAX(ZERO, I_M_max);  // check if I_M_max is greater than zero
-        else if(state_hs == hs_calculate)
-			H_max = `MAX(High_in, I_M_max);
+		// if(state_hs == hs_idle)
+			// H_max =  (I_M_max[SCORE_WIDTH-1] == 1'b1)? I_M_max :ZERO; //`MAX(ZERO, I_M_max);  // check if I_M_max is greater than zero
+        // else if(state_hs == hs_calculate)
+		H_max = `MAX(High_in, I_M_max);
 	end
 	
 	

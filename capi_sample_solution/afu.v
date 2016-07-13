@@ -1,5 +1,5 @@
 //   (C) Copyright International Business Machines 2014
-`define _DEBUGGING_
+//`define _DEBUGGING_
 module afu (
   // Command interface
   output         ah_cvalid,      // Command valid

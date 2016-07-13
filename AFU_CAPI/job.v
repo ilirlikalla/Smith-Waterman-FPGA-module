@@ -258,7 +258,7 @@ module job (
     else if (wed_done)
       job_state <= 12'b000000000001;	// postmmio
     else if (job_st_postmmio && done_postmmio_l)
-      job_state <= 12'b100000000000	// idle
+      job_state <= 12'b100000000000;	// idle
   end
 
   // WED data

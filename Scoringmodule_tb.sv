@@ -6,7 +6,7 @@
 */
 `define LF 8'h0A  // line feed char
 `define ZERO  (2**(12-1)) // biased zero for score width 12 bits
-`define STRING_LENGTH 50 
+`define STRING_LENGTH 150 
 `timescale 1 ns / 100 ps
 `define SCORE_WIDTH 12
 `define LENGTH 48
@@ -18,10 +18,10 @@ module ScoringModule_tb;
 /* function to encode neuclotides from ASCII to binary: */
 function automatic [1:0] ConvertToBase(input logic [7:0] base);
 	case(base)
-		"A", "a": ConvertToBase = 2'b00;
-		"G", "g": ConvertToBase = 2'b01;
-		"T", "t": ConvertToBase = 2'b10;
-		"C", "c": ConvertToBase = 2'b11;
+		"A", "a": ConvertToBase = 2'b10;
+		"G", "g": ConvertToBase = 2'b11;
+		"T", "t": ConvertToBase = 2'b00;
+		"C", "c": ConvertToBase = 2'b01;
 	default: ConvertToBase = 2'bZZ;
 	endcase
 endfunction

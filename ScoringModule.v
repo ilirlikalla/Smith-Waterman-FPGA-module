@@ -163,7 +163,7 @@ reg [LOG_LENGTH-1:0] output_select_r;		// stores select signals for output mux
 // ---- instantiation of the systolic array of processing elements: ----
 genvar i;
 generate 
-	for(i=0; i<LENGTH; i=i+1)
+	for(i=0; i<LENGTH; i=i+1) begin: GEN_BLOCK
 		if(i==0)	// instantiate the first processing element and assign proper initial inputs:
 			SW_ProcessingElement    
 		   #(
@@ -226,6 +226,7 @@ generate
 				.en_out(en_[i]),
 				.vld(vld_[i])
 				);
+	end
 endgenerate
 
 endmodule
