@@ -9,7 +9,7 @@
 `define STRING_LENGTH 150 
 `timescale 1 ns / 100 ps
 `define SCORE_WIDTH 12
-`define LENGTH 48
+`define LENGTH 128
 // `define TEST_FILE "./data/score_test.fa" //  "../data/data.fa"
 // `define TEST_FILE "../data/data.fa"
 `define TEST_FILE "../data/data1.fa"
@@ -33,7 +33,7 @@ endfunction
 	logic [1:0] base;
 	string str,db[100];		// string of chars from the file kept here.
 	integer fd, i,j=0,k=0,length;
-	logic [0:`STRING_LENGTH*2-1] query ; 	// query bit stream saved here!!!
+	logic [0:`LENGTH*2-1] query ; 	// query bit stream saved here!!!
 
 /* SIGNALS: */
 	logic clk,rst;
@@ -70,7 +70,7 @@ ScoringModule
 		.mismatch(-4),	// LUT
 		.gap_open(-12),	// LUT
 		.gap_extend(-4 ), // LUT
-		.output_select(32),	// select lines for output multiplexer
+		.output_select(length),	// select lines for output multiplexer
 // outputs:
 	    // data_out,
 		// M_out,
@@ -164,7 +164,7 @@ begin: STIMULUS
 
 	end
 	$fclose(fd);
-	#((length+5)*clk_period);
+	#((length+10)*clk_period); //
      $fclose(fd);
 	$stop;
 end
