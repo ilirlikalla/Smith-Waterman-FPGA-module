@@ -2,7 +2,9 @@
 
 
 /* NOTES:
-	- this version of the processing element, has the combinational logic gated by the enable and reset signals (en_in & rst)
+	- this version of the processing element is a pipelined design. The logic is more refined than the
+	previous versions, in order to help the synthesis tool for speed optimisation. This is the
+	fastest version, with a 2-stage pipeline. (combinational logic is not gated by the enable and reset signals )
 	- coded based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"
 */

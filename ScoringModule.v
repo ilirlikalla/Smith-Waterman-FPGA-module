@@ -2,7 +2,7 @@
 
 
 /* NOTES:
-	- coded based on VERILOG 2001 standard.
+	- code based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"
 */
 
@@ -15,30 +15,29 @@ module ScoringModule
 		_A = 2'b10,        	//nucleotide "A"
 		_G = 2'b11,        	//nucleotide "G"
 		_T = 2'b00,        	//nucleotide "T"
-		_C = 2'b01,        	//nucleotide "C"
-		ZERO  = (2**(SCORE_WIDTH-1)) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
+		_C = 2'b01,			//nucleotide "C"
+		ZERO = (2**(SCORE_WIDTH-1)) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
 	)(
 // inputs:
 		clk,
 		rst, 				// active low 
 		en_in,
-		// first,
 		data_in,
 		query,
 		// M_in,
 		// I_in,
 		// High_in,
-		match,			// LUT
-		mismatch,	// LUT
-		gap_open,	// LUT
-		gap_extend, // LUT
-		output_select,	// select lines for output multiplexer
+		match,				// LUT
+		mismatch,			// LUT
+		gap_open,			// LUT
+		gap_extend, 		// LUT
+		output_select,		// select lines for output multiplexer
 // outputs:
 	    // data_out,
 		// M_out,
 		// I_out,
 		// High_out,
-		result, 	// Smith-waterman result
+		result, 			// Smith-waterman result
 		//en_out,
 		vld
 		);
@@ -66,10 +65,10 @@ input wire [LOG_LENGTH-1:0] output_select;
 // input wire [SCORE_WIDTH-1:0] High_in; 	// highest score from left neighbour
 
 // ---- LUT inputs: -------
-input wire [SCORE_WIDTH-1:0] match;		// match penalty from LUT
-input wire [SCORE_WIDTH-1:0] mismatch;	// mismatch penalty from LUT
-input wire [SCORE_WIDTH-1:0] gap_open; // gap open penalty from LUT
-input wire [SCORE_WIDTH-1:0] gap_extend;// gap extend penalty from LUT
+input wire [SCORE_WIDTH-1:0] match;			// match penalty from LUT
+input wire [SCORE_WIDTH-1:0] mismatch;		// mismatch penalty from LUT
+input wire [SCORE_WIDTH-1:0] gap_open; 		// gap open penalty from LUT
+input wire [SCORE_WIDTH-1:0] gap_extend;	// gap extend penalty from LUT
 // ---- LUT inputs END.----
 
 /* -------- Outputs: ---------*/
@@ -86,10 +85,10 @@ output wire vld;		// valid flag, is set when sequence score has been calculated
 
 
 /* --------- Internal signals: ---------- */
-wire [SCORE_WIDTH-1:0] high_ [0:LENGTH-1]; // bus holding all individual high scores of each PE
-wire [SCORE_WIDTH-1:0] M_ [0:LENGTH-1]; // bus holding all individual "M"scores of each PE
-wire [SCORE_WIDTH-1:0] I_ [0:LENGTH-1]; // bus holding all individual "I" scores of each PE
-wire [LENGTH-1:0] vld_; // bus holding all valid signals from each PE
+wire [SCORE_WIDTH-1:0] high_ [0:LENGTH-1];	// bus holding all individual high scores of each PE
+wire [SCORE_WIDTH-1:0] M_ [0:LENGTH-1]; 	// bus holding all individual "M"scores of each PE
+wire [SCORE_WIDTH-1:0] I_ [0:LENGTH-1]; 	// bus holding all individual "I" scores of each PE
+wire [LENGTH-1:0] vld_; 					// bus holding all valid signals from each PE
 wire [LENGTH-1:0] en_;
 wire [1:0] data_ [0:LENGTH-1];
 

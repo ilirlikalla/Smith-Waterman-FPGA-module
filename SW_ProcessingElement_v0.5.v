@@ -2,7 +2,7 @@
 
 
 /* NOTES:
-	- this version of the processing element, has the combinational logic gated by the enable and reset signals (en_in & rst)
+	- this version of the processing element, ...
 	- coded based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"
 */

@@ -1,4 +1,5 @@
 /* NOTES:
+	!!!FAULTY: the highest score is not propagated correctly through the processing elements, fixed in later versions!
 	- this version of the processing element, has the combinational logic gated by the enable and reset signals (en_in & rst)
 	- coded based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"

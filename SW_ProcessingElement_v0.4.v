@@ -2,7 +2,9 @@
 
 
 /* NOTES:
-	- this version of the processing element, has the combinational logic gated by the enable and reset signals (en_in & rst)
+	- this version of the processing element has the state machine implemented in a "register gated" way,
+	where the state register bits control explictly the outputs of the module. The result was a slower than
+    expected synthesised design, but hardware efficient.
 	- coded based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"
 */
@@ -115,19 +117,19 @@ wire  [SCORE_WIDTH-1:0] H_bus; 		// the bus keeps the final high score
 	
 	// ---- Combinational part: ----
 
-    assign LUT = (data_in == query)? match : mismatch; //  the proper match penalty
-	
+    assign LUT = (data_in == query)? match : mismatch;						//  the proper match penalty
+		
 	// "M" matrix logic:
-	assign diag_max = `MAX(M_diag, I_diag); 		// (M_diag > I_diag)? M_diag : I_diag; // find max between the two matrices diagonals
+	assign diag_max = `MAX(M_diag, I_diag); 								// find max between the two matrices diagonals
 	assign M_score = ((sc_calculate)? diag_max : ZERO) + LUT; 
-	assign M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  // check if "M" matrix element is larger or equal to ZERO. This bus holds "M" score. !!! SKIP THIS STEP FOR GLOBAL ALIGNMENT !!!
+	assign M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  		// check if "M" matrix element is larger or equal to ZERO. This bus holds "M" score. !!! SKIP THIS STEP FOR GLOBAL ALIGNMENT !!!
 	
 	// "I" matrix logic:
-	assign I_max = `MAX(I_in, I_out_r); 				//(I_in > I_out_r)? I_in : I_out_r; // calculate max between left and up neighbour in "I"
-	assign M_max = `MAX(M_in, M_out_r); 				//(M_in > M_out_r)? M_in : M_out_r; // calculate max between left and up neighbour in "M"
+	assign I_max = `MAX(I_in, I_out_r); 									//(I_in > I_out_r)? I_in : I_out_r; // calculate max between left and up neighbour in "I"
+	assign M_max = `MAX(M_in, M_out_r); 									//(M_in > M_out_r)? M_in : M_out_r; // calculate max between left and up neighbour in "M"
 	assign M_open = ((sc_calculate)? M_max : ZERO) + gap_open + gap_extend; // penalty to open gap in current alignment            !X!  ->  + gap_extend??? (this corrects some results in data1.fa)
-	assign I_extend = ((sc_calculate)? I_max : ZERO) + gap_extend ; 			// penalty to extend gap in current alignment			
-	assign I_bus = `MAX(M_open, I_extend); 		//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
+	assign I_extend = ((sc_calculate)? I_max : ZERO) + gap_extend ; 		// penalty to extend gap in current alignment			
+	assign I_bus = `MAX(M_open, I_extend); 									//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
 	
 	// connect outputs to their respective "latches"
 	assign data_out = data_out_r;
@@ -235,6 +237,7 @@ wire  [SCORE_WIDTH-1:0] H_bus; 		// the bus keeps the final high score
 		state_hs <= 2'b10;
 	else if(hs_idle && en_out_r)
 		state_hs <= 2'b01;
+
 // ==== END of High Score stage logic. ====
 // ========================================	
 						
