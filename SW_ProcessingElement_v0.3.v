@@ -8,10 +8,10 @@
 	- coded based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"
 */
-
+`define _DEBUGGING_
 `define MAX(x,y)  ((x > y)? x :y)
-
-module SW_ProcessingElement
+`define MUX(c,x,y) ((c)? x :y)
+module SW_ProcessingElement_
    #( parameter
 		SCORE_WIDTH = 12,	// result width in bits
 		_A = 2'b00,        	// nucleotide "A"
@@ -24,7 +24,6 @@ module SW_ProcessingElement
 		clk,
 		rst, 				// active low 
 		en_in,
-		first,
 		data_in,
 		query,
 		M_in,
@@ -49,7 +48,6 @@ module SW_ProcessingElement
 input wire clk;
 input wire rst;
 input wire en_in;						//enable input
-input wire first;						// flag that indicates if the processing cell is the first element of the systolic array
 input wire [1:0] data_in;				// target base input		  		
 input wire [1:0] query;					// query base input
 input wire [SCORE_WIDTH-1:0] M_in;		// "M": Match score matrix from left neighbour 
@@ -97,9 +95,19 @@ reg [SCORE_WIDTH-1:0] I_extend; 	// penalty for extending an existing gap sequen
 reg [SCORE_WIDTH-1:0] I_bus; 		// the bus keeps the final "I" matrix score
 reg [SCORE_WIDTH-1:0] I_M_max; 		// max betwwen "I" & "M" scores
 reg [SCORE_WIDTH-1:0] H_max; 		// max betwwen "I_M_max" & "High_out" 
+reg [SCORE_WIDTH-1:0] H_bus; 		// high score bus
 
 /* ----- END of internal signals. ----- */
-
+`ifdef _DEBUGGING_
+	integer file;
+	initial
+	begin 
+		file = $fopen("SW_PE_v_03");
+		$fmonitor(file,"@%8tns: M_open_r:%d, I_extend_r:%d, diag_max_r:%d, LUT_r:%d, data_r:%d, M_diag:%d, I_diag:%d",
+						$time, M_open, I_extend, diag_max, LUT, data_in, M_diag, I_diag);
+		$fclose(file);
+	end				
+`endif	
 
 // ========================================					
 // ========= Score stage logic: ===========
@@ -118,9 +126,11 @@ reg [SCORE_WIDTH-1:0] H_max; 		// max betwwen "I_M_max" & "High_out"
 		M_open = 0;
 		I_extend = 0;
 		I_bus = 0;
-		LUT = (data_in == query)? match : mismatch; //  the proper match penalty
+		
 		if(state_sc == sc_calculate)		
 		begin
+			LUT = (data_in == query)? match : mismatch; //  the proper match penalty
+			
 			// "M" matrix logic:			
 			diag_max = `MAX(M_diag, I_diag); 		// (M_diag > I_diag)? M_diag : I_diag; // find max between the two matrices diagonals
 			M_score = LUT + diag_max;
@@ -134,6 +144,8 @@ reg [SCORE_WIDTH-1:0] H_max; 		// max betwwen "I_M_max" & "High_out"
 			I_bus = `MAX(M_open, I_extend); 		//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
 		end else
 		begin
+		    LUT = (data_in == query)? match : mismatch; //  the proper match penalty
+			// "M" matrix logic:
 			diag_max = `MAX(M_diag, I_diag); 		// (M_diag > I_diag)? M_diag : I_diag; // find max between the two matrices diagonals
 			M_score = LUT + ZERO;
 			M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  // check if "M" matrix element is larger or equal to ZERO. This bus holds "M" score. !!! SKIP THIS STEP FOR GLOBAL ALIGNMENT !!!
@@ -161,6 +173,7 @@ reg [SCORE_WIDTH-1:0] H_max; 		// max betwwen "I_M_max" & "High_out"
 			I_out <= ZERO;
 			M_diag <= ZERO;
 			I_diag <= ZERO ;//+ gap_extend;			//  !X!  ->  gap_extend???	
+			data_out <= 2'b00;
 			state_sc <= sc_idle;
 		end
 		else begin
@@ -226,7 +239,8 @@ reg [SCORE_WIDTH-1:0] H_max; 		// max betwwen "I_M_max" & "High_out"
 		// if(state_hs == hs_idle)
 			// H_max =  (I_M_max[SCORE_WIDTH-1] == 1'b1)? I_M_max :ZERO; //`MAX(ZERO, I_M_max);  // check if I_M_max is greater than zero
         // else if(state_hs == hs_calculate)
-		H_max = `MAX(High_in, I_M_max);
+		H_max = `MAX(High_in, High_out);		// max between current PE's high score, and its left neighbour
+		H_bus = `MAX(`MUX(state_hs == hs_calculate, H_max, High_in), I_M_max); 		// final high score
 	end
 	
 	
@@ -248,7 +262,7 @@ reg [SCORE_WIDTH-1:0] H_max; 		// max betwwen "I_M_max" & "High_out"
 				if(en_out==1'b1)
 				begin // start calculating
 					// do 1st iteration calculation here:					!X!
-					High_out <= H_max;					// compare current PE's high score with the left neighbour's 
+					High_out <= H_bus;					// compare current PE's high score with the left neighbour's 
 					vld <= 1'b0;	
 					state_hs <= hs_calculate; 
 				end
@@ -265,7 +279,7 @@ reg [SCORE_WIDTH-1:0] H_max; 		// max betwwen "I_M_max" & "High_out"
 					state_hs <= hs_idle;
 				end
 				else // continue calculating.
-					High_out <= `MAX(H_max, High_out);	// compare current PE's high score with the left neighbour's 
+					High_out <= H_bus;	// compare current PE's high score with the left neighbour's 
 			
 			endcase
 		end

@@ -2,12 +2,13 @@
 
 
 /* NOTES:
+    - this version of the score module is ... * UNDER CONSTRUCTION *
 	- code based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"
 */
 
 
-module ScoringModule
+module ScoringModule_v1
    #( parameter
 		SCORE_WIDTH = 12,	// result width in bits
 		LENGTH=128,			// number of processing elements in the systolic array
@@ -79,8 +80,8 @@ input wire [SCORE_WIDTH-1:0] gap_extend;	// gap extend penalty from LUT
 // output reg [SCORE_WIDTH-1:0] High_out;	// highest score out to right neighbour
 // output reg en_out;	// enable signal for the right neighbour
 
-output reg [SCORE_WIDTH-1:0] result;	
-output reg vld;		// valid flag, is set when sequence score has been calculated
+output wire [SCORE_WIDTH-1:0] result;	
+output wire vld;		// valid flag, is set when sequence score has been calculated
 
 
 
@@ -92,7 +93,7 @@ wire [LENGTH-1:0] vld_; 					// bus holding all valid signals from each PE
 wire [LENGTH-1:0] en_;
 wire [1:0] data_ [0:LENGTH-1];
 
-// reg [LOG_LENGTH-1:0] output_select_r;		// stores select signals for output mux
+reg [LOG_LENGTH-1:0] output_select_r;		// stores select signals for output mux
 // reg [LOG_LENGTH-1:0] base_counter;		// counts the target sequence length
 // parameter WAIT= 2'b01, COUNT= 2'b10; // counter states
 // reg [1:0] counter_state;	// counter state register
@@ -107,65 +108,18 @@ wire [1:0] data_ [0:LENGTH-1];
 // ---- output logic: ----
 
  // calculate the select signal:
- // always@(posedge clk) 
- 	// if(!rst)
-		// output_select_r <= 0;
-	// else
-	// if(en_in)
-		// output_select_r <= output_select - 1; // possible hardware fault for lengths outside 1..128 !X!
- // select the corrent output: 		
-  always@(posedge clk) 
+ always@(posedge clk) 
  	if(!rst)
-		{result,vld} <= 0;
-	else
-		{vld,result} <= {vld_[output_select-1],high_[output_select-1]};
-		
+		output_select_r <= 0;
+	else if(en_in)
+		output_select_r <= output_select - 1; // possible hardware fault for lengths outside 1..128 !X!
  // select the corrent output: 		
- //assign 
+ assign {vld,result} = {vld_[output_select_r],high_[output_select_r]};
 
 
 
 
-// always@(posedge clk)	
-// begin: OUTPUT_SEL
-	// if(rst==1'b0)
-		// output_select <= 0;
-	// else if(en_in==1'b0)
-		// output_select <= base_counter;
-// end
-	
-//base counter logic:
-// always@(posedge clk)
-// begin: BASE_COUNT
-	// if(rst==1'b0)
-	// begin
-		// base_counter <= 0;
-		// counter_state <= WAIT;
-	// end
-	// else begin
-		// case(counter_state)
-		// WAIT:
-			// begin
-				// base_counter <=0;
-				// if(en_in == 1'b1)
-					// begin
-					// base_counter <= 0;
-					// counter_state <= COUNT;
-					// end
-			// end
-			
-		// COUNT:
-			// if(en_in == 1'b0)
-				// counter_state <= WAIT;
-			// else if( base_counter < LENGTH)
-				// base_counter <= base_counter + 1;
-				
-			// default: counter_state <= WAIT;  // in case of failure go to the "safe" state (reset)
-		// endcase
-		
-	// end
-// end
-		
+
 
 // ---- instantiation of the systolic array of processing elements: ----
 genvar i;
