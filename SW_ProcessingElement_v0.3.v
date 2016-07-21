@@ -8,7 +8,7 @@
 	- coded based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"
 */
-`define _DEBUGGING_
+//`define _DEBUGGING_
 `define MAX(x,y)  ((x > y)? x :y)
 `define MUX(c,x,y) ((c)? x :y)
 module SW_ProcessingElement_
