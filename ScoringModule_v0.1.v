@@ -2,13 +2,13 @@
 
 
 /* NOTES:
-    - this version of the score module is ... * UNDER CONSTRUCTION *
+    - this version of the score module has the output non-latched
 	- code based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"
 */
 
 
-module ScoringModule_v1
+module ScoringModule
    #( parameter
 		SCORE_WIDTH = 12,	// result width in bits
 		LENGTH=128,			// number of processing elements in the systolic array

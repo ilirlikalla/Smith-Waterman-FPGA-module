@@ -8,10 +8,10 @@
 	- coded based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"
 */
-`define _DEBUGGING_
+//`define _DEBUGGING_
 `define MAX(x,y)  ((x > y)? x :y)
 `define MUX(c,x,y) ((c)? x :y)
-module SW_ProcessingElement_
+module SW_ProcessingElement
    #( parameter
 		SCORE_WIDTH = 12,	// result width in bits
 		_A = 2'b00,        	// nucleotide "A"
@@ -98,16 +98,16 @@ reg [SCORE_WIDTH-1:0] H_max; 		// max betwwen "I_M_max" & "High_out"
 reg [SCORE_WIDTH-1:0] H_bus; 		// high score bus
 
 /* ----- END of internal signals. ----- */
-`ifdef _DEBUGGING_
-	integer file;
-	initial
-	begin 
-		file = $fopen("SW_PE_v_03");
-		$fmonitor(file,"@%8tns: M_open_r:%d, I_extend_r:%d, diag_max_r:%d, LUT_r:%d, data_r:%d, M_diag:%d, I_diag:%d",
-						$time, M_open, I_extend, diag_max, LUT, data_in, M_diag, I_diag);
-		$fclose(file);
-	end				
-`endif	
+//`ifdef _DEBUGGING_
+//	integer file;
+//	initial
+//	begin 
+//		file = $fopen("SW_PE_v_03");
+//		$fmonitor(file,"@%8tns: M_open_r:%d, I_extend_r:%d, diag_max_r:%d, LUT_r:%d, data_r:%d, M_diag:%d, I_diag:%d",
+//						$time, M_open, I_extend, diag_max, LUT, data_in, M_diag, I_diag);
+//		$fclose(file);
+//	end				
+//`endif	
 
 // ========================================					
 // ========= Score stage logic: ===========
