@@ -12,6 +12,7 @@
 `define LENGTH 128
 // `define TEST_FILE "./data/score_test.fa" //  "../data/data.fa"
 // `define TEST_FILE "../data/data.fa"
+// `define TEST_FILE "../data/data100.fa"
 `define TEST_FILE "../data/data1.fa"
 module ScoringModule_tb;
 
@@ -102,7 +103,7 @@ function automatic [`STRING_LENGTH*50-1:0] StrToBit(input string str);  // (inpu
  end
 endfunction
 
-parameter clk_period= 10;
+parameter clk_period= 4;
 initial
 begin: CLOCK
 	clk=0;
@@ -116,13 +117,13 @@ initial
 begin: STIMULUS
 	$dumpfile("scoring_module.vcd");
 	$dumpvars;
-    #10;
+    #clk_period;
 	fd= $fopen(`TEST_FILE,"r");
 	rst= 1;
 	enable= 0;	// no data to send
 	mode=1; 		// set to local alignment mode (Smith-waterman mode)
 	//base_counter<= 31;
-	#10;
+	#clk_period;
 	// force reset and wait for 3 cycles:
 	rst= 0;
 	i=0;
@@ -164,7 +165,7 @@ begin: STIMULUS
 
 	end
 	$fclose(fd);
-	#((length+10)*clk_period); //
+	#((`LENGTH)*clk_period); //
      $fclose(fd);
 	$stop;
 end

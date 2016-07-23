@@ -195,7 +195,7 @@ reg [SCORE_WIDTH-1:0] High_in_l2; 	// highest score from left neighbour
 			// I_out_l <= ZERO;
 			M_diag <= ZERO;
 			I_diag <= ZERO ;//+ gap_extend;			//  !X!  ->  gap_extend???	
-			// High_in_l <= ZERO;
+			High_in_l <= ZERO;
 			//High_in_l2 <= ZERO;
 			state_sc_1 <= sc1_idle;
 		end
@@ -213,7 +213,7 @@ reg [SCORE_WIDTH-1:0] High_in_l2; 	// highest score from left neighbour
 					diag_max_r <= diag_max;
 					LUT_r <= LUT ;
 					data_r <= data_in;
-					// High_in_l <= High_in;				// latch high in 
+					High_in_l <= High_in;				// latch high in 
 					M_diag <= M_in;	 					// score from left neighbour serves as diagonal score in the next cycle
 					I_diag <= I_in ;//+ gap_extend;		//  !X!  ->  gap_extend???
 					state_sc_1 <= sc1_calculate;
@@ -246,8 +246,8 @@ reg [SCORE_WIDTH-1:0] High_in_l2; 	// highest score from left neighbour
 					// High_in_l <= ZERO;
 					M_diag <= ZERO;
 					I_diag <= ZERO ;//+ gap_extend;			//  !X!  ->  gap_extend???	
-					//M_diag <= ZERO;
-					//I_diag <= ZERO ;//+ gap_extend;			//  !X!  ->  gap_extend???	
+					M_diag <= ZERO;
+					I_diag <= ZERO ;//+ gap_extend;			//  !X!  ->  gap_extend???	
 					state_sc_1 <= sc1_idle;
 				end
 				else begin // continue latching
@@ -257,7 +257,7 @@ reg [SCORE_WIDTH-1:0] High_in_l2; 	// highest score from left neighbour
 					diag_max_r <= diag_max;
 					LUT_r <= LUT ;
 					data_r <= data_in;
-					// High_in_l <= High_in;				// latch high in 
+					High_in_l <= High_in;				// latch high in 
 					M_diag <= M_in;	 					// score from left neighbour serves as diagonal score in the next cycle
 					I_diag <= I_in ;//+ gap_extend;		//  !X!  ->  gap_extend???
 				end // en_iN == 1
@@ -308,23 +308,25 @@ reg [SCORE_WIDTH-1:0] High_in_l2; 	// highest score from left neighbour
 	
 	always@(posedge clk)
 	begin: sc2_SEQ
-		if(rst==1'b0)
+		if(~rst)
 		begin
 			/* set regs to initial state!!!*/
 			en_out <= 1'b0;
 			M_out <= ZERO;
 			I_out <= ZERO;
 			M_out_l <= ZERO;
-			I_out_l <= ZERO;			
+			I_out_l <= ZERO;	
 			data_out <= 2'b00;
-			// High_in_l2 <= ZERO;				// latch high in 
+			High_in_l2 <= ZERO;				// latch high in 
 			state_sc_2 <= sc2_idle;
 		end
 		else begin
 			en_out <= en_s;
 			// latch outputs back to 1st stage:
+			M_out_l <= M_out;
+			I_out_l <= I_out;
 			
-			//$display("stage2 seq");
+			// $display("stage2 seq");
 			case(state_sc_2)
 			
 			sc2_idle:
@@ -333,13 +335,13 @@ reg [SCORE_WIDTH-1:0] High_in_l2; 	// highest score from left neighbour
 					// do 1st iteration calculation here:					!X!
 					M_out <= M_bus; 					// connect score bus to output reg 
 					I_out <= I_bus; 	 				// connect score bus to output reg 
-					// High_in_l2 <= High_in_l;				// latch high in 
+					High_in_l2 <= High_in_l;				// latch high in 
 					data_out <= data_r;
 					en_out <= 1'b1;
 					state_sc_2 <= sc2_calculate;
 				end
 				else begin // waiting for data
-				//set output to zero: 		    
+				// set output to zero: 		    
 					M_out <= ZERO;
 					I_out <= ZERO;
 					M_out_l <= ZERO;
@@ -354,18 +356,20 @@ reg [SCORE_WIDTH-1:0] High_in_l2; 	// highest score from left neighbour
 				begin // show result.
 					en_out <= 1'b0;
 					state_sc_2 <= sc2_idle;
+					M_out <= ZERO;
+					I_out <= ZERO;
+					M_out_l <= ZERO;
+					I_out_l <= ZERO;
 					// High_in_l2 <= ZERO;				// latch high in 
 				end
 				else begin // continue calculating.
 					M_out <= M_bus; 					// connect score bus to output reg 
 					I_out <= I_bus; 					// connect score bus to output reg 
-					// High_in_l2 <= High_in_l;				// latch high in 
+					High_in_l2 <= High_in_l;				// latch high in 
 					data_out <= data_r;
 				end // en_s == 1
 			default: state_sc_2 <= sc2_idle; 				// go to safe state
 			endcase
-			M_out_l <= M_out;
-			I_out_l <= I_out;
 			
 		end
 	end
@@ -388,8 +392,8 @@ reg [SCORE_WIDTH-1:0] High_in_l2; 	// highest score from left neighbour
 		// if(state_hs == hs_idle)
 			// H_max =  (I_M_max[SCORE_WIDTH-1] == 1'b1)? I_M_max :ZERO; //`MAX(ZERO, I_M_max);  // check if I_M_max is greater than zero
         // else if(state_hs == hs_calculate)
-		H_max = `MAX(High_in_l2, High_out);		// max between current PE's high score, and its left neighbour
-		H_bus = `MAX(`MUX(state_hs == hs_calculate, H_max, High_in_l2), I_M_max); 		// final high score
+		H_max = `MAX(High_in, High_out);		// max between current PE's high score, and its left neighbour
+		H_bus = `MAX(`MUX(state_hs == hs_calculate, H_max, High_in), I_M_max); 		// final high score
 	end
 	
 	
@@ -406,6 +410,8 @@ reg [SCORE_WIDTH-1:0] High_in_l2; 	// highest score from left neighbour
 		end
 		else begin
 		//$display("hs seq");
+			// High_in_l <= High_in;
+			// High_in_l2 <= High_in_l;
 			case(state_hs)
 			
 			hs_idle:
@@ -420,33 +426,39 @@ reg [SCORE_WIDTH-1:0] High_in_l2; 	// highest score from left neighbour
 				//set output to zero: 		    
 					vld <= 1'b0; 
 					High_out <= ZERO;
+					// High_in_l <= ZERO;
+					// High_in_l2 <= ZERO;
 				end
 			
 			hs_calculate:
 				if(en_out==1'b0) 
 				begin // show result.
 					vld <= 1'b1;
+					// High_in_l <= ZERO;
+					// High_in_l2 <= ZERO;
 					state_hs <= hs_idle;
 				end
 				else // continue calculating.
 					High_out <= H_bus;	// compare current PE's high score with the left neighbour's 
 			
 			endcase
+			// latch High_in :
+			
 		end
 	end
 	
 	// latch High_in from the input
-	always@(posedge clk)
-	if(~rst || ~en_in)
-		High_in_l <= ZERO;
-	else 
-		High_in_l <= High_in;
+		// always@(posedge clk)
+		// if(~rst || ~en_in)
+			// High_in_l <= ZERO;
+		// else 
+			// High_in_l <= High_in;
 	// latch High_in_l from 1st stage
-	always@(posedge clk)
-	if(~rst || ~en_s)
-		High_in_l2 <= ZERO;
-	else 
-		High_in_l2 <= High_in_l;
+		// always@(posedge clk)
+		// if(~rst || ~en_s)
+			// High_in_l2 <= ZERO;
+		// else 
+			// High_in_l2 <= High_in_l;
 // ==== END of High Score stage logic. ====
 // ========================================	
 						
