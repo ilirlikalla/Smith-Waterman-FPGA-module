@@ -100,18 +100,21 @@ reg [SCORE_WIDTH-1:0] LUT;			// hold the match/mismatch penalty correspodning to
 reg [SCORE_WIDTH-1:0] M_score; 		// keeps the "M" matrix score before comparison with ZERO
 reg [SCORE_WIDTH-1:0] M_bus; 		// the bus keeps the final "M" matrix score
 reg [SCORE_WIDTH-1:0] diag_max; 	// max diagonal between the "I" & "M" diagonals score
-reg [SCORE_WIDTH-1:0] I_max; 		// max between "I" left and up elements score
-reg [SCORE_WIDTH-1:0] M_max; 		// max between "M" left and up elements score
-reg [SCORE_WIDTH-1:0] M_open; 		// penalty for starting a new gap sequence
-reg [SCORE_WIDTH-1:0] I_extend; 	// penalty for extending an existing gap sequence
+// reg [SCORE_WIDTH-1:0] I_max; 		// max between "I" left and up elements score
+// reg [SCORE_WIDTH-1:0] M_max; 		// max between "M" left and up elements score
+reg [SCORE_WIDTH-1:0] M_in_open; 		// penalty for starting a new gap sequence
+reg [SCORE_WIDTH-1:0] I_in_extend; 	// penalty for extending an existing gap sequence
 reg [SCORE_WIDTH-1:0] I_bus; 		// the bus keeps the final "I" matrix score
 reg [SCORE_WIDTH-1:0] I_M_max; 		// max betwwen "I" & "M" scores
 reg [SCORE_WIDTH-1:0] H_max; 		// max betwwen "I_M_max" & "High_out" 
 reg [SCORE_WIDTH-1:0] H_bus; 		// high score bus
 
 // 1st stage registers:
-reg [SCORE_WIDTH-1:0] M_open_r; 
-reg [SCORE_WIDTH-1:0] I_extend_r; 	
+reg [SCORE_WIDTH-1:0] Q_insert; 
+reg [SCORE_WIDTH-1:0] T_insert; 
+reg [SCORE_WIDTH-1:0] Q_insert_r; 
+reg [SCORE_WIDTH-1:0] M_out_open; 	
+reg [SCORE_WIDTH-1:0] I_out_extend; 	
 reg [SCORE_WIDTH-1:0] diag_max_r; 	
 reg [SCORE_WIDTH-1:0] LUT_r;
 reg [1:0] data_r;
@@ -133,35 +136,22 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 		// avoid latching:
 		LUT = 0; 
 		diag_max = 0;
-		I_max = 0;
-		M_max = 0;
-		M_open = 0;
-		I_extend = 0;
+		// I_max = 0;
+		// M_max = 0;
+		M_in_open = 0;
+		I_in_extend = 0;
+		Q_insert = 0;
         //$display("stage1 comb");
+	
+		// "M" matrix logic:
 		LUT = (data_in == query)? match : mismatch; //  the proper match penalty
-		if(state_sc_1 == sc1_calculate)		
-		begin
-			// "M" matrix logic:			
-			diag_max = `MAX(M_diag, I_diag); 		// find max between the two matrices diagonals
-			
-			// "I" matrix logic:
-			I_max = `MAX(I_in, I_out_l);				// calculate max between left and upper neighbour in "I"	!X! 1 cycle later?
-			M_max = `MAX(M_in, M_out_l); 				// calculate max between left and upper neighbour in "M"	!X! 1 cycle later?
-			M_open = M_max + gap_open + gap_extend; // penalty to open an extra gap		!X!  ->  + gap_extend??? (this corrects some results in data1.fa)
-			I_extend = I_max + gap_extend; 			// penalty to extend an existing gap
-				
-		end else
-		begin
-			// "M" matrix logic:
-			diag_max = `MAX(M_diag, I_diag); 		// find max between the two matrices diagonals
-			
-			// "I" matrix logic:
-			I_max = `MAX(I_in, I_out_l); 				// calculate max between left and upper neighbour in "I"	!X! 1 cycle later?
-			M_max = `MAX(M_in, M_out_l); 				// calculate max between left and upper neighbour in "M"	!X! 1 cycle later?
-			M_open = ZERO + gap_open + gap_extend; 	// penalty to open the first gap in the current sequence	!X!  ->  + gap_extend??? (this corrects some results in data1.fa)
-			I_extend = ZERO + gap_extend;			// extend "non-existing" gap (Insert gap before the first base in the sequence)			
-
-		end
+		diag_max = `MAX(M_diag, I_diag); 			// find max between the two matrices diagonals
+		
+		// "I" matrix logic:
+		//new_gap_penalty = gap_open + gap_extend; 	// penalty to open a new gap
+		M_in_open = M_in + gap_open;				// penalty to insert a gap in the query
+		I_in_extend = I_in + gap_extend;			// penalty to extend ang gap in the query 
+		Q_insert = `MAX(M_in_open,I_in_extend);		// max penalty(lowest effort) to insert a gap in the quary sequence
 		
 	end
 	
@@ -174,8 +164,8 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 		begin
 			/* set regs to initial state!!!*/
 			en_s <= 1'b0;
-			M_open_r <= ZERO;
-			I_extend_r <= ZERO;
+			Q_insert_r <= ZERO;
+			
 			diag_max_r <= ZERO;
 			LUT_r <= ZERO ;
 			data_r <= 2'b00;
@@ -193,8 +183,7 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 				if(en_in==1'b1)
 				begin // latch results:
 					en_s <= 1'b1;
-					M_open_r <= M_open;
-					I_extend_r <= I_extend;
+					Q_insert_r <= Q_insert;	
 					diag_max_r <= diag_max;
 					LUT_r <= LUT ;
 					data_r <= data_in;
@@ -205,8 +194,7 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 				else begin // idle:
 				//set output to zero: 		    
 					en_s <= 1'b0;
-					M_open_r <= ZERO;
-					I_extend_r <= ZERO;
+					Q_insert_r <= ZERO;
 					diag_max_r <= ZERO;
 					LUT_r <= ZERO ;
 					data_r <= 2'b00;
@@ -230,8 +218,7 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 				end
 				else begin // continue latching
 					en_s <= 1'b1;
-					M_open_r <= M_open;
-					I_extend_r <= I_extend;
+					Q_insert_r <= Q_insert;		
 					diag_max_r <= diag_max;
 					LUT_r <= LUT ;
 					data_r <= data_in;
@@ -250,10 +237,13 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 	always@*
 	begin: sc2_COMB
 		// avoid latching:	
-        //$display("stage2 comb");		
-		M_score = 0;
+        M_score = 0;
+		M_out_open = 0;
+		I_out_extend = 0;
+		T_insert = 0;
 		M_bus = 0;
 		I_bus = 0;
+		//$display("stage2 comb");
 		if(state_sc_2 == sc2_calculate)		
 		begin
 			// "M" matrix logic:			
@@ -261,7 +251,10 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 			M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  // check if "M" matrix element is larger or equal to ZERO. This bus holds "M" score. !!! SKIP THIS STEP FOR GLOBAL ALIGNMENT !!!
 
 			// "I" matrix logic:
-			I_bus = `MAX(M_open_r, I_extend_r); 		//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
+			M_out_open = M_out + gap_open;				// penalty to insert a gap in the target
+			I_out_extend = I_out + gap_extend;			// penalty to extend ang gap in the target
+			T_insert = `MAX(M_out_open, I_out_extend);	// max penalty(lowest effort) to insert a gap in the targey sequence
+			I_bus = `MAX(Q_insert_r, T_insert); 		//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
 		end else
 		begin
 			// "M" matrix logic:
@@ -269,7 +262,10 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 			M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  // check if "M" matrix element is larger or equal to ZERO. This bus holds "M" score. !!! SKIP THIS STEP FOR GLOBAL ALIGNMENT !!!
 			
 			// "I" matrix logic:	
-			I_bus = `MAX(M_open_r, I_extend_r); 		//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
+			M_out_open = ZERO+ gap_open;				// penalty to insert a gap in the target (first iteration upper score is zero)
+			I_out_extend = ZERO + gap_extend;			// penalty to extend ang gap in the target (first iteration upper score is zero)
+			T_insert = `MAX(M_out_open, I_out_extend);	// max penalty(lowest effort) to insert a gap in the targey sequence
+			I_bus = `MAX(Q_insert_r, T_insert); 		//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
 		end
 		
 	end

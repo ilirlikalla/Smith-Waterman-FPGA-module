@@ -69,7 +69,7 @@ ScoringModule
 		// High_in,
 		.match(5),			// LUT
 		.mismatch(-4),	// LUT
-		.gap_open(-12),	// LUT
+		.gap_open(-16),	// LUT
 		.gap_extend(-4 ), // LUT
 		.output_select(length),	// select lines for output multiplexer
 // outputs:
@@ -160,7 +160,7 @@ begin: STIMULUS
 			
 		end
 		enable=0;
-		#clk_period;
+		#(clk_period);
 	
 
 	end

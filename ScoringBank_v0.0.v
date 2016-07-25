@@ -86,7 +86,7 @@ reg [SCORE_WIDTH-1:0] gap_extend;	// gap extend penalty
 /* -------- Component instantiations: -----------*/
 genvar i;
 generate
-	for( i=0; i<NR_MODULES; i++)
+
 ScoringModule
    #(
 		.SCORE_WIDTH(SCORE_WIDTH),	// 
