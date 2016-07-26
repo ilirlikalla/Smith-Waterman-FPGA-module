@@ -330,7 +330,7 @@ module afu (
 	ScoringModule
 	#(
 	.SCORE_WIDTH(12),		// result width in bits
-	.LENGTH(128),				// number of processing elements in the systolic array
+	.LENGTH(256),				// number of processing elements in the systolic array
 	.LOG_LENGTH(),			// processing element addressing width
 	._A(),        			// nucleotide "A" encoding
 	._G(),        			// nucleotide "G" encoding

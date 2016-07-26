@@ -9,10 +9,10 @@
 //`define _DEBUGGING_
 `define MAX(x,y)  ((x > y)? x :y)
 `define MUX(c,x,y) ((c)? x :y)
-module SW_ProcessingElement
-   #( parameter
+module SW_ProcessingElement_v1 
+	#( parameter
 		SCORE_WIDTH = 12,	// result width in bits
-		_A = 2'b00,        	// nucleotide "A"
+		_A = 2'b00,        	// nucleotide "A"	(for future use!)
 		_G = 2'b01,        	// nucleotide "G"
 		_T = 2'b10,        	// nucleotide "T"
 		_C = 2'b11,        	// nucleotide "C"
@@ -21,6 +21,7 @@ module SW_ProcessingElement
 // inputs:
 		clk,
 		rst, 				// active low 
+		toggle_in,
 		en_in,
 		data_in,
 		query,
@@ -37,7 +38,9 @@ module SW_ProcessingElement
 		I_out,
 		High_out,
 		en_out,
-		vld
+		toggle_out,
+		vld0,
+		vld1,
 		);
 			
 
@@ -45,7 +48,8 @@ module SW_ProcessingElement
 /* ------- Inputs: -----------*/
 input wire clk;
 input wire rst;
-input wire en_in;						//enable input
+input wire en_in;						// enable input
+input wire toggle_in;					// toggles calculation process between different sequences
 input wire [1:0] data_in;				// target base input		  		
 input wire [1:0] query;					// query base input
 input wire [SCORE_WIDTH-1:0] M_in;		// "M": Match score matrix from left neighbour 
@@ -64,21 +68,16 @@ output reg [SCORE_WIDTH-1:0] M_out;		// match score out to right neighbour
 output reg [SCORE_WIDTH-1:0] I_out;		// in-del score out to right neighbour
 output reg [SCORE_WIDTH-1:0] High_out;	// highest score out to right neighbour
 output reg en_out;						// enable signal for the right neighbour
-output reg vld;							// valid flag, is set when sequence score has been calculated
+output reg toggle_out;					// toggle signal for the right neighbour
+output reg vld0;						// valid flag, is set when the toggle 0 sequence score has been calculated
+output reg vld1;						// valid flag, is set when the toggle 1 sequence score has been calculated
 
 
 // state definition in one-hot encoding:
-// score 1st stage:
-localparam sc1_idle=3'b10, sc1_calculate=3'b01; 
-reg [1:0] state_sc_1;		// state register
-
-// score 2nd stage:
-localparam sc2_idle=3'b10, sc2_calculate=3'b01; 
-reg [1:0] state_sc_2;		// state register
-
-// high score stage:
-localparam hs_idle=3'b10, hs_calculate=3'b01; 
-reg [1:0] state_hs;			// state register
+localparam idle=2'b10, calculate=2'b01; 
+reg [3:0] state_sc_1;		// 1st stage state register
+reg [3:0] state_sc_2;		// 2nd stage state register
+reg [3:0] state_hs;			// high score stage state register
 
 
 /* -------- Internal signals: --------- */
@@ -106,9 +105,8 @@ reg [SCORE_WIDTH-1:0] I_extend_r;
 reg [SCORE_WIDTH-1:0] diag_max_r; 	
 reg [SCORE_WIDTH-1:0] LUT_r;
 reg [1:0] data_r;
-reg en_s;							// enable for stage 2   +
-reg [SCORE_WIDTH-1:0] M_out_l;   
-reg [SCORE_WIDTH-1:0] I_out_l;  
+reg en_s;							// enable for 2nd stage 
+reg toggle_s;						// toggle for 2nd stage   
 
 /* ----- END of internal signals. ----- */
 
@@ -131,15 +129,14 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 		I_extend = 0;
         //$display("stage1 comb");
 		LUT = (data_in == query)? match : mismatch; //  the proper match penalty
-		if(state_sc_1 == sc1_calculate)		
+		if( ({toggle_in, state_sc_1} == {1'b0, 2'b??, calculate}) || ({toggle_in, state_sc_1} == {1'b1, calculate, 2'b??}) )		
 		begin
 			// "M" matrix logic:			
 			diag_max = `MAX(M_diag, I_diag); 		// (M_diag > I_diag)? M_diag : I_diag; // find max between the two matrices diagonals
 			
-
 			// "I" matrix logic:
-			I_max = `MAX(I_in, I_out_l); 				//(I_in > I_out)? I_in : I_out; // calculate max between left and up neighbour in "I"
-			M_max = `MAX(M_in, M_out_l); 				//(M_in > M_out)? M_in : M_out; // calculate max between left and up neighbour in "M"
+			I_max = `MAX(I_in, I_out); 				//(I_in > I_out)? I_in : I_out; // calculate max between left and up neighbour in "I"
+			M_max = `MAX(M_in, M_out); 				//(M_in > M_out)? M_in : M_out; // calculate max between left and up neighbour in "M"
 			M_open = M_max + gap_open + gap_extend; // penalty to open gap in current alignment            !X!  ->  + gap_extend??? (this corrects some results in data1.fa)
 			I_extend = I_max + gap_extend; 			// penalty to extend gap in current alignment			
 				//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
@@ -149,8 +146,8 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 			diag_max = `MAX(M_diag, I_diag); 		// (M_diag > I_diag)? M_diag : I_diag; // find max between the two matrices diagonals
 			
 			// "I" matrix logic:
-			I_max = `MAX(I_in, I_out_l); 				//(I_in > I_out)? I_in : I_out; // calculate max between left and up neighbour in "I"
-			M_max = `MAX(M_in, M_out_l); 				//(M_in > M_out)? M_in : M_out; // calculate max between left and up neighbour in "M"
+			I_max = `MAX(I_in, I_out); 				//(I_in > I_out)? I_in : I_out; // calculate max between left and up neighbour in "I"
+			M_max = `MAX(M_in, M_out); 				//(M_in > M_out)? M_in : M_out; // calculate max between left and up neighbour in "M"
 			M_open = ZERO + gap_open + gap_extend; 	// penalty to open gap in current alignment            !X!  ->  + gap_extend??? (this corrects some results in data1.fa)
 			I_extend = ZERO + gap_extend;			// penalty to extend gap in current alignment			
 
@@ -172,18 +169,16 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 			diag_max_r <= ZERO;
 			LUT_r <= ZERO ;
 			data_r <= 2'b00;
-			M_out_l <= ZERO;
-			I_out_l <= ZERO;
 			M_diag <= ZERO;
-			I_diag <= ZERO ;//+ gap_extend;			//  !X!  ->  gap_extend???	
-			state_sc_1 <= sc1_idle;
+			I_diag <= ZERO ;						//  !X!  ->  gap_extend???	
+			state_sc_1 <= {idle, idle};
 		end
 		else begin
-			//$display("stage1 seq");
 			en_s <= en_in;
-			case(state_sc_1)
-			
-			sc1_idle:
+			toggle_s <= toggle_in;
+			case({toggle_in, state_sc_1})
+				// --- states for toggle flag = 0: ---
+			{1'b0, 2'b??, idle}:				// idle state for toggle 0
 				if(en_in==1'b1)
 				begin // latch results:
 					en_s <= 1'b1;
@@ -192,9 +187,9 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 					diag_max_r <= diag_max;
 					LUT_r <= LUT ;
 					data_r <= data_in;
-					M_diag <= M_in;	 					// score from left neighbour serves as diagonal score in the next cycle
-					I_diag <= I_in ;//+ gap_extend;		//  !X!  ->  gap_extend???
-					state_sc_1 <= sc1_calculate;
+					M_diag <= M_in;	 				// score from left neighbour serves as diagonal score in the next cycle
+					I_diag <= I_in ;				//  !X!  ->  gap_extend???  
+					state_sc_1 <= {state_sc_1[3:2], calculate};
 				end
 				else begin // idle:
 				//set output to zero: 		    
@@ -205,17 +200,17 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 					LUT_r <= ZERO ;
 					data_r <= 2'b00;
 					M_diag <= ZERO;
-					I_diag <= ZERO ;//+ gap_extend;			//  !X!  ->  gap_extend???	
+					I_diag <= ZERO ;				//  !X!  ->  gap_extend???	
 				end // EN_IN == 0
 			
-			sc1_calculate:
+			{1'b0, 2'b??, calculate}: 			// calculate state for toggle 0		
 				if(en_in==1'b0) 
 				begin // show result.
 					en_s <= 1'b0;
 					//data_r <= 2'b00;
 					//M_diag <= ZERO;
-					//I_diag <= ZERO ;//+ gap_extend;			//  !X!  ->  gap_extend???	
-					state_sc_1 <= sc1_idle;
+					//I_diag <= ZERO ;					//  !X!  ->  gap_extend???	
+					state_sc_1 <= {state_sc_1[3:2], idle};
 				end
 				else begin // continue latching
 					en_s <= 1'b1;
@@ -224,16 +219,59 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 					diag_max_r <= diag_max;
 					LUT_r <= LUT ;
 					data_r <= data_in;
-					M_diag <= M_in;	 					// score from left neighbour serves as diagonal score in the next cycle
-					I_diag <= I_in ;//+ gap_extend;		//  !X!  ->  gap_extend???
-				end // en_iN == 1
-			default: state_sc_1 <= sc1_idle; 				// go to safe state
-			endcase
-			M_out_l <= M_out;
-			I_out_l <= I_out;
+					M_diag <= M_in;	 				// score from left neighbour serves as diagonal score in the next cycle
+					I_diag <= I_in ;				//  !X!  ->  gap_extend???
+				end // en_iN == 1.
+				
+			// --- states for toggle flag = 1: ---
+			{1'b1, idle, 2'b??}:				// idle state for toggle 1
+				if(en_in==1'b1)
+				begin // latch results:
+					en_s <= 1'b1;
+					M_open_r <= M_open;
+					I_extend_r <= I_extend;
+					diag_max_r <= diag_max;
+					LUT_r <= LUT ;
+					data_r <= data_in;
+					M_diag <= M_in;	 				// score from left neighbour serves as diagonal score in the next cycle
+					I_diag <= I_in ;				//  !X!  ->  gap_extend???  ; 2 pairs of diagonal registers might be needed
+					state_sc_1 <= {calculate, state_sc_1[1:0]};
+				end
+				else begin // idle:
+				//set output to zero: 		    
+					en_s <= 1'b0;
+					M_open_r <= ZERO;
+					I_extend_r <= ZERO;
+					diag_max_r <= ZERO;
+					LUT_r <= ZERO ;
+					data_r <= 2'b00;
+					M_diag <= ZERO;
+					I_diag <= ZERO ;				//  !X!  ->  gap_extend???	
+				end // EN_IN == 0
 			
+			{1'b1, calculate, 2'b??}:			// calculate state for toggle 1
+				if(en_in==1'b0) 
+				begin // show result.
+					en_s <= 1'b0;
+					//data_r <= 2'b00;
+					//M_diag <= ZERO;
+					//I_diag <= ZERO ;					//  !X!  ->  gap_extend???	
+					state_sc_1 <= {idle, state_sc_1[1:0]};
+				end
+				else begin // continue latching
+					en_s <= 1'b1;
+					M_open_r <= M_open;
+					I_extend_r <= I_extend;
+					diag_max_r <= diag_max;
+					LUT_r <= LUT ;
+					data_r <= data_in;
+					M_diag <= M_in;	 				// score from left neighbour serves as diagonal score in the next cycle
+					I_diag <= I_in ;				//  !X!  ->  gap_extend???
+				end // en_iN == 1.
+				
+			default: state_sc_1 <= {idle, idle}; 	// go to safe state
+			endcase
 		end
-		
 	end
 	
 	// ################## STAGE 2: ######################
@@ -247,14 +285,14 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 		M_score = 0;
 		M_bus = 0;
 		I_bus = 0;
-		if(state_sc_2 == sc2_calculate)		
+		if( ({toggle_s, state_sc_2} == {1'b0,2'b??,calculate}) || ({toggle_s, state_sc_2} == {1'b1,calculate,2'b??}) )		
 		begin
 			// "M" matrix logic:			
 			M_score = LUT_r + diag_max_r;
 			M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  // check if "M" matrix element is larger or equal to ZERO. This bus holds "M" score. !!! SKIP THIS STEP FOR GLOBAL ALIGNMENT !!!
 
 			// "I" matrix logic:
-			I_bus = `MAX(M_open_r, I_extend_r); 		//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
+			I_bus = `MAX(M_open_r, I_extend_r); 	// this bus holds "I" score
 		end else
 		begin
 			// "M" matrix logic:
@@ -262,7 +300,7 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 			M_bus = (M_score[SCORE_WIDTH-1] == 1'b1)? M_score :ZERO;  // check if "M" matrix element is larger or equal to ZERO. This bus holds "M" score. !!! SKIP THIS STEP FOR GLOBAL ALIGNMENT !!!
 			
 			// "I" matrix logic:	
-			I_bus = `MAX(M_open_r, I_extend_r); 		//(M_open > I_extend)? M_open : I_extend; // this bus holds "I" score
+			I_bus = `MAX(M_open_r, I_extend_r); 	// this bus holds "I" score
 		end
 		
 	end
@@ -277,28 +315,25 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 			/* set regs to initial state!!!*/
 			en_out <= 1'b0;
 			M_out <= ZERO;
-			I_out <= ZERO;
-			// M_out_l <= ZERO;
-			// I_out_l <= ZERO;			
+			I_out <= ZERO;		
 			data_out <= 2'b00;
-			state_sc_2 <= sc2_idle;
+			
+			state_sc_2 <= {idle, idle};
 		end
 		else begin
 			en_out <= en_s;
-			// latch outputs back to 1st stage:
+			toggle_out <= toggle_s; 		
 			
-			//$display("stage2 seq");
-			case(state_sc_2)
-			
-			sc2_idle:
+			case({toggle_s, state_sc_2})
+			// --- states for toggle = 0: ---
+			{1'b0, 2'b??, idle}:
 				if(en_s==1'b1)
-				begin // start calculating
-					// do 1st iteration calculation here:					!X!
-					M_out <= M_bus; 					// connect score bus to output reg 
+				begin // start calculating !X!	
+					M_out <= M_bus; 					// connect score bus to output reg
 					I_out <= I_bus; 	 				// connect score bus to output reg 
 					data_out <= data_r;
 					en_out <= 1'b1;
-					state_sc_2 <= sc2_calculate;
+					state_sc_2 <= {state_sc_2[3:2], calculate};
 				end
 				else begin // waiting for data
 				//set output to zero: 		    
@@ -308,21 +343,50 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 					data_out <= 2'b00;
 				end // en_s == 0
 			
-			sc2_calculate:
+			{1'b0, 2'b??, calculate}:
 				if(en_s==1'b0) 
 				begin // show result.
 					en_out <= 1'b0;
-					state_sc_2 <= sc2_idle;
+					state_sc_2 <= {state_sc_2[3:2], idle};
+				end
+				else begin // continue calculating.
+					M_out <= M_bus; 					// connect score bus to output reg
+					I_out <= I_bus; 					// connect score bus to output reg 
+					data_out <= data_r;
+				end // en_s == 1
+				
+			// --- states for toggle = 1: ---
+			{1'b1, idle, 2'b??}:
+				if(en_s==1'b1)
+				begin // start calculatin !X!
+					M_out <= M_bus; 					// connect score bus to output reg 
+					I_out <= I_bus; 	 				// connect score bus to output reg 
+					data_out <= data_r;
+					en_out <= 1'b1;
+					state_sc_2 <= {calculate, state_sc_2[1:0]};
+				end
+				else begin // waiting for data
+				//set output to zero: 		    
+					M_out <= ZERO;
+					I_out <= ZERO;
+					en_out <= 1'b0;
+					data_out <= 2'b00;
+				end // en_s == 0
+			
+			{1'b1, calculate, 2'b??}:
+				if(en_s==1'b0) 
+				begin // show result.
+					en_out <= 1'b0;
+					state_sc_2 <= {idle, state_sc_2[1:0]};
 				end
 				else begin // continue calculating.
 					M_out <= M_bus; 					// connect score bus to output reg 
 					I_out <= I_bus; 					// connect score bus to output reg 
 					data_out <= data_r;
-				end // en_s == 1
-			default: state_sc_2 <= sc2_idle; 				// go to safe state
+				end // en_s == 1	
+				
+			default: state_sc_2 <= {idle, idle}; // go to safe state
 			endcase
-			// M_out_l <= M_out;
-			// I_out_l <= I_out;
 		end
 	end
 // ====== END of Score stage logic. =======
@@ -331,7 +395,8 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 
 // ========================================					
 // ======= High Score stage logic: ========
-	
+// ============ ( STAGE 3 )  ==============	
+
 	// ---- Combinational part: ----
 
 	always@*
@@ -339,13 +404,12 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 		// avoid latching:
 		H_max = 0;
 		I_M_max = 0;
-		//$display("hs comb");
         I_M_max = `MAX(M_out, I_out); 			// max between "I" and "M" matrices
-		// if(state_hs == hs_idle)
+		// if(state_hs == idle)
 			// H_max =  (I_M_max[SCORE_WIDTH-1] == 1'b1)? I_M_max :ZERO; //`MAX(ZERO, I_M_max);  // check if I_M_max is greater than zero
-        // else if(state_hs == hs_calculate)
+        // else if(state_hs == calculate)
 		H_max = `MAX(High_in, High_out);		// max between current PE's high score, and its left neighbour
-		H_bus = `MAX(`MUX(state_hs == hs_calculate, H_max, High_in), I_M_max); 		// final high score
+		H_bus = `MAX(`MUX( ({toggle_out, state_hs} == {1'b0, 2'b??, calculate}) || ({toggle_out, state_hs} == {1'b1, calculate, 2'b??}) , H_max, High_in), I_M_max); 		// final high score
 	end
 	
 	
@@ -356,37 +420,60 @@ reg [SCORE_WIDTH-1:0] I_out_l;
 		if(rst==1'b0)
 		begin
 			/* set regs to initial state!!!*/
-			vld <= 1'b0;
+			vld0 <= 1'b0;
+			vld1 <= 1'b0;
 			High_out <= ZERO;
-			state_hs <= hs_idle;
+			state_hs <= {idle, idle};
 		end
 		else begin
-		//$display("hs seq");
-			case(state_hs)
-			
-			hs_idle:
+			case({toggle_out, state_hs})
+			// --- states for toggle = 0: ---
+			{1'b0, 2'b??, idle}:
 				if(en_out==1'b1)
 				begin // start calculating
-					// do 1st iteration calculation here:					!X!
-					High_out <= H_bus;					// compare current PE's high score with the left neighbour's 
-					vld <= 1'b0;	
-					state_hs <= hs_calculate; 
+					High_out <= H_bus;			// compare current PE's high score with the left neighbour's !X!
+					vld0 <= 1'b0;	
+					state_hs <= {state_hs[3:2], calculate}; 
 				end
 				else begin // waiting for data
 				//set output to zero: 		    
-					vld <= 1'b0; 
+					vld0 <= 1'b0; 
 					High_out <= ZERO;
 				end
 			
-			hs_calculate:
+			{1'b0, 2'b??, calculate}:
 				if(en_out==1'b0) 
 				begin // show result.
-					vld <= 1'b1;
-					state_hs <= hs_idle;
+					vld0 <= 1'b1;
+					state_hs <= {state_hs[3:2], idle};
 				end
 				else // continue calculating.
-					High_out <= H_bus;	// compare current PE's high score with the left neighbour's 
+					High_out <= H_bus;			// compare current PE's high score with the left neighbour's 
+					
+			// --- states for toggle = 1: ---
+			{1'b1, idle, 2'b??}:
+				if(en_out==1'b1)
+				begin // start calculating
+					High_out <= H_bus;			// compare current PE's high score with the left neighbour's !X!
+					vld1 <= 1'b0;	
+					state_hs <= {calculate, state_hs[1:0]}; 
+				end
+				else begin // waiting for data
+				//set output to zero: 		    
+					vld1 <= 1'b0; 
+					High_out <= ZERO;
+				end
 			
+			{1'b1, calculate, 2'b??}:
+				if(en_out==1'b0) 
+				begin // show result.
+					vld1 <= 1'b1;
+					state_hs <= {idle, state_hs[1:0]};
+				end
+				else // continue calculating.
+					High_out <= H_bus;			// compare current PE's high score with the left neighbour's 
+			
+			default: state_hs <= {idle, idle};
 			endcase
 		end
 	end
