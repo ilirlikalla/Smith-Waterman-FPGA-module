@@ -13,7 +13,9 @@
 // `define TEST_FILE "./data/score_test.fa" //  "../data/data.fa"
 // `define TEST_FILE "../data/data.fa"
 // `define TEST_FILE "../data/data100.fa"
+// `define QUERY_FILE "../data/query100.fa"
 `define TEST_FILE "../data/data1.fa"
+`define QUERY_FILE "../data/query1.fa"
 module ScoringModule_tb;
 
 /* function to encode neuclotides from ASCII to binary: */
@@ -118,7 +120,7 @@ begin: STIMULUS
 	$dumpfile("scoring_module.vcd");
 	$dumpvars;
     #clk_period;
-	fd= $fopen(`TEST_FILE,"r");
+	
 	rst= 1;
 	enable= 0;	// no data to send
 	mode=1; 		// set to local alignment mode (Smith-waterman mode)
@@ -131,12 +133,15 @@ begin: STIMULUS
 	rst= 1;
 	
 	// read query from file and encode it to a bitstream:
+	fd= $fopen(`QUERY_FILE,"r");
 	$fscanf(fd,"%s",str);
 	$fscanf(fd,"%s",str);
 	query= StrToBit(str);
-	query_length = length-1;
+	$fclose(fd);
 	#clk_period;
-	
+
+	// feed target sequences:
+	fd= $fopen(`TEST_FILE,"r");
 	while(!$feof(fd))
 	begin
 	    
