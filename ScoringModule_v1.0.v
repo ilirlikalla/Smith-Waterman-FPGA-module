@@ -38,7 +38,8 @@ module ScoringModule_v1
 		// M_out,
 		// I_out,
 		// High_out,
-		result, 			// Smith-waterman result
+		result0, 			// Smith-waterman result for toggle 0
+		result1, 			// Smith-waterman result for toggle 1
 		//en_out,
 		vld0,
 		vld1,
@@ -82,7 +83,8 @@ input wire [SCORE_WIDTH-1:0] gap_extend;	// gap extend penalty from penalties
 // output reg [SCORE_WIDTH-1:0] High_out;	// highest score out to right neighbour
 // output reg en_out;						// enable signal for the right neighbour
 
-output reg [SCORE_WIDTH-1:0] result;	
+output reg [SCORE_WIDTH-1:0] result0;	
+output reg [SCORE_WIDTH-1:0] result1;	
 output reg vld0;							// valid flag, is set when sequence score has been calculated
 output reg vld1;							// valid flag, is set when sequence score has been calculated
 output reg toggle;							// toggle flag, chooses which sequence is to be fed
@@ -90,15 +92,17 @@ output reg toggle;							// toggle flag, chooses which sequence is to be fed
 
 
 /* --------- Internal signals: ---------- */
-wire [SCORE_WIDTH-1:0] high_ [0:LENGTH-1];	// bus holding all individual high scores of each PE
+wire [SCORE_WIDTH-1:0] high0_ [0:LENGTH-1];	// bus holding all individual high0 scores of each PE
+wire [SCORE_WIDTH-1:0] high1_ [0:LENGTH-1];	// bus holding all individual high1 scores of each PE
 wire [SCORE_WIDTH-1:0] M_ [0:LENGTH-1]; 	// bus holding all individual "M"scores of each PE
 wire [SCORE_WIDTH-1:0] I_ [0:LENGTH-1]; 	// bus holding all individual "I" scores of each PE
 wire [LENGTH-1:0] vld0_; 					// bus holding all valid0 signals from each PE
 wire [LENGTH-1:0] vld1_; 					// bus holding all valid1 signals from each PE
-wire [LENGTH-1:0] en_;						// bus holding all enable signals from each PE
+wire [LENGTH-1:0] en0_;						// bus holding all enable0 signals from each PE
+wire [LENGTH-1:0] en1_;						// bus holding all enable1 signals from each PE
 wire [LENGTH-1:0] toggle_;					// bus holding all toggle signals 
 wire [1:0] data_ [0:LENGTH-1];				// holds bases that are bassing through the PEs
-wire enable;								// enable signal for the systolic array	
+						// enable signal for the systolic array	
 
 // ---- output logic: ----
 
@@ -106,12 +110,12 @@ wire enable;								// enable signal for the systolic array
  // select the corrent output: 		
   always@(posedge clk) 
  	if(!rst)
-		{toggle, vld0, vld1, result} <= 0;
+		{toggle, vld0, vld1, result0, result1} <= 0;
 	else 
-		{toggle, vld0, vld1, result} <= {~toggle, vld0_[output_select-1], vld1_[output_select-1], high_[output_select-1]};
+		{toggle, vld0, vld1, result0, result1} <= {~toggle, vld0_[output_select-1], vld1_[output_select-1], high0_[output_select-1], high1_[output_select-1]};
 		
  // set enable:
-	assign enable = en0 | en1;
+	
 
 // ---- instantiation of the systolic array of processing elements: ----
 genvar i;
@@ -131,12 +135,14 @@ generate
 				.clk(clk),
 				.rst(rst), 					// active low 
 				.toggle_in(toggle),
-				.en_in(enable),
+				.en0_in(en0),
+				.en1_in(en1),
 				.data_in(data_in),
 				.query(query[1:0]),
 				.M_in(ZERO),
 				.I_in(ZERO),				//  gap_open???   !X!
-				.High_in(ZERO),
+				.High0_in(ZERO),
+				.High1_in(ZERO),
 				.match(match),				// penalties
 				.mismatch(mismatch),		// penalties
 				.gap_open(gap_open),		// penalties
@@ -145,8 +151,10 @@ generate
 				.data_out(data_[i]),
 				.M_out(M_[i]),
 				.I_out(I_[i]),
-				.High_out(high_[i]),
-				.en_out(en_[i]),
+				.High0_out(high0_[i]),
+				.High1_out(high1_[i]),
+				.en0_out(en0_[i]),
+				.en1_out(en1_[i]),
 				.toggle_out(toggle_[i]),
 				.vld0(vld0_[i]),
 				.vld1(vld1_[i])
@@ -165,12 +173,14 @@ generate
 				.clk(clk),
 				.rst(rst), 					// active low 
 				.toggle_in(toggle_[i-1]),
-				.en_in(en_[i-1]),
+				.en0_in(en0_[i-1]),
+				.en1_in(en1_[i-1]),
 				.data_in(data_[i-1]),
 				.query(query[2*i+1:2*i]),
 				.M_in(M_[i-1]),
 				.I_in(I_[i-1]),		
-				.High_in(high_[i-1]),
+				.High0_in(high0_[i-1]),
+				.High1_in(high1_[i-1]),
 				.match(match),				// penalties
 				.mismatch(mismatch),		// penalties
 				.gap_open(gap_open),		// penalties
@@ -179,8 +189,10 @@ generate
 				.data_out(data_[i]),
 				.M_out(M_[i]),
 				.I_out(I_[i]),
-				.High_out(high_[i]),
-				.en_out(en_[i]),
+				.High0_out(high0_[i]),
+				.High1_out(high1_[i]),
+				.en0_out(en0_[i]),
+				.en1_out(en1_[i]),
 				.toggle_out(toggle_[i]),
 				.vld0(vld0_[i]),
 				.vld1(vld1_[i])
