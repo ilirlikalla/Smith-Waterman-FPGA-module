@@ -16,7 +16,6 @@ module mmio (
   input          odd_parity,
   input          reset,
   input          ha_pclock,
-`ifdef _TRACE_
   input         command_trace_val,
   input [0:7]   command_trace_wtag,
   input [0:119] command_trace_wdata,
@@ -25,7 +24,6 @@ module mmio (
   input [0:41]  response_trace_wdata,
   input         jcontrol_trace_val,
   input [0:140] jcontrol_trace_wdata,
-`endif
   output        done_premmio,
   output        done_postmmio,
   input         start_premmio,
@@ -61,7 +59,6 @@ module mmio (
   wire        mmio_rd_datapar;
 
   // Trace array signals
-`ifdef _TRACE_
   reg          command_trace_val_l;
   reg  [0:7]   command_trace_wtag_l;
   reg  [0:119] command_trace_wdata_l;
@@ -85,7 +82,7 @@ module mmio (
   reg         trace_write_ack;
 
   wire        local_trace_stop_condition;
-`endif
+
   reg  [0:63] trace_options_reg;
 
   // Input latching
@@ -102,23 +99,15 @@ module mmio (
   always @ (posedge ha_pclock)
     cfg_write_l <= cfg_write;
 
-`ifdef _TRACE_
   always @ (posedge ha_pclock)
     mmio_read <= ha_mmval && !ha_mmcfg && ha_mmrnw && (ha_mmad != trace_mmioad);
-`else
-  always @ (posedge ha_pclock)
-    mmio_read <= ha_mmval && !ha_mmcfg && ha_mmrnw;
-`endif	
 
   always @ (posedge ha_pclock)
     mmio_read_l <= mmio_read;
-`ifdef _TRACE_
+
   always @ (posedge ha_pclock)
     mmio_write <= ha_mmval && !ha_mmcfg && !ha_mmrnw && (ha_mmad != trace_mmioad);
-`else
-  always @ (posedge ha_pclock)
-    mmio_write <= ha_mmval && !ha_mmcfg && !ha_mmrnw;
-`endif
+
   always @ (posedge ha_pclock)
     mmio_write_l <= mmio_write;
 
@@ -203,7 +192,6 @@ module mmio (
       else
         mmio_rd_data <= {cfg_data[0:31], cfg_data[0:31]};
     end
-`ifdef _TRACE_
     else if (command_trace_ack) begin
       mmio_rd_data <= command_trace_data_out;
     end
@@ -213,7 +201,6 @@ module mmio (
     else if (control_trace_ack) begin
       mmio_rd_data <= control_trace_data_out;
     end
-`endif
     else if (mmio_read_l) begin
       mmio_rd_data <= trace_options_reg;
     end
@@ -230,13 +217,10 @@ module mmio (
   );
 
   // MMIO acknowledge
-`ifdef _TRACE_
+
   always @ (posedge ha_pclock)
     mmio_ack <= cfg_read_l || cfg_write_l || mmio_read_l || mmio_write_l || command_trace_ack || response_trace_ack || control_trace_ack || trace_write_ack;
-`else
-  always @ (posedge ha_pclock)
-    mmio_ack <= cfg_read_l || cfg_write_l || mmio_read_l || mmio_write_l;
-`endif
+
   // Latched outputs
 
   always @ (posedge ha_pclock)
@@ -275,7 +259,6 @@ module mmio (
 
 //Trace Array Logic
 
-`ifdef _TRACE_
   trace_array_template #(
    .RAM_OPT("m20k,no_rw_check"),
    .ADDR_WIDTH(8),
@@ -373,7 +356,7 @@ module mmio (
             trace_read_reg <= {ha_mmdata[0], 15'b 000000000000000, ha_mmdata[16:31], 28'h 0000000, ha_mmdata[60:63]};
     else trace_read_reg <= trace_read_reg;
   end
-`endif
+
   always @ (posedge ha_pclock)
   begin
     if(reset)

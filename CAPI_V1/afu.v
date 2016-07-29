@@ -111,14 +111,13 @@ module afu (
   wire [0:63]  ah_jerror_int;      // Job error
 
   //Command Interface trace array signals
-`ifdef _TRACE_
   wire         command_trace_val;
   wire [0:7]   command_trace_wtag;
   wire [0:119] command_trace_wdata;
 
   wire         jcontrol_trace_val;
   wire [0:140] jcontrol_trace_wdata;
-`endif
+
 
 
 
@@ -162,7 +161,6 @@ module afu (
     .odd_parity(odd_parity),
     .reset(reset),
     .ha_pclock(ha_pclock),
-`ifdef _TRACE_
     .command_trace_val(command_trace_val),
     .command_trace_wtag(command_trace_wtag),
     .command_trace_wdata(command_trace_wdata),
@@ -171,7 +169,6 @@ module afu (
     .response_trace_wdata({ha_rvalid, ha_rtag, ha_rtagpar, ha_response, ha_rcredits, ha_rcachestate, ha_rcachepos}),
     .jcontrol_trace_val(jcontrol_trace_val),
     .jcontrol_trace_wdata(jcontrol_trace_wdata),
-`endif
     .done_premmio(done_premmio),
     .done_postmmio(done_postmmio),
     .start_premmio(start_premmio),
@@ -545,11 +542,11 @@ module afu (
    assign ah_jrunning = ah_jrunning_int;
    assign ah_jdone = ah_jdone_int;
    assign ah_jerror = ah_jerror_int;
-`ifdef _TRACE_
+
    assign command_trace_val = ah_cvalid_int;
    assign command_trace_wtag = ah_ctag_int;
    assign command_trace_wdata = {ah_cvalid_int, ah_ctag_int, ah_ctagpar_int, ah_com_int, ah_compar_int, ah_cea_int, ah_ceapar_int, ah_cabt_int, ah_cch_int, ah_csize_int};
    assign jcontrol_trace_val = ha_jval || ah_jdone_int;
    assign jcontrol_trace_wdata = {ha_jval, ha_jcom, ha_jcompar, ha_jea, ha_jeapar, ah_jrunning_int, ah_jdone_int, ah_jerror_int};
-`endif
+
 endmodule
