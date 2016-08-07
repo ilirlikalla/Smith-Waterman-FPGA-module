@@ -5,80 +5,55 @@
 	- this version of the processing element is ... * UNDER CONSTRUCTION *
 	- coded based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"
+	- parameters belonging to the encoded nuclotides are not used.(for future use)
 */
 
 `define MAX(x,y)  ((x > y)? x :y)
 `define MUX(c,x,y) ((c)? x :y)
 module SW_ProcessingElement_v1 
 	#( parameter
-		SCORE_WIDTH = 12,	// result width in bits
-		_A = 2'b00,        	// nucleotide "A"	(for future use!)
-		_G = 2'b01,        	// nucleotide "G"
-		_T = 2'b10,        	// nucleotide "T"
-		_C = 2'b11,        	// nucleotide "C"
-		ZERO  = (2**(SCORE_WIDTH-1)) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
+		SCORE_WIDTH = 12,			// result's width in bits
+		_A = 2'b00,        			// nucleotide "A"	(for future use!)
+		_G = 2'b01,        			// nucleotide "G"
+		_T = 2'b10,        			// nucleotide "T"
+		_C = 2'b11,        			// nucleotide "C"
+		ZERO = (2**(SCORE_WIDTH-1))	// value of the biased zero, bias= 2 ^ SCORE_WIDTH	
 	)(
-// inputs:
-		clk,
-		rst, 				// active low 
-		toggle_in,
-		en0_in,
-		en1_in,
-		data_in,
-		query,
-		M_in,
-		I_in,
-		High0_in,
-		High1_in,
-		match,				// LUT
-		mismatch,			// LUT
-		gap_open,			// LUT
-		gap_extend, 		// LUT
-// outputs:
-	    data_out,
-		M_out,
-		I_out,
-		High0_out,
-		High1_out,
-		en0_out,
-		en1_out,
-		toggle_out,
-		vld0,
-		vld1
-		);
+	// ---- Inputs: ----
+	input wire clk,
+	input wire rst,
+	input wire en0_in,						// enable input,, toggle 0
+	input wire en1_in,						// enable input,, toggle 1
+	input wire toggle_in,					// toggles calculation process between different sequences
+	input wire [1:0] data_in,				// target base input		  		
+	input wire [1:0] query,					// query base input
+	input wire [SCORE_WIDTH-1:0] M_in,		// "M": Match score matrix from left neighbour 
+	input wire [SCORE_WIDTH-1:0] I_in,		// "I": In-del score matrix from left neighbour
+	input wire [SCORE_WIDTH-1:0] High0_in, 	// highest score from left neighbour, toggle 0
+	input wire [SCORE_WIDTH-1:0] High1_in, 	// highest score from left neighbour, toggle 1
+	// ---- penalty inputs: ----
+	input wire [SCORE_WIDTH-1:0] match,		// match penalty from LUT
+	input wire [SCORE_WIDTH-1:0] mismatch,	// mismatch penalty from LUT
+	input wire [SCORE_WIDTH-1:0] gap_open,	// gap open penalty from LUT
+	input wire [SCORE_WIDTH-1:0] gap_extend,// gap extend penalty from LUT
+	// --- penalty inputs END.---
+
+	// ---- Outputs: ----
+	output reg [1:0] data_out,				// target base out to next cell
+	output reg [SCORE_WIDTH-1:0] M_out,		// match score out to right neighbour
+	output reg [SCORE_WIDTH-1:0] I_out,		// in-del score out to right neighbour
+	output reg [SCORE_WIDTH-1:0] High0_out,	// highest score out to right neighbour, toggle 0
+	output reg [SCORE_WIDTH-1:0] High1_out,	// highest score out to right neighbour, toggle 1
+	output reg en0_out,						// enable signal for the right neighbour, toggle 0
+	output reg en1_out,						// enable signal for the right neighbour, toggle 1
+	output reg toggle_out,					// toggle signal for the right neighbour
+	output reg vld0,						// valid flag, is set when the toggle 0 sequence score has been calculated
+	output reg vld1							// valid flag, is set when the toggle 1 sequence score has been calculated
+	);
 			
 
 	 
-/* ------- Inputs: -----------*/
-input wire clk;
-input wire rst;
-input wire en0_in;						// enable input,, toggle 0
-input wire en1_in;						// enable input,, toggle 1
-input wire toggle_in;					// toggles calculation process between different sequences
-input wire [1:0] data_in;				// target base input		  		
-input wire [1:0] query;					// query base input
-input wire [SCORE_WIDTH-1:0] M_in;		// "M": Match score matrix from left neighbour 
-input wire [SCORE_WIDTH-1:0] I_in;		// "I": In-del score matrix from left neighbour
-input wire [SCORE_WIDTH-1:0] High0_in; 	// highest score from left neighbour, toggle 0
-input wire [SCORE_WIDTH-1:0] High1_in; 	// highest score from left neighbour, toggle 1
-// ---- LUT inputs: -------
-input wire [SCORE_WIDTH-1:0] match;		// match penalty from LUT
-input wire [SCORE_WIDTH-1:0] mismatch;	// mismatch penalty from LUT
-input wire [SCORE_WIDTH-1:0] gap_open; 	// gap open penalty from LUT
-input wire [SCORE_WIDTH-1:0] gap_extend;// gap extend penalty from LUT
-// ---- LUT inputs END.----
 
-/* -------- Outputs: ---------*/
-output reg [1:0] data_out;				// target base out to next cell
-output reg [SCORE_WIDTH-1:0] M_out;		// match score out to right neighbour
-output reg [SCORE_WIDTH-1:0] I_out;		// in-del score out to right neighbour
-output reg [SCORE_WIDTH-1:0] High0_out;	// highest score out to right neighbour, toggle 0
-output reg [SCORE_WIDTH-1:0] High1_out;	// highest score out to right neighbour, toggle 1
-output reg en0_out;						// enable signal for the right neighbour, toggle 0
-output reg en1_out;						// enable signal for the right neighbour, toggle 1
-output reg toggle_out;					// toggle signal for the right neighbour
-output reg vld0;						// valid flag, is set when the toggle 0 sequence score has been calculated
-output reg vld1;						// valid flag, is set when the toggle 1 sequence score has been calculated
 
 
 // state definition in one-hot encoding:
@@ -102,13 +77,13 @@ reg [SCORE_WIDTH-1:0] LUT;			// hold the match/mismatch penalty correspodning to
 reg [SCORE_WIDTH-1:0] M_score; 		// keeps the "M" matrix score before comparison with ZERO
 reg [SCORE_WIDTH-1:0] M_bus; 		// the bus keeps the final "M" matrix score
 reg [SCORE_WIDTH-1:0] diag_max; 	// max diagonal between the "I" & "M" diagonals score
-reg [SCORE_WIDTH-1:0] I_max; 		// max between "I" left and up elements score
-reg [SCORE_WIDTH-1:0] M_max; 		// max between "M" left and up elements score
+reg [SCORE_WIDTH-1:0] I_max; 		// max between "I" left and upper element score
+reg [SCORE_WIDTH-1:0] M_max; 		// max between "M" left and upper element score
 reg [SCORE_WIDTH-1:0] M_open; 		// penalty for starting a new gap sequence
 reg [SCORE_WIDTH-1:0] I_extend; 	// penalty for extending an existing gap sequence
 reg [SCORE_WIDTH-1:0] I_bus; 		// the bus keeps the final "I" matrix score
-reg [SCORE_WIDTH-1:0] I_M_max; 		// max betwwen "I" & "M" scores
-reg [SCORE_WIDTH-1:0] H_max; 		// max betwwen "I_M_max" & "High_out" 
+reg [SCORE_WIDTH-1:0] I_M_max; 		// max between "I" & "M" scores
+reg [SCORE_WIDTH-1:0] H_max; 		// max between left & current element high score 
 reg [SCORE_WIDTH-1:0] H_bus; 		// high score bus
 
 // 1st stage registers:
@@ -193,7 +168,7 @@ reg toggle_s;						// toggle for 2nd stage
 			en0_s <= en0_in;
 			en1_s <= en1_in;
 			toggle_s <= toggle_in;
-			case({toggle_in, state_sc_1})
+			case(sc1_state)
 				// --- states for toggle flag = 0: ---
 			//{1'b0, idle, idle},{1'b0, calculate, idle}:// idle state for toggle 0
 			{1'b0, state_sc_1[3:2], idle}:

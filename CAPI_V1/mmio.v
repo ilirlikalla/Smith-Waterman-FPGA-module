@@ -1,4 +1,3 @@
-//   (C) Copyright International Business Machines 2014
 
 module mmio (
   input          ha_mmval,
@@ -16,14 +15,9 @@ module mmio (
   input          odd_parity,
   input          reset,
   input          ha_pclock,
-  input         command_trace_val,
-  input [0:7]   command_trace_wtag,
-  input [0:119] command_trace_wdata,
-  input	        response_trace_val,
-  input [0:7]   response_trace_wtag,
-  input [0:41]  response_trace_wdata,
-  input         jcontrol_trace_val,
-  input [0:140] jcontrol_trace_wdata,
+`ifdef _TRACE_
+	// ... put trace ports here ...
+`endif
   output        done_premmio,
   output        done_postmmio,
   input         start_premmio,
@@ -59,30 +53,9 @@ module mmio (
   wire        mmio_rd_datapar;
 
   // Trace array signals
-  reg          command_trace_val_l;
-  reg  [0:7]   command_trace_wtag_l;
-  reg  [0:119] command_trace_wdata_l;
-  reg          response_trace_val_l;
-  reg  [0:7]   response_trace_wtag_l;
-  reg  [0:41]  response_trace_wdata_l;
-  reg          jcontrol_trace_val_l;
-  reg  [0:140] jcontrol_trace_wdata_l;
-
-  reg  [0:63]  trace_read_reg;
-
-  reg         trace_rval_l;
-  wire [0:23] trace_mmioad = 24'h FFFFFE;
-
-  wire        command_trace_ack;
-  wire [0:63] command_trace_data_out;
-  wire        response_trace_ack;
-  wire [0:63] response_trace_data_out;
-  wire        control_trace_ack;
-  wire [0:63] control_trace_data_out;
-  reg         trace_write_ack;
-
-  wire        local_trace_stop_condition;
-
+`ifdef _TRACE_
+	// ... put trace signals here ...
+`endif
   reg  [0:63] trace_options_reg;
 
   // Input latching
@@ -99,15 +72,21 @@ module mmio (
   always @ (posedge ha_pclock)
     cfg_write_l <= cfg_write;
 
+`ifdef _TRACE_
+	// ... put trace stuff here ...
+`else
   always @ (posedge ha_pclock)
-    mmio_read <= ha_mmval && !ha_mmcfg && ha_mmrnw && (ha_mmad != trace_mmioad);
+    mmio_read <= ha_mmval && !ha_mmcfg && ha_mmrnw;
+`endif	
 
   always @ (posedge ha_pclock)
     mmio_read_l <= mmio_read;
-
+`ifdef _TRACE_
+	// ... put trace stuff here ...
+`else
   always @ (posedge ha_pclock)
-    mmio_write <= ha_mmval && !ha_mmcfg && !ha_mmrnw && (ha_mmad != trace_mmioad);
-
+    mmio_write <= ha_mmval && !ha_mmcfg && !ha_mmrnw;
+`endif
   always @ (posedge ha_pclock)
     mmio_write_l <= mmio_write;
 
@@ -184,7 +163,8 @@ module mmio (
   // Read data
 
   always @ (posedge ha_pclock) begin
-    if (cfg_read_l) begin
+    if (cfg_read_l) 
+	begin
       if (mmio_dw_l)
         mmio_rd_data <= cfg_data;
       else if (mmio_ad[23])
@@ -192,19 +172,13 @@ module mmio (
       else
         mmio_rd_data <= {cfg_data[0:31], cfg_data[0:31]};
     end
-    else if (command_trace_ack) begin
-      mmio_rd_data <= command_trace_data_out;
-    end
-    else if (response_trace_ack) begin
-      mmio_rd_data <= response_trace_data_out;
-    end
-    else if (control_trace_ack) begin
-      mmio_rd_data <= control_trace_data_out;
-    end
-    else if (mmio_read_l) begin
+`ifdef _TRACE_
+	// ... put trace stuff here ...
+`endif
+    else if (mmio_read_l) 
+	begin
       mmio_rd_data <= trace_options_reg;
-    end
-    else
+    end else
       mmio_rd_data <= 64'h0;
   end
 
@@ -217,10 +191,12 @@ module mmio (
   );
 
   // MMIO acknowledge
-
+`ifdef _TRACE_
+	// ... put trace stuff here ...
+`else
   always @ (posedge ha_pclock)
-    mmio_ack <= cfg_read_l || cfg_write_l || mmio_read_l || mmio_write_l || command_trace_ack || response_trace_ack || control_trace_ack || trace_write_ack;
-
+    mmio_ack <= cfg_read_l || cfg_write_l || mmio_read_l || mmio_write_l;
+`endif
   // Latched outputs
 
   always @ (posedge ha_pclock)
@@ -259,104 +235,9 @@ module mmio (
 
 //Trace Array Logic
 
-  trace_array_template #(
-   .RAM_OPT("m20k,no_rw_check"),
-   .ADDR_WIDTH(8),
-   .DATA_WIDTH(120),
-   .TRACE_ID("0x0")
-  ) command_interface_trace (
-   .clk(ha_pclock),
-   .reset(reset),
-   .read_controls({trace_read_reg[60:63], trace_read_reg[0]}),
-   .trace_rvalid(trace_rval_l),
-//   .flow_mode_in(trace_read_reg[16]),
-   .flow_mode_in(1'b 1),
-   .trace_data_in(command_trace_wdata_l),
-   .trace_valid(command_trace_val_l),
-   .trace_tag(command_trace_wtag_l),
-   .local_trace_stop(1'b 0),
-   .trace_data_out(command_trace_data_out),
-   .trace_data_ack_out(command_trace_ack)
-  );
-  
-    trace_array_template #(
-   .RAM_OPT("m20k,no_rw_check"),
-   .ADDR_WIDTH(8),
-   .DATA_WIDTH(42),
-   .TRACE_ID("0x1")
-  ) response_interface_trace (
-   .clk(ha_pclock),
-   .reset(reset),
-   .read_controls({trace_read_reg[60:63], trace_read_reg[0]}),
-   .trace_rvalid(trace_rval_l),
-//   .flow_mode_in(trace_read_reg[17]),
-   .flow_mode_in(1'b 1),
-   .trace_data_in(response_trace_wdata_l),
-   .trace_valid(response_trace_val_l),
-   .trace_tag(response_trace_wtag_l),
-   .local_trace_stop(1'b 0),
-   .trace_data_out(response_trace_data_out),
-   .trace_data_ack_out(response_trace_ack)
-  );
-
-    trace_array_template #(
-   .RAM_OPT("m20k,no_rw_check"),
-   .ADDR_WIDTH(8),
-   .DATA_WIDTH(141),
-   .TRACE_ID("0x2")
-  ) control_interface_trace (
-   .clk(ha_pclock),
-   .reset(reset),
-   .read_controls({trace_read_reg[60:63], trace_read_reg[0]}),
-   .trace_rvalid(trace_rval_l),
-   .flow_mode_in(1'b 1),
-   .trace_data_in(jcontrol_trace_wdata_l),
-   .trace_valid(jcontrol_trace_val_l),
-   .trace_tag(8'h 00),
-   .local_trace_stop(1'b 0),
-   .trace_data_out(control_trace_data_out),
-   .trace_data_ack_out(control_trace_ack)
-  );
-
-  assign local_trace_stop_condition = parity_error[0] | parity_error[1];
-
-  always @ (posedge ha_pclock)
-  begin
-    if(reset)begin
-    command_trace_val_l <= 1'b 0;
-    command_trace_wtag_l <= 8'h 00;
-    command_trace_wdata_l <= 120'h 0000_0000_0000_0000_0000_0000_0000_00;
-    response_trace_val_l <= 1'b 0;
-    response_trace_wtag_l <= 8'h 00;
-    response_trace_wdata_l <= {40'h 0000_0000_00, 2'b 00};
-    jcontrol_trace_val_l <= 1'b 0;
-    jcontrol_trace_wdata_l <= {140'h 0000_0000_0000_0000_0000_0000_0000_0000_000, 1'b 0};
-    trace_rval_l <= 1'b 0;
-    trace_write_ack <= 1'b 0;
-    end
-    else begin  
-    command_trace_val_l <= command_trace_val;
-    command_trace_wtag_l <= command_trace_wtag;
-    command_trace_wdata_l <= command_trace_wdata;
-    response_trace_val_l <= response_trace_val;
-    response_trace_wtag_l <= response_trace_wtag;
-    response_trace_wdata_l <= response_trace_wdata;
-    jcontrol_trace_val_l <= jcontrol_trace_val;
-    jcontrol_trace_wdata_l <= jcontrol_trace_wdata;
-    trace_rval_l <= ha_mmval && !ha_mmcfg && ha_mmrnw && ha_mmdw && (ha_mmad == trace_mmioad);
-    trace_write_ack <= ha_mmval && !ha_mmcfg && !ha_mmrnw && ha_mmdw && (ha_mmad == trace_mmioad);
-    end
-  end
-
-  always @ (posedge ha_pclock)
-  begin
-    if(reset)
-    trace_read_reg <= 64'h 0000_0000_0000_0000;
-    else if(ha_mmval && !ha_mmcfg && !ha_mmrnw && ha_mmdw && (ha_mmad == trace_mmioad))
-            trace_read_reg <= {ha_mmdata[0], 15'b 000000000000000, ha_mmdata[16:31], 28'h 0000000, ha_mmdata[60:63]};
-    else trace_read_reg <= trace_read_reg;
-  end
-
+`ifdef _TRACE_
+	// ... put trace stuff here ...
+`endif
   always @ (posedge ha_pclock)
   begin
     if(reset)

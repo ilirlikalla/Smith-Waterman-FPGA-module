@@ -111,13 +111,9 @@ module afu (
   wire [0:63]  ah_jerror_int;      // Job error
 
   //Command Interface trace array signals
-  wire         command_trace_val;
-  wire [0:7]   command_trace_wtag;
-  wire [0:119] command_trace_wdata;
-
-  wire         jcontrol_trace_val;
-  wire [0:140] jcontrol_trace_wdata;
-
+`ifdef _TRACE_
+	// ... put trace stuff here ...
+`endif
 
 
 
@@ -161,14 +157,9 @@ module afu (
     .odd_parity(odd_parity),
     .reset(reset),
     .ha_pclock(ha_pclock),
-    .command_trace_val(command_trace_val),
-    .command_trace_wtag(command_trace_wtag),
-    .command_trace_wdata(command_trace_wdata),
-    .response_trace_val(ha_rvalid),
-    .response_trace_wtag(ha_rtag),
-    .response_trace_wdata({ha_rvalid, ha_rtag, ha_rtagpar, ha_response, ha_rcredits, ha_rcachestate, ha_rcachepos}),
-    .jcontrol_trace_val(jcontrol_trace_val),
-    .jcontrol_trace_wdata(jcontrol_trace_wdata),
+`ifdef _TRACE_
+	// ... put trace ports here ...
+`endif
     .done_premmio(done_premmio),
     .done_postmmio(done_postmmio),
     .start_premmio(start_premmio),
@@ -207,7 +198,7 @@ module afu (
     .done_postmmio(done_postmmio),
     .start_premmio(start_premmio),
     .start_postmmio(start_postmmio),
-		.endianess(little_endian)
+	.endianess(little_endian)
   );
 
    reg 		 ha_rvalid_l;
@@ -319,10 +310,10 @@ module afu (
   reg [0:3]	scoring_state;
   
 	// **** sc_st_xxxx => scoring_state_xxxx ****
-  parameter sc_st_idle = 4'b1000, 
-   			sc_st_read_seq = 4'b0100, 
-	     sc_st_calculate = 4'b0010,
-    sc_st_write_result = 4'b0001;
+  parameter sc_st_idle		 	= 4'b1000, 
+   			sc_st_read_seq 		= 4'b0100, 
+	     	sc_st_calculate		= 4'b0010,
+   		 	sc_st_write_result	= 4'b0001;
       			
   // ---- end of signals ----
   
@@ -358,62 +349,62 @@ module afu (
 
   // ---- sequential part: ----
   always@(posedge ha_pclock)
-		begin: STATE_SEQUENTIAL
-			if (reset) 
-			begin
-				result_r <= 16'd0;
-				index_s <= 1'b0;
-				scoring_state <= 4'b1000;
-				target_empty <= 1'b1;
-			end 
-			else begin
-				case(scoring_state)
+	begin: STATE_SEQUENTIAL
+		if (reset) 
+		begin
+			result_r <= 16'd0;
+			index_s <= 1'b0;
+			scoring_state <= 4'b1000;
+			target_empty <= 1'b1;
+		end 
+		else begin
+			case(scoring_state)
 
-					sc_st_idle: // stays idle
-							if(read_req) // proceed to next state
-								scoring_state <= sc_st_read_seq;
+			sc_st_idle: // stays idle
+				if(read_req) // proceed to next state
+					scoring_state <= sc_st_read_seq;
 
-					sc_st_read_seq: // waits for sequences from dma.v
-							begin
-								if(read_ready)// jump to next state 
-								begin
-									scoring_state <= sc_st_calculate;
-								end 
-								else begin // decode sequence data
-									if(read_data_ready) 
-				 					begin
-										seq_reg[index_s] <= sequence_w; // get sequence bases !X!
-										seq_length[index_s] <= length_w ; // get sequenece length !X!
-										target_empty <= !index_s; // target is loaded
-										index_s <= ~ index_s; // increment register index (data is read in order from dma.v)
-									end
-								end
-							end
-				
-					sc_st_calculate:  // starts the scoring module to do the calculation
-							begin
-								if(valid_s) // store result and jump to next state
-								begin
-									result_r <= result_s; // store result
-									scoring_state <= sc_st_write_result;
-								end
-								else begin
-									seq_reg[1][463:0] <= {2'b00,seq_reg[1][463:2]}; // feed bases to scoring module, by shifting out the sequence !X!
-									if(base_cnt == seq_length[1]) 
-										target_empty <= 1'b1;
-								end
-							end  
-					sc_st_write_result: // send result and wait for it to be written by dma.v
-								if(write_ready) // jump to idle state
-								begin
-									index_s <= ~index_s;
-									scoring_state <= sc_st_idle;
-								end
+			sc_st_read_seq: // waits for sequences from dma.v
+				begin
+					if(read_ready)// jump to next state 
+					begin
+						scoring_state <= sc_st_calculate;
+					end 
+					else begin // decode sequence data
+						if(read_data_ready) 
+	 					begin
+							seq_reg[index_s] <= sequence_w; // get sequence bases !X!
+							seq_length[index_s] <= length_w ; // get sequenece length !X!
+							target_empty <= !index_s; // target is loaded
+							index_s <= ~ index_s; // increment register index (data is read in order from dma.v)
+						end
+					end
+				end
 
-					default: scoring_state <= 4'b1000; // jump to 'safe' state
-				endcase
-			end
+			sc_st_calculate:  // starts the scoring module to do the calculation
+				begin
+					if(valid_s) // store result and jump to next state
+					begin
+						result_r <= result_s; // store result
+						scoring_state <= sc_st_write_result;
+					end
+					else begin
+						seq_reg[1][463:0] <= {2'b00,seq_reg[1][463:2]}; // feed bases to scoring module, by shifting out the sequence !X!
+						if(base_cnt == seq_length[1]) 
+							target_empty <= 1'b1;
+					end
+				end  
+			sc_st_write_result: // send result and wait for it to be written by dma.v
+				if(write_ready) // jump to idle state
+				begin
+					index_s <= ~index_s;
+					scoring_state <= sc_st_idle;
+				end
+
+			default: scoring_state <= 4'b1000; // jump to 'safe' state
+			endcase
 		end
+	end
     
    // ---- combinational part: ----
 	always@*
@@ -542,11 +533,7 @@ module afu (
    assign ah_jrunning = ah_jrunning_int;
    assign ah_jdone = ah_jdone_int;
    assign ah_jerror = ah_jerror_int;
-
-   assign command_trace_val = ah_cvalid_int;
-   assign command_trace_wtag = ah_ctag_int;
-   assign command_trace_wdata = {ah_cvalid_int, ah_ctag_int, ah_ctagpar_int, ah_com_int, ah_compar_int, ah_cea_int, ah_ceapar_int, ah_cabt_int, ah_cch_int, ah_csize_int};
-   assign jcontrol_trace_val = ha_jval || ah_jdone_int;
-   assign jcontrol_trace_wdata = {ha_jval, ha_jcom, ha_jcompar, ha_jea, ha_jeapar, ah_jrunning_int, ah_jdone_int, ah_jerror_int};
-
+`ifdef _TRACE_
+	// ... put trace stuff here ...
+`endif
 endmodule
