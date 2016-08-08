@@ -58,7 +58,7 @@ ScoringModule_v1
    #(
 		.SCORE_WIDTH(`SCORE_WIDTH),	// result width in bits
 		.LENGTH(`LENGTH),			// number of processing elements in the systolic array
-		.LOG_LENGTH(),				// element addressing width
+		.ADDR_WIDTH(),				// element addressing width
 		._A(),        				//nucleotide1 "A"
 		._G(),        				//nucleotide "G"
 		._T(),        				//nucleotide "T"

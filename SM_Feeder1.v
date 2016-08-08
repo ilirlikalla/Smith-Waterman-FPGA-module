@@ -12,7 +12,7 @@
 `define LENGTH 	feed_in[(2*TARGET_LENGTH+LEN_WIDTH-1)-:LEN_WIDTH]
 `define TARGET 	feed_in[(2*TARGET_LENGTH-1):0]
 
-module SM_feeder_
+module SM_feeder
 	#( parameter
 		TARGET_LENGTH = 128,			// target sequence's length	
 		LEN_WIDTH = 12,					// sequence's length width in bits
@@ -30,8 +30,8 @@ module SM_feeder_
 	input re1,							// id1 fifo's read enable
 	output reg en0,
 	output reg en1,
-	output reg [1:0] data_out,
-	output reg full,						// is set when the feeder is full of targets
+	output  [1:0] data_out,
+	output full,						// is set when the feeder is full of targets
 	output [ID_WIDTH-1:0] id0,
 	output [ID_WIDTH-1:0] id1				
 	);
@@ -57,10 +57,9 @@ module SM_feeder_
 	wire [2:0] state_w;
 
 	// fifo signals:
-	reg we0, we1;
-    //reg ld_id[1:0];
+	wire we0, we1;
 	wire full0, full1;
-	
+ 
 	// --- instantiations: ---
 	
 	// fifo for toggle 0:
@@ -102,8 +101,7 @@ module SM_feeder_
 	begin	
 		if(~rst)
 		begin
-			target_loaded[0] <= 1'b0;
-			target_loaded[1] <= 1'b0;
+			target_loaded <= 2'b00;
 	  		ld_indx <= 1'b0;
 			en0 <= 1'b0;
 			en1 <= 1'b0;
@@ -164,27 +162,6 @@ module SM_feeder_
 		endcase
 		end
 	end
-		
-			
-	// --- combinational part: ---
-	always@*
-	begin
-		// avoid latching:
-//		en0 = 0;
-//		en1 = 0;
-		full = 0;
-		data_out = 0;
-		we0 = 0;
-		we1 = 0;
-		// logic:
-//		en0 = target_loaded[i0];
-//		en1 = target_loaded[i1];
-		full =(&target_loaded) | (full0 && full1) ;
-		data_out = (toggle)? target[i1][1:0] : target[i0][1:0];
-		we0 = ld & ~toggle;										// put sequence id in fifo 0 
-		we1 = ld & toggle;										// put sequence id in fifo 1
-	end
-	
 	
 	// base counter for toggle 0:		
 	always@(posedge clk)
@@ -200,5 +177,14 @@ module SM_feeder_
 			counter1 <= 0;
 		else if( en1 & ~toggle)
 			counter1 <= counter1 + 1;
+			
+	// --- combinational part: ---	
+	assign data_out = (toggle)? target[i1][1:0] : target[i0][1:0];
+	assign we0 = ld & ~toggle;	
+	assign we1 = ld & toggle;
+	assign full = &target_loaded ||(ld & (|target_loaded)) || full0 || full1 ;
+
+	
+
 
 endmodule

@@ -1,11 +1,13 @@
 // Author: Ilir Likalla
 
-
+/* NOTES:
+	- depth MUST be a power of 2
+*/
 module fifo
 	#(parameter
 		MEM_OPT = "m20k,no_rw_check",
 		WIDTH = 48,
-		DEPTH = 5,
+		DEPTH = 4,
 		ADDR_BITS = $clog2(DEPTH)
 	)(
 	input rst,
