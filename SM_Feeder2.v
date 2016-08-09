@@ -12,7 +12,7 @@
 `define LENGTH 	feed_in[(2*TARGET_LENGTH+LEN_WIDTH-1)-:LEN_WIDTH]
 `define TARGET 	feed_in[(2*TARGET_LENGTH-1):0]
 
-module SM_feeder1
+module SM_feeder
 	#( parameter
 		TARGET_LENGTH = 128,			// target sequence's length	
 		LEN_WIDTH = 12,					// sequence's length width in bits
@@ -30,7 +30,7 @@ module SM_feeder1
 	input re1,							// id1 fifo's read enable
 	output reg en0,
 	output reg en1,
-	output  [1:0] data_out,
+	output [1:0] data_out,
 	output full,						// is set when the feeder is full of targets
 	output [ID_WIDTH-1:0] id0,
 	output [ID_WIDTH-1:0] id1				
@@ -43,12 +43,13 @@ module SM_feeder1
 	reg [LEN_WIDTH-1:0] counter1;			// counter for toggle 1
 	
 	// sequence related signals:
-	reg [ID_WIDTH-1:0] id [0:1];			// sequence's id registers
-	reg [LEN_WIDTH-1:0] length [0:1];		// sequence's length registers
-	reg [2*TARGET_LENGTH-1:0] target [0:1];	// target sequence registers
-	reg [0:1] target_loaded;				// is set when the respective target register is loaded
-	reg ld_indx;							// points to the next register/ that is to be loaded
-	reg i0, i1;								// indices for toggle 0 & 1
+	reg [LEN_WIDTH-1:0] length0;		// sequence's length register 0
+	reg [LEN_WIDTH-1:0] length1;		// sequence's length register 1
+	reg [2*TARGET_LENGTH-1:0] target0;	// target sequence registers
+	reg [2*TARGET_LENGTH-1:0] target1;	// target sequence registers
+	reg loaded0;						// is set when the respective target register is loaded
+	reg loaded1;						// is set when the respective target register is loaded
+
 
 	// state signals:
 	localparam 	idle = 1'b0,
@@ -101,61 +102,53 @@ module SM_feeder1
 	begin	
 		if(~rst)
 		begin
-			target_loaded <= 2'b00;
-	  		ld_indx <= 1'b0;
+			loaded0 <= 1'b0;
+			loaded1 <= 1'b0;
 			en0 <= 1'b0;
 			en1 <= 1'b0;
 			state <= {idle, idle};
 		end else
 		begin
 			case(state_w)
-			// states for toggle 0:
-			{1'b0, state[1], idle}:
-		
-				if(ld)								// !X! ->  data might be overwritten. error signal?
+			//if any of the target registers is empty, load new sequence:
+			{1'b1, state[1], idle}, {1'b0, idle, state[0]}:			// mutually exclusive events!
+				if(ld)												// !X! ->  data might be overwritten. error signal?
 				begin
-					
-					length[ld_indx] <= `LENGTH;
-					target[ld_indx] <= `TARGET;
-					target_loaded[ld_indx] <= 1'b1;	
-					en0 <= 1'b1;
-					i0 <= ld_indx;
-					ld_indx <= ~ld_indx;
-					state <= {state[1], feed};
+					if(!loaded0)									// load the first target reg, if it is empty.
+					begin
+						length0 <= `LENGTH;
+						target0 <= `TARGET;
+						loaded0 <= 1'b1;	
+						en0 <= 1'b1;
+						state <= {state[1], feed};					// enable the state machine to feed data on toggle 0
+					end	else if(!loaded1)							// else load the second register, if it's also empty.
+					begin
+						length1 <= `LENGTH;
+						target1 <= `TARGET;
+						loaded1 <= 1'b1;	
+						en1 <= 1'b1;
+						state <= {feed, state[0]};					// enable the state machine to feed data on toggle 1
+					end
 				end
-		
-			{1'b0, state[1], feed}:			
+			// feed state 0 (feeds data on toggle 0 !X!):	
+			{1'b1, state[1], feed}:			
 				begin
-					target[i0][2*TARGET_LENGTH-1:0] <= {2'b00,target[i0][2*TARGET_LENGTH-1:2]}; // feed bases to scoring module, by shifting out the sequence !X!
-					if(counter0 == (length[i0] - 1))
+					target0[2*TARGET_LENGTH-1:0] <= {2'b00,target0[2*TARGET_LENGTH-1:2]}; // feed bases to scoring module, by shifting out the sequence !X!
+					if(counter0 == (length0 - 1))
 					begin 
 						en0 <= 1'b0;
-						target_loaded[i0] <= 1'b0;
+						loaded0 <= 1'b0;
 						state <= {state[1], idle};
 					end						
 				end  
-			// states for toggle 1:
-			{1'b1, idle, state[0]}:
-		
-				if(ld)								// !X! ->  data might be overwritten. error signal?
+			// feed state 1 (feeds data on toggle 1 !X!):	
+			{1'b0, feed, state[0]}:			
 				begin
-					
-					length[ld_indx] <= `LENGTH;
-					target[ld_indx] <= `TARGET;
-					target_loaded[ld_indx] <= 1'b1;
-					en1 <= 1'b1;
-					i1 <= ld_indx;
-					ld_indx <= ~ld_indx;
-					state <= {feed, state[0]};
-				end
-		
-			{1'b1, feed, state[0]}:			
-				begin
-					target[i1][2*TARGET_LENGTH-1:0] <= {2'b00,target[i1][2*TARGET_LENGTH-1:2]}; // feed bases to scoring module, by shifting out the sequence !X!
-					if(counter1 == (length[i1] - 1))
+					target1[2*TARGET_LENGTH-1:0] <= {2'b00,target1[2*TARGET_LENGTH-1:2]}; // feed bases to scoring module, by shifting out the sequence !X!
+					if(counter1 == (length1 - 1))
 					begin 
 						en1 <= 1'b0;
-						target_loaded[i1] <= 1'b0;
+						loaded1 <= 1'b0;
 						state <= {idle, state[0]};
 					end						
 				end  
@@ -167,7 +160,7 @@ module SM_feeder1
 	always@(posedge clk)
 		if(~rst | ~en0)
 			counter0 <= 0;
-		else if( en0 & ~toggle)
+		else if( en0 & toggle)
 			counter0 <= counter0 + 1;
 
 
@@ -179,10 +172,10 @@ module SM_feeder1
 			counter1 <= counter1 + 1;
 			
 	// --- combinational part: ---	
-	assign data_out = (toggle)? target[i1][1:0] : target[i0][1:0];
-	assign we0 = ld & ~toggle;	
-	assign we1 = ld & toggle;
-	assign full = &target_loaded ||(ld & (|target_loaded)) || full0 || full1 ;
+	assign data_out = (toggle)? target1 : target0;
+	 assign we0 = ld & toggle;	
+	 assign we1 = ld & ~toggle;
+	assign full = (loaded0 && loaded1) || (ld && (loaded0 || loaded1)) || full0 || full1 ;			// !X! -> too complicated (2 levels of logic)
 
 	
 

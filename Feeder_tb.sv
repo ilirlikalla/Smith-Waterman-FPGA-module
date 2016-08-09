@@ -235,7 +235,7 @@ begin: SB_stimulus
 		disable SB_stimulus;										// stop this process
 	end
 	
-	if(seq_read && ~full)
+	if(seq_read && !full)
 	begin
 		feed_in[(`IN_WIDTH-1)-:`ID_WIDTH] <= k; 					// put sequence's ID
 		feed_in[(`IN_WIDTH-`ID_WIDTH-1)-:`LEN_WIDTH] <= str[k].len;	// put sequence's length
@@ -257,8 +257,8 @@ always@(posedge valid0)
 begin: Display_results0	
 	if(valid0 == 1)	// precaution
 	begin
-		$display("@%8tns %10s score:%4d, id:%3d", $time, db[j0],result0+`ZERO, id0);
-		j0= j0+1;
+		$display("@%8tns %10s score:%4d, id:%3d", $time, db[id0],result0+`ZERO, id0);
+		//j0= j0+1;
 	end
 end
 
@@ -267,8 +267,8 @@ always@(posedge valid1)
 begin: Display_results1	
 	if(valid1 == 1)	// precaution
 	begin
-		$display("@%8tns %10s score:%4d, id:%3d", $time, db[j0],result1+`ZERO, id1);
-		j0= j0+1;
+		$display("@%8tns %10s score:%4d, id:%3d", $time, db[id1],result1+`ZERO, id1);
+		//j0= j0+1;
 	end
 end
 
