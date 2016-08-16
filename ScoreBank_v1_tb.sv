@@ -49,6 +49,7 @@ endfunction
 	string q_str, str[100], db[100];	// strings of chars from the file kept here.
 	integer fd;
 	integer seq_read= 0; 						// flags that indicate that all sequences are read from the TEST_FILE
+	integer seq_read_l;
 	integer i;									// base indices
 	integer k= 0;								// sequence indices
 	integer length, nr, id;						// query length, nr of sequences for toggle 0 and 1
@@ -62,7 +63,8 @@ endfunction
 	logic mode, enable;
 	logic signed [`SCORE_WIDTH-1:0] result0;
 	//logic [11:0] base_counter;
-
+	
+	logic ld, ld_q;
 	logic ld_sequence;							// if set, a new target sequence is loaded in  
 	logic ld_penalties;							// if set, penalties are loaded	
 	logic [0:`IN_WIDTH-1] data_in;  				// sequence data input
@@ -124,7 +126,7 @@ function automatic [`STRING_LENGTH*50-1:0] StrToBit(input string seq,input strin
 		StrToBit[j+:2]=ConvertToBase(str[i]);
 		j= j+2;
 	end
-	$display("%s length: %d",seq ,str.len());
+	//$display("%s length: %d",seq ,str.len());
 	length= str.len();
 
  end
@@ -168,18 +170,19 @@ begin: INIT_TB
 	fd= $fopen(`QUERY_FILE,"r");
 	$fscanf(fd,"%s",q_str);
 	$fscanf(fd,"%s",q_str);
-	query= StrToBit("query",q_str);
+	
 	$fclose(fd);
 	#clk_period;
 
 	// load query:
+	query= StrToBit("query",q_str);
 	data_in[0:1] = 2'b01;					// query sequence 
 	data_in[2+:`ID_WIDTH] = id;
 	data_in[(2+`ID_WIDTH)+:`LEN_WIDTH] = length;
-	data_in[(2+`ID_WIDTH +`LEN_WIDTH):`IN_WIDTH] = query;
-	ld_sequence = 1;
+	data_in[(2+`ID_WIDTH +`LEN_WIDTH):`IN_WIDTH-1] = query;
+	ld_q = 1;
 	#clk_period;
-	ld_sequence = 0;
+	ld_q = 0;
 	
 	// read target sequences:
 	fd= $fopen(`TEST_FILE,"r");
@@ -204,7 +207,7 @@ begin: INIT_TB
 	k = 0;
 	
 	@done; 									// wait for all sequences to be fed			
-	#((`LENGTH)*clk_period);				// wait for the last sequence to be processed		 
+	#((`LENGTH*3)*clk_period);				// wait for the last sequence to be processed		 
 	$stop; 									// stop simulation
 end
 
@@ -219,25 +222,28 @@ begin: SB_stimulus
 		-> done;						// blocking trigger!!!
 		disable SB_stimulus;						// stop this process
 	end
-	if(seq_read)
+	
+	if(ld )
 	begin
-		ld_sequence <= 0;
-		if(~full)
-		begin
-			target <= StrToBit(db[k], str[k]);
-			data_in[0:1] <= 2'b10;					// target sequence 
-			data_in[2+:`ID_WIDTH] <= id;
-			data_in[(2+`ID_WIDTH)+:`LEN_WIDTH] <= length;
-			data_in[(2+`ID_WIDTH +`LEN_WIDTH)+:`LENGTH] <= target;
-			ld_sequence <= 1;
-		
-			id <= id +1;
-			k <= k +1;		
-		end
+		k = k+1;
 	end
+	data_in[0:1] <= 2'b10;					// target sequence 
+	data_in[2+:`ID_WIDTH] <= k;
+	data_in[(2+`ID_WIDTH +`LEN_WIDTH):`IN_WIDTH-1] <= StrToBit(db[k], str[k]);
+	data_in[(2+`ID_WIDTH)+:`LEN_WIDTH] <= length;
+	//ld_sequence <= ld;
+	seq_read_l <= seq_read;		
 end
 
-
+always@*
+begin:SB_stim_comb
+	ld= 0;
+	
+	if(~full && seq_read_l && (k< nr) )
+		ld = 1;
+	ld_sequence = ld || (ld_q && data_in[1]);
+	//ld = ld_l && ld_s;
+end
 
 bit [0:100]vflg  = 0;	// vflg(i) is set if that result is already read
 integer j, r_id, r_result;
@@ -245,14 +251,14 @@ integer j, r_id, r_result;
 always@(posedge clk)
 begin: Display_results	
 	
-	for(j=0; j<`MODULES; j= j+1)
+	for(j=0; j<2*`MODULES; j= j+1)
 	begin
-		r_id = IDs[(j*`SCORE_WIDTH)+:`SCORE_WIDTH];
+		r_id = IDs[(j*`ID_WIDTH)+:`ID_WIDTH];
 		r_result = results[(j*`SCORE_WIDTH)+:`SCORE_WIDTH];
 		if(vld[j] && ~vflg[r_id])
 		begin
-			$display("@%8t: %10s score: \t%d", $time, db[r_id], r_result+`ZERO);
-			vflg[IDs[j]] = 1;
+			$display("@%8t: %10s score: \t%d", $time, db[r_id], r_result-`ZERO);
+			vflg[r_id] = 1;
 		end
 	end
 end

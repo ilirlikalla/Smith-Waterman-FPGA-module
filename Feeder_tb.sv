@@ -48,7 +48,7 @@ endfunction
 	logic [1:0] base;
 	string q_str, str[100], db[100];	// strings of chars from the file kept here.
 	integer fd;
-	integer seq_read= 0; 				// flags that indicate that all sequences are read from the TEST_FILE
+	integer seq_read= 0, seq_read_l; 				// flags that indicate that all sequences are read from the TEST_FILE
 	integer i;							// base indices
 	integer k= 0;						// sequence indices
 	integer j0= 0, j1= 0;				// result's inices
@@ -78,7 +78,8 @@ endfunction
 	logic [`ID_WIDTH-1:0] id0;
 	logic [`ID_WIDTH-1:0] id1;	
 	logic valid0, valid1;
-	// penalties:
+
+	logic sync = 0;
 
 /* DUT instantiation: */
     
@@ -218,31 +219,43 @@ begin: INIT_TB
 	k = 0;
 	
 	@done; 									// wait for all sequences to be fed			
-	#((`LENGTH)*2*clk_period);				// wait for the last sequence to be processed		 
+	#((`LENGTH)*4*clk_period);				// wait for the last sequence to be processed		 
 	$stop; 									// stop simulation
 end
 
-
+logic ld_l = 0;
 // --- feed module: ---
 always@(posedge clk)
-begin: SB_stimulus
+begin: FD_stimulus
 	
 	// if there are no more sequences stop:
-	ld <= 0; 
+	 
 	if(k >= nr)
 	begin
+		sync <= 0;
 		-> done;													// blocking trigger!!!
 		disable SB_stimulus;										// stop this process
 	end
-	
-	if(seq_read && !full)
+
+	if(ld )
 	begin
-		feed_in[(`IN_WIDTH-1)-:`ID_WIDTH] <= k; 					// put sequence's ID
-		feed_in[(`IN_WIDTH-`ID_WIDTH-1)-:`LEN_WIDTH] <= str[k].len;	// put sequence's length
-		feed_in[(2*`LENGTH-1):0] <= StrToBit(db[k],str[k]);			// put sequence's bases
-		ld <= 1;														// assert load signal to the feeder
-		k <= k+1;
+		k = k+1;
 	end
+	feed_in[(`IN_WIDTH-1)-:`ID_WIDTH] <= k; 					// put sequence's ID
+	feed_in[(`IN_WIDTH-`ID_WIDTH-1)-:`LEN_WIDTH] <= str[k].len;	// put sequence's length
+	feed_in[(2*`LENGTH-1):0] <= StrToBit(db[k],str[k]);			// put sequence's bases
+	//if(seq_read && (k<nr)) sync <=1;
+	seq_read_l <= seq_read;											// sync seq_read
+	
+end
+
+always@*
+begin:FD_stim_comb
+	ld= 0;
+	
+	if(~full && seq_read_l && (k< nr) )
+		ld = 1;
+	//ld = ld_l && ld_s;
 end
 
 //assign ld = ~full & ld_s;

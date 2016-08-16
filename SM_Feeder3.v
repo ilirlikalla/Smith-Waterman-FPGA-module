@@ -2,7 +2,7 @@
 
 
 /* NOTES:
-	- in this version of the feeder module the state machines are expressed as single 'always@' blocks
+	- in this version of the feeder module the state machines are expressed as separate 'always@' blocks
 	- code based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"
 */
@@ -13,7 +13,7 @@
 `define LENGTH 	buffer_in[(2*TARGET_LENGTH+LEN_WIDTH-1)-:LEN_WIDTH]
 `define TARGET 	buffer_in[(2*TARGET_LENGTH-1):0]
 
-module SM_feeder
+module SM_feeder3
 	#( parameter
 		TARGET_LENGTH = 128,			// target sequence's length	
 		LEN_WIDTH = 12,					// sequence's length width in bits
@@ -40,8 +40,8 @@ module SM_feeder
 	// --- internal signals: ---
 
 	// counter signals:
-	reg [LEN_WIDTH-1:0] counter0;			// counter for toggle 0
-	reg [LEN_WIDTH-1:0] counter1;			// counter for toggle 1
+	reg [LEN_WIDTH-1:0] counter0;		// base counter for toggle 0
+	reg [LEN_WIDTH-1:0] counter1;		// base counter for toggle 1
 	
 	// sequence related signals:
 	reg [LEN_WIDTH-1:0] length0;		// sequence's length register 0
@@ -54,10 +54,10 @@ module SM_feeder
 	reg buffer_vld;						// valid signal for the buffer_in
 
 	// state signals:
-	localparam 	idle = 1'b0,
-				feed = 1'b1;
-	reg [1:0] state;						// state register
-	wire [2:0] state_w;
+	localparam 	idle = 2'b10,
+				feed = 2'b01;
+	reg [1:0] state0;					// state for toggle 0 register
+	reg [1:0] state1;					// state for toggle 1 register
 
 	// fifo signals:
 	reg we0, we1;
@@ -99,7 +99,6 @@ module SM_feeder
     
 
 	// --- sequential part: ---
-
 	
 	// input buffer logic:
 	always@(posedge clk)
@@ -108,70 +107,77 @@ module SM_feeder
 		if(~loaded0 || ~ loaded1)
 			{buffer_vld, buffer_in} <= {ld, feed_in};
 	end
-	
-	// state machine:
-	assign state_w = {toggle,state};
+
+
+	// toggle 0 state machine:
 	always@(posedge clk)
-	begin	
+	begin
 		if(~rst)
 		begin
 			loaded0 <= 1'b0;
-			loaded1 <= 1'b0;
 			en0 <= 1'b0;
-			en1 <= 1'b0;
-			state <= {idle, idle};
+			state0 <= idle;
 		end else
-		begin
-			case(state_w)
-			//if any of the target registers is empty, load new sequence:
-			{1'b1, state[1], idle}:		// mutually exclusive events!
-
-				if(buffer_vld && ~loaded0)											// !X! ->  data might be overwritten. error signal?
+		begin if(toggle)
+			case(state0)
+			idle:
+				if(buffer_vld && ~loaded0)
 				begin
 					length0 <= `LENGTH;
 					target0 <= `TARGET;
 					loaded0 <= 1'b1;	
 					en0 <= 1'b1;
-					state[0] <= feed;				// enable the state machine to feed data on toggle 0
-				end 
-					
-			{1'b0, idle, state[0]}:
-				if(buffer_vld && ~loaded1)						// else load the second register, if it's also empty.
+					state0 <= feed;				// enable the state machine to feed data on toggle 0
+				end	
+			feed:
 				begin
-					length1 <= `LENGTH;
-					target1 <= `TARGET;
-					loaded1 <= 1'b1;	
-					en1 <= 1'b1;
-					state[1] <= feed;				// enable the state machine to feed data on toggle 1
-				end
-	
-			// feed state 0 (feeds data on toggle 0 !X!):	
-			{1'b1, state[1], feed}:			
-				begin
-					// feed the first sequence:
 					target0[2*TARGET_LENGTH-1:0] <= {2'b00,target0[2*TARGET_LENGTH-1:2]}; // feed bases to scoring module, by shifting out the sequence !X!
 					if(counter0 == (length0 - 1))
 					begin 
 						en0 <= 1'b0;
 						loaded0 <= 1'b0;
-						state[0] <= idle;
-					end						
-				end  
-			// feed state 1 (feeds data on toggle 1 !X!):	
-			{1'b0, feed, state[0]}:			
+						state0 <= idle;
+					end	
+				end
+			default: 
+				state0 <= idle;		// go to safe state
+			endcase
+		end
+	end
+
+	// toggle 0 state machine:
+	always@(posedge clk)
+	begin
+		if(~rst)
+		begin
+			loaded1 <= 1'b0;
+			en1 <= 1'b0;
+			state1 <= idle;
+		end else
+		begin if(~toggle)
+			case(state1)
+			idle:
+				if(buffer_vld && ~loaded1)
 				begin
-					// feed the second sequence:
+					length1 <= `LENGTH;
+					target1 <= `TARGET;
+					loaded1 <= 1'b1;	
+					en1 <= 1'b1;
+					state1 <= feed;				// enable the state machine to feed data on toggle 0
+				end	
+			feed:
+				begin
 					target1[2*TARGET_LENGTH-1:0] <= {2'b00,target1[2*TARGET_LENGTH-1:2]}; // feed bases to scoring module, by shifting out the sequence !X!
 					if(counter1 == (length1 - 1))
 					begin 
 						en1 <= 1'b0;
 						loaded1 <= 1'b0;
-						state[1] <= idle;
-					end						
-				end  
-			
-			default: state <= {idle, idle};						// go to "safe" state
-		endcase
+						state1 <= idle;
+					end	
+				end
+			default: 
+				state1 <= idle;		// go to safe state
+			endcase
 		end
 	end
 	
@@ -181,7 +187,6 @@ module SM_feeder
 			counter0 <= 0;
 		else if( en0 & toggle)
 			counter0 <= counter0 + 1;
-
 
 	// base counter for toggle 1:		
 	always@(posedge clk)
@@ -199,10 +204,10 @@ module SM_feeder
 		data_out = 0;
 		data_out = (toggle)? target1[1:0] : target0[1:0];
 		full = (buffer_vld && (loaded0 || loaded1)) || (loaded0 && loaded1) || full0 || full1 ;
-		if({toggle, state[0]} == {1'b1, idle})
-			we0 = buffer_vld && ~loaded0;
-		if({toggle, state[1]} == {1'b0, idle}) 
-			we1 = buffer_vld && ~loaded1;
+		if(state0 == idle)
+			we0 = buffer_vld && ~loaded0 && toggle;
+		if(state1 == idle) 
+			we1 = buffer_vld && ~loaded1 && ~toggle;
 	end
 	
 
