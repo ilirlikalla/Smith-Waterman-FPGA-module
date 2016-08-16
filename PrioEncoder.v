@@ -1,3 +1,8 @@
+// Author: Ilir Likalla
+
+/* NOTES:
+	- this encoder gives priority to the first lowest significant bit that is 0
+*/
 module PrioEncoder
 	#( parameter
 		BITS = 4,
