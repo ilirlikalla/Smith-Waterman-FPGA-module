@@ -7,7 +7,7 @@
 	- parameters belonging to the encoded nuclotides are not used.(for future use)
 */
 
-module ScoreBank_v1
+module ScoreBank_v2
 	#( parameter
 		SCORE_WIDTH = 12,					// result's width in bits
 		ID_WIDTH = 48,						// sequence's ID width in bits
@@ -53,7 +53,7 @@ module ScoreBank_v1
 
 	reg [(2*TARGET_LENGTH)-1:0] targets [0:(2*MODULES)-1];	// target sequences registers (shift regs)
 	reg target_valid [0:(2*MODULES)-1];						// if set, the respective target reg is full
-	reg [(2*MODULE_LENGTH)-1:0] query ;						// query register.
+	//reg [(2*MODULE_LENGTH)-1:0] query ;						// query register.
 	reg [ID_WIDTH-1:0] q_ID;								// query's ID
 	reg [LEN_WIDTH-1:0] q_length;							// query's length
 	reg query_valid;										// is set when the query is loaded
@@ -66,7 +66,7 @@ module ScoreBank_v1
 	wire [1:0] data_ [0:MODULES-1];					// holds bases that are passing through the PEs
 	wire [FEED_ADDR-1:0] feed_sel;					// feeder module selection bits
 	reg [MODULES-1:0] ld_;							// bus holding all feeder's load signals
-	
+	reg ld_query;
 
 // --- module instantiations: ---
 
@@ -76,11 +76,12 @@ module ScoreBank_v1
 		for(i=0; i< MODULES; i= i + 1)
 		begin
 			// Scoring module:
-			ScoringModule_v1
+			ScoringModule_v1_1
 			#(
 				.SCORE_WIDTH(SCORE_WIDTH),	
 				.LENGTH(MODULE_LENGTH),					
 				.ADDR_WIDTH(ADDR_WIDTH),	
+				.PREG_FREQ(),								// !x! -> SET TO DEFAULT
 				._A(_A),        	
 				._G(_G),        
 				._T(_T),       
@@ -91,9 +92,11 @@ module ScoreBank_v1
 			.clk(clk),
 			.rst(rst),
 			.en0(en0_[i]),		
-			.en1(en1_[i]),		
+			.en1(en1_[i]),
+			.ld_p(ld_penalties),							
+			.ld_q(ld_query),	
 			.data_in(data_[i]),  		
-			.query(query),
+			.query(data_in[2+ID_WIDTH +LEN_WIDTH:IN_WIDTH-1]),
 			.output_select(q_length),
 			.match(match),
 			.mismatch(mismatch),
@@ -104,7 +107,8 @@ module ScoreBank_v1
 			.result1(results[((i+MODULES)*SCORE_WIDTH)+:SCORE_WIDTH]),
 			.vld0(vld[i]),
 			.vld1(vld[i+MODULES]),
-			.toggle(toggle_[i])
+			.toggle(toggle_[i]),		
+			.ready()										// !X! -> port not connected
 			);
 	
 			// Scoring module's feresult1_eder:
@@ -150,7 +154,10 @@ module ScoreBank_v1
 		ready = 0;
 		full = 0;
 		ld_ = 0;
-
+		ld_query = 0;
+		
+		{match, mismatch, gap_open, gap_extend} = penalties;
+		ld_query = ld_sequence && data_in[1];
 		full = &full_ ;
 		if(ld_sequence && data_in[0])
 			ld_[feed_sel] = ld_sequence;
@@ -164,18 +171,13 @@ module ScoreBank_v1
 	begin
 		if(~rst)
 		begin
-			// default penalties:
-			match <= 0;
-			mismatch <= 0;
-			gap_open <= 0;
-			gap_extend <= 0;
+		
 			query_valid <= 0; 					// !X! -> redundant ???
 		end else 
 		begin
-			if(ld_penalties)
-				{match, mismatch, gap_open, gap_extend} <= penalties;
+				
 			if(ld_sequence && (data_in[0:1] == 2'b01))
-				{query_valid, q_ID, q_length, query} <= data_in[1:IN_WIDTH-1];
+				{query_valid, q_ID, q_length} <= data_in[1:2+ID_WIDTH +LEN_WIDTH-1];
 		end
 	end
 	

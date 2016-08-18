@@ -1,7 +1,8 @@
 // Author: Ilir Likalla
 
 /* NOTES:
-	- depth MUST be a power of 2
+	- depth MUST be a power of 2!
+	- BEHAVIOUR WHEN FIFO IS FULL: if new data is loaded in, it will overwrite previous data!
 */
 module fifo
 	#(parameter
@@ -24,7 +25,7 @@ module fifo
 	reg [0:ADDR_BITS-1] i_ad;	// data in in address (pointer)
 	reg [0:ADDR_BITS-1] o_ad;	// data out address (pointer)
 	reg [0:DEPTH-1] vld;		// data valid signals
-	reg re_shw;					// shadow of read enable
+	reg re_shw;					// shadow flag of read enable
 `ifdef use_altera_atts	
 	(* ramstyle = MEM_OPT *)reg [0:WIDTH-1] ram [0:DEPTH-1];
 `else
@@ -50,15 +51,15 @@ module fifo
 			end
 			// output logic:
 			out <= ram[o_ad];
-			if (re && ~re_shw)
+			if (re && ~re_shw)	// increment only on rising edges of read enable
 			begin
 				vld[o_ad] <= 1'b0;
 				o_ad <= o_ad + 1; 
 			end
-			re_shw <= re;	// update re's shadow
+			re_shw <= re;		// update re's shadow
 		end
 	end
 
-	assign full = &vld;		 // set full signal
+	assign full = &vld;		 	// set full signal
 
 endmodule

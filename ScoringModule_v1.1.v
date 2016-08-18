@@ -2,17 +2,21 @@
 
 
 /* NOTES:
+	- In this version of the module there are penalty registers every 8 processing elements
 	- code based on VERILOG 2001 standard.
 	- possible faults are associated by the comment "!X!"
 	- parameters belonging to the encoded nuclotides are not used.(for future use)
 */
 
-
-module ScoringModule_v1
+// parameter related macros:
+`define PREG_NUM (LENGTH/PREG_FREQ)	// number of penalty register groups
+`define set_reg(x) (x/`PREG_NUM)	// sets appropriate penalty register for each processing element
+module ScoringModule_v1_1
    #( parameter
 		SCORE_WIDTH = 12,			// result's width in bits
 		LENGTH=128,					// number of processing elements in the systolic array
 		ADDR_WIDTH = log2b(LENGTH)+1,	// element addressing width
+		PREG_FREQ = 8,				// frequency of Penalty registers is set to default as 1 register for every 8 PEs
 		_A = 2'b10,        			// nucleotide "A"
 		_G = 2'b11,        			// nucleotide "G"
 		_T = 2'b00,        			// nucleotide "T"
@@ -24,6 +28,8 @@ module ScoringModule_v1
 	input wire rst,
 	input wire en0,								//enable input
 	input wire en1,								//enable input
+	input wire ld_p,							// load penalties input
+	input wire ld_q,							// load query input
 	input wire [1:0] data_in,					// target base input		  		
 	input wire [(2*LENGTH)-1:0] query,			// query base input
 	input wire [ADDR_WIDTH-1:0] output_select,
@@ -51,7 +57,8 @@ module ScoringModule_v1
 	output reg [SCORE_WIDTH-1:0] result1,	
 	output reg vld0,							// valid flag, is set when sequence score has been calculated
 	output reg vld1,							// valid flag, is set when sequence score has been calculated
-	output reg toggle							// toggle flag, chooses which sequence is to be fed
+	output reg toggle,							// toggle flag, chooses which sequence is to be fed
+	output ready								// is set when penalties are loaded for the first few processing elements
 	);
 
 function integer log2b ; 						// calculates base 2 logarithm of  of 'length'
@@ -77,19 +84,65 @@ wire [LENGTH-1:0] en0_;						// bus holding all enable0 signals from each PE
 wire [LENGTH-1:0] en1_;						// bus holding all enable1 signals from each PE
 wire [LENGTH-1:0] toggle_;					// bus holding all toggle signals 
 wire [1:0] data_ [0:LENGTH-1];				// holds bases that are passing through the PEs
-						
+
+// penalty register groups:
+reg [`PREG_NUM-1:0] p_valid;				// valid signals for penalty registers
+reg [SCORE_WIDTH-1:0] match_r [0:`PREG_NUM-1];
+reg [SCORE_WIDTH-1:0] mismatch_r [0:`PREG_NUM-1];
+reg [SCORE_WIDTH-1:0] gap_open_r [0:`PREG_NUM-1];
+reg [SCORE_WIDTH-1:0] gap_extend_r [0:`PREG_NUM-1];
+
+// query regiser:
+reg [(2*LENGTH)-1:0] query_r;				// query register
+reg q_valid;								// query valid signal
 // ---- output logic: ----
 
 
  // select the corrent output: 		
-  always@(posedge clk) 
- 	if(!rst)
+	always@(posedge clk) 
+	if(!rst)
 		{toggle, vld0, vld1, result0, result1} <= 0;
 	else 
 		{toggle, vld0, vld1, result0, result1} <= {~toggle, vld0_[output_select-1], vld1_[output_select-1], high0_[output_select-1], high1_[output_select-1]};
-		
- // set enable:
 	
+// penalty setup logic:
+	integer p;
+	always@(posedge clk)
+	begin
+		if(~rst)
+		begin
+			q_valid <= 1'b0;
+			p_valid <= 0;
+		end else
+		begin
+			if(ld_q)
+			begin
+				q_valid <= ld_q;
+				query_r <= query;
+			end
+
+			for(p= 0; p <`PREG_NUM; p= p+1)
+				if((p==0) && ld_p)
+				begin
+					// load penalies for the first PREG_NUM processing elements:
+					p_valid[p] <= ld_p;
+					match_r[p] <= match;
+					mismatch_r[p] <= mismatch;
+					gap_open_r[p] <= gap_open;
+					gap_extend_r[p] <= gap_extend;
+				end else if(p_valid[p-1])
+				begin 
+					// propagate penalties:
+					p_valid[p] <= p_valid[p-1];
+					match_r[p] <= match_r[p-1];
+					mismatch_r[p] <= mismatch_r[p-1];
+					gap_open_r[p] <= gap_open_r[p-1];
+					gap_extend_r[p] <= gap_extend_r[p-1];	
+				end
+		end
+	end		
+	
+	assign ready = q_valid && p_valid[0];	// if penalties are loaded for at least the first element the module is ready to work
 
 // ---- instantiation of the systolic array of processing elements: ----
 genvar i;
@@ -112,15 +165,15 @@ generate
 			.en0_in(en0),
 			.en1_in(en1),
 			.data_in(data_in),
-			.query(query[1:0]),
+			.query(query_r[1:0]),
 			.M_in(ZERO),
 			.I_in(ZERO),				//  gap_open???   !X!
 			.High0_in(ZERO),
 			.High1_in(ZERO),
-			.match(match),				// penalties
-			.mismatch(mismatch),		// penalties
-			.gap_open(gap_open),		// penalties
-			.gap_extend(gap_extend), 	// penalties
+			.match(match_r[`set_reg(i)]),				// penalties
+			.mismatch(mismatch_r[`set_reg(i)]),			// penalties
+			.gap_open(gap_open_r[`set_reg(i)]),			// penalties
+			.gap_extend(gap_extend_r[`set_reg(i)]), 	// penalties
 			// outputs:
 			.data_out(data_[i]),
 			.M_out(M_[i]),
@@ -150,15 +203,15 @@ generate
 			.en0_in(en0_[i-1]),
 			.en1_in(en1_[i-1]),
 			.data_in(data_[i-1]),
-			.query(query[2*i+1:2*i]),
+			.query(query_r[2*i+1:2*i]),
 			.M_in(M_[i-1]),
 			.I_in(I_[i-1]),		
 			.High0_in(high0_[i-1]),
 			.High1_in(high1_[i-1]),
-			.match(match),				// penalties
-			.mismatch(mismatch),		// penalties
-			.gap_open(gap_open),		// penalties
-			.gap_extend(gap_extend), 	// penalties
+			.match(match_r[`set_reg(i)]),				// penalties
+			.mismatch(mismatch_r[`set_reg(i)]),			// penalties
+			.gap_open(gap_open_r[`set_reg(i)]),			// penalties
+			.gap_extend(gap_extend_r[`set_reg(i)]), 	// penalties
 			// outputs:
 			.data_out(data_[i]),
 			.M_out(M_[i]),

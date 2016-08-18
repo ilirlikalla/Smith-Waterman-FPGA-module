@@ -6,20 +6,28 @@
 	- possible faults are associated by the comment "!X!"
 */
 
+// ---- testbench configuration macros: ----
+
 `define LF 8'h0A 			 	// line feed char
 `define ZERO  (2**(12-1)) 		// biased zero for score width 12 bits
 `define STRING_LENGTH 150 
 `timescale 1 ns / 100 ps
+// --- Alignment penalities: ---
+`define MATCH 5
+`define MISMATCH -4
+`define GAP_OPEN -12
+`define GAP_EXTEND -4
 // --- ScoringModule macros: ---
 `define SCORE_WIDTH 12
 `define LENGTH 128				// module's length
 // --- ScoreBank macros: ---
-`define MODULES 2 				// nr of modules per bank
+`define MODULES 10				// nr of modules per bank
 `define ID_WIDTH 48				// sequence ID field's width
 `define LEN_WIDTH 12 			// sequence length field's width
 `define IN_WIDTH (2 +`ID_WIDTH	\
 				+ `LEN_WIDTH 	\
                 + (2*`LENGTH)) // ScoreBank input's width 
+
 // --- test data macros: ---
 // `define TEST_FILE "./data/score_test.fa" //  "../data/data.fa"
 // `define TEST_FILE "../data/data.fa"
@@ -78,15 +86,15 @@ endfunction
 	logic vld_max;								// max valid
 
 	// penalties:
-	logic [`SCORE_WIDTH-1:0] match 		= 5;
-	logic [`SCORE_WIDTH-1:0] mismatch	= -4;
-	logic [`SCORE_WIDTH-1:0] gap_open	= -12;
-	logic [`SCORE_WIDTH-1:0] gap_extend	= -4;
+	logic [`SCORE_WIDTH-1:0] match 		= `MATCH;
+	logic [`SCORE_WIDTH-1:0] mismatch	= `MISMATCH;
+	logic [`SCORE_WIDTH-1:0] gap_open	= `GAP_OPEN;
+	logic [`SCORE_WIDTH-1:0] gap_extend	= `GAP_EXTEND;
 	logic [(4*`SCORE_WIDTH)-1:0] penalties = {match, mismatch, gap_open, gap_extend};
 
 /* DUT instantiation: */
     
-	ScoreBank_v1
+	ScoreBank_v2
 	#( 	
 		.SCORE_WIDTH(`SCORE_WIDTH),		// result's width in bits
 		.ID_WIDTH(`ID_WIDTH),			// sequence's ID width in bits
@@ -102,7 +110,7 @@ endfunction
 	.ld_sequence,						// if set, a new target sequence is loaded in  
 	//input ld_query,					// if set, a new query sequence is loaded		!X! -> this port might be redundant
 	.ld_penalties,						// if set, penalties are loaded	
-	.data_in,  					// sequence data input
+	.data_in,  							// sequence data input
 	.penalties, 						// penalties input. Four penalties are loaded simultaneously
 	.ready,								// is set if the module is ready to process data
 	.full,								// is set if the module's sequence registers are full
@@ -257,11 +265,12 @@ begin: Display_results
 		r_result = results[(j*`SCORE_WIDTH)+:`SCORE_WIDTH];
 		if(vld[j] && ~vflg[r_id])
 		begin
-			$display("@%8t: %10s score: \t%d", $time, db[r_id], r_result-`ZERO);
+			$display("@%6dns: %10s score: \t%d", $time, db[r_id], r_result-`ZERO);
 			vflg[r_id] = 1;
 		end
 	end
 end
+
 
 
 endmodule

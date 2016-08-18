@@ -86,8 +86,8 @@ module afu (
   wire [0:63]    write_addr;
   wire [0:63]    write_size;
   wire           write_data_ready;
-  //wire [0:511]   data; // removed by ilir
-  //wire           data_ack; // removed by ilir
+  //wire [0:511]   data;			// removed by ilir
+  //wire           data_ack;		// removed by ilir
   wire           odd_parity;
   wire           done_premmio;
   wire           done_postmmio;
@@ -117,7 +117,7 @@ module afu (
 
 
 
-// ============== START of sample logic SIGNALS ===================
+// ============== START of Aligner's SIGNALS & COMPONENTS ===================
   // Job.v signals:
 	wire little_endian;
   // DMA signals:
@@ -127,7 +127,7 @@ module afu (
   reg [0:511] write_data_out;
   
  
-// =============== END of sample logic SIGNALS ====================
+// =============== END of Aligner's SIGNALS & COMPONENTS ====================
 
 
   // Move data whenever both read and write ports are data ready
@@ -285,173 +285,9 @@ module afu (
     .ha_pclock(ha_pclock)
   );
 
-// ============== START of sample logic ==========================
+// ============== START of Aligner's logic ==========================
    
-  // ---- signals: ------ 
-   // sequence descriptor signals:
-  reg [463:0]	seq_reg [0:1];		// two registers of 232 bases each
-  reg [15:0]	seq_length [0:1];	// holds sequence lengths
-  reg index_s;									// register index
-	wire [0:15] length_w;				
-	wire [0:463] sequence_w;
-  
-   
-  // control signals:
-  reg enable_s; 								// enables scoring module
-  //reg enable_c;                 // enables base counter
-	reg target_empty;							// is set if target sequence is not present in seq_reg[1]
-  wire valid_s;  								// valid from scoring module
-  wire [0:11] result_s;         // scoring module output
-  wire [0:15] result_w;								
-  reg [0:15] result_r;
-  reg [15:0] base_cnt;
-  
-  // FSM signals:
-  reg [0:3]	scoring_state;
-  
-	// **** sc_st_xxxx => scoring_state_xxxx ****
-  parameter sc_st_idle		 	= 4'b1000, 
-   			sc_st_read_seq 		= 4'b0100, 
-	     	sc_st_calculate		= 4'b0010,
-   		 	sc_st_write_result	= 4'b0001;
-      			
-  // ---- end of signals ----
-  
-  
-	ScoringModule
-	#(
-	.SCORE_WIDTH(12),		// result width in bits
-	.LENGTH(256),				// number of processing elements in the systolic array
-	.LOG_LENGTH(),			// processing element addressing width
-	._A(),        			// nucleotide "A" encoding
-	._G(),        			// nucleotide "G" encoding
-	._T(),        			// nucleotide "T" encoding
-	._C(),        			// nucleotide "C" encoding
-	.ZERO() 						// $realtobits(2**SCORE_WIDTH) // value of the biased zero, bias= 2 ^ SCORE_WIDTH	
-	) DUT(
-	// inputs:
-	.clk(ha_pclock),
-	.rst(~reset), 			// active low 
-	.en_in(enable_s),
-	.data_in(seq_reg[1][1:0]), 				// target bases go in here ** to be set
-	.query(seq_reg[0]),  					// query goes here ** to be set 
-	.match(5),					// match penalty
-	.mismatch(-4),			// mismatch penalty
-	.gap_open(-12),			// opening a new gap penalty 
-	.gap_extend(-4 ), 	// extending gap length penalty 
-	.output_select(seq_length[0]),	// select lines for output multiplexer ** to be set 
-	// outputs: 
-	.result(result_s), 	// Smith-waterman result
-	.vld(valid_s)
-	);
 
-	// ------ State machine: --------
-
-  // ---- sequential part: ----
-  always@(posedge ha_pclock)
-	begin: STATE_SEQUENTIAL
-		if (reset) 
-		begin
-			result_r <= 16'd0;
-			index_s <= 1'b0;
-			scoring_state <= 4'b1000;
-			target_empty <= 1'b1;
-		end 
-		else begin
-			case(scoring_state)
-
-			sc_st_idle: // stays idle
-				if(read_req) // proceed to next state
-					scoring_state <= sc_st_read_seq;
-
-			sc_st_read_seq: // waits for sequences from dma.v
-				begin
-					if(read_ready)// jump to next state 
-					begin
-						scoring_state <= sc_st_calculate;
-					end 
-					else begin // decode sequence data
-						if(read_data_ready) 
-	 					begin
-							seq_reg[index_s] <= sequence_w; // get sequence bases !X!
-							seq_length[index_s] <= length_w ; // get sequenece length !X!
-							target_empty <= !index_s; // target is loaded
-							index_s <= ~ index_s; // increment register index (data is read in order from dma.v)
-						end
-					end
-				end
-
-			sc_st_calculate:  // starts the scoring module to do the calculation
-				begin
-					if(valid_s) // store result and jump to next state
-					begin
-						result_r <= result_s; // store result
-						scoring_state <= sc_st_write_result;
-					end
-					else begin
-						seq_reg[1][463:0] <= {2'b00,seq_reg[1][463:2]}; // feed bases to scoring module, by shifting out the sequence !X!
-						if(base_cnt == seq_length[1]) 
-							target_empty <= 1'b1;
-					end
-				end  
-			sc_st_write_result: // send result and wait for it to be written by dma.v
-				if(write_ready) // jump to idle state
-				begin
-					index_s <= ~index_s;
-					scoring_state <= sc_st_idle;
-				end
-
-			default: scoring_state <= 4'b1000; // jump to 'safe' state
-			endcase
-		end
-	end
-    
-   // ---- combinational part: ----
-	always@*
-		begin: STATE_COMBINATIONAL
-			// avoid latching:
-			enable_s = 1'b0;
-			read_ack = 1'b0;
-			write_data_out = 512'd0;
-			write_data_ack = 1'b0;
-			case(scoring_state)
-
-				//sc_st_idle:
-						// ... do nothing 
-
-				sc_st_read_seq:
-							if(read_data_ready) 
-								read_ack = 1'b1; // send acknowledge
-				
-				sc_st_calculate:
-						begin
-							
-							if(target_empty | (base_cnt == seq_length[1])) // if all the sequence has been feed to the scoring module
-							begin
-								enable_s = 1'b0;	// stop the module 
-							end
-						 	else
-								enable_s = 1'b1; // send enable to scoring module 
-							
-						end 
-				sc_st_write_result:
-						if(write_data_ready)
-						begin
-							write_data_out= (index_s == 1'b0)? {result_w,496'd0}: 512'h0; // send result to dma.v write bus
-							write_data_ack=1'b1;  // send write acknowledge
-						end
-						
-				//default: // do nothing  !X! 
-			endcase
-		end
-
-	// ---- base counter: ----
-	always@(posedge ha_pclock)
-	if(reset | ~enable_s)
-		base_cnt <= 16'd0;
-	else if( enable_s)
-		base_cnt <= base_cnt + 1;
-	
 	// ---- fix endianess of sequence_data: ----
 		endian_swap #(
 		.BYTES(2)
@@ -518,7 +354,7 @@ module afu (
 
 
 
-// ============+=== END of sample logic ==========================
+// ============+=== END of Aligner's logic ==========================
 
    assign ah_cvalid = ah_cvalid_int;      // Command valid
    assign ah_ctag = ah_ctag_int;        // Command tag

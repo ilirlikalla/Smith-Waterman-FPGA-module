@@ -147,7 +147,7 @@ module afu_control
 	// On parity error detection send reset to all other logic immediately
 	assign reset = reset_int || error_detected;
 
-	assign all_done = error_detected || (done && (st_idle && !start_int));
+	assign all_done = error_detected || (done && (st_idle && !start_int));		// !x! -> idle state involved here!
 
 	always @ (posedge ha_pclock) begin
 	if (reset_int || all_done)
