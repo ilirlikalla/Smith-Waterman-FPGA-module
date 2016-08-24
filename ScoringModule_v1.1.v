@@ -104,7 +104,7 @@ reg q_valid;								// query valid signal
 	if(!rst)
 		{toggle, vld0, vld1, result0, result1} <= 0;
 	else 
-		{toggle, vld0, vld1, result0, result1} <= {~toggle, vld0_[q_length-1], vld1_[q_length-1], high0_[q_length-1], high1_[q_length-1]};
+		{toggle, vld0, vld1, result0, result1} <= {~toggle, vld0_[q_length], vld1_[q_length], high0_[q_length], high1_[q_length]};
 	
 // penalty setup logic:
 	integer p;
@@ -122,7 +122,7 @@ reg q_valid;								// query valid signal
 			begin
 				q_valid <= ld_q;
 				query_r <= query;
-				q_length <= output_select;
+				q_length <= output_select - 1;
 			end
 
 			for(p= 0; p <`PREG_NUM; p= p+1)

@@ -97,7 +97,7 @@ module ScoreBank_v2
 			.ld_q(ld_query),	
 			.data_in(data_[i]),  		
 			.query(data_in[2+ID_WIDTH +LEN_WIDTH:IN_WIDTH-1]),
-			.output_select(q_length),
+			.output_select(data_in[(2+ID_WIDTH)+:LEN_WIDTH]),
 			.match(match),
 			.mismatch(mismatch),
 			.gap_open(gap_open),
@@ -155,7 +155,7 @@ module ScoreBank_v2
 		ld_ = 0;
 		ld_query = 0;
 		
-		q_length = data_in[(2+ID_WIDTH)+:LEN_WIDTH];			// wire query's length to output_select
+		//q_length = data_in[(2+ID_WIDTH)+:LEN_WIDTH];			// wire query's length to output_select
 		{match, mismatch, gap_open, gap_extend} = penalties;
 		ld_query = ld_sequence && data_in[1];
 		full = &full_ ;
