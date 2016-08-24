@@ -21,7 +21,7 @@
 `define SCORE_WIDTH 12
 `define LENGTH 128				// module's length
 // --- ScoreBank macros: ---
-`define MODULES 10				// nr of modules per bank
+`define MODULES 4				// nr of modules per bank
 `define ID_WIDTH 48				// sequence ID field's width
 `define LEN_WIDTH 12 			// sequence length field's width
 `define IN_WIDTH (2 +`ID_WIDTH	\
@@ -29,12 +29,13 @@
                 + (2*`LENGTH)) // ScoreBank input's width 
 
 // --- test data macros: ---
-// `define TEST_FILE "./data/score_test.fa" //  "../data/data.fa"
-// `define TEST_FILE "../data/data.fa"
-// `define TEST_FILE "../data/data100.fa"
-// `define QUERY_FILE "../data/query100.fa"
-`define TEST_FILE "../data/data1.fa"
-`define QUERY_FILE "../data/query1.fa"
+// `define TEST_FILE "score_test.fa" //  "../data/data.fa"
+// `define TEST_FILE "data.fa"
+// `define TEST_FILE "data100.fa"
+// `define QUERY_FILE "query100.fa"
+`define DATA_PATH "../data/"
+`define TEST_FILE "data1.fa"
+`define QUERY_FILE "query1.fa"
 
 module ScorieBank_v1_tb;
 
@@ -54,8 +55,8 @@ endfunction
 /* VARIABLES:  */
 	logic [7:0] char;
 	logic [1:0] base;
-	string q_str, str[100], db[100];	// strings of chars from the file kept here.
-	integer fd;
+	string q_str, str[100], db[100];			// strings of chars from the file kept here.
+	integer fd, outfile;						// file descriptors
 	integer seq_read= 0; 						// flags that indicate that all sequences are read from the TEST_FILE
 	integer seq_read_l;
 	integer i;									// base indices
@@ -175,7 +176,7 @@ begin: INIT_TB
 	ld_penalties = 0;
 
 	// read query from file and encode it to a bitstream:
-	fd= $fopen(`QUERY_FILE,"r");
+	fd= $fopen({`DATA_PATH,`QUERY_FILE},"r");
 	$fscanf(fd,"%s",q_str);
 	$fscanf(fd,"%s",q_str);
 	
@@ -193,7 +194,7 @@ begin: INIT_TB
 	ld_q = 0;
 	
 	// read target sequences:
-	fd= $fopen(`TEST_FILE,"r");
+	fd= $fopen({`DATA_PATH,`TEST_FILE},"r");
 	while(!$feof(fd))
 	begin
 		// read line and check if it is a DNA read or not
@@ -206,6 +207,9 @@ begin: INIT_TB
 		end else break;
 	end
 	$fclose(fd);
+
+	// create output file:
+	outfile = $fopen({`DATA_PATH,`TEST_FILE,"_",`QUERY_FILE,"_out.txt"},"w");
 	seq_read = 1;
 	// save nr of sequences:
 	nr = k;
@@ -215,7 +219,8 @@ begin: INIT_TB
 	k = 0;
 	
 	@done; 									// wait for all sequences to be fed			
-	#((`LENGTH*3)*clk_period);				// wait for the last sequence to be processed		 
+	#((`LENGTH*5)*clk_period);				// wait for the last sequence to be processed		
+	$fclose(outfile); 
 	$stop; 									// stop simulation
 end
 
@@ -266,6 +271,7 @@ begin: Display_results
 		if(vld[j] && ~vflg[r_id])
 		begin
 			$display("@%6dns: %10s score: \t%d", $time, db[r_id], r_result-`ZERO);
+			$fdisplay(outfile,"@%6dns: %10s score: \t%d", $time, db[r_id], r_result-`ZERO);
 			vflg[r_id] = 1;
 		end
 	end

@@ -94,6 +94,7 @@ reg [SCORE_WIDTH-1:0] gap_extend_r [0:`PREG_NUM-1];
 
 // query regiser:
 reg [(2*LENGTH)-1:0] query_r;				// query register
+reg [ADDR_WIDTH-1:0] q_length;				// query's length
 reg q_valid;								// query valid signal
 // ---- output logic: ----
 
@@ -103,7 +104,7 @@ reg q_valid;								// query valid signal
 	if(!rst)
 		{toggle, vld0, vld1, result0, result1} <= 0;
 	else 
-		{toggle, vld0, vld1, result0, result1} <= {~toggle, vld0_[output_select-1], vld1_[output_select-1], high0_[output_select-1], high1_[output_select-1]};
+		{toggle, vld0, vld1, result0, result1} <= {~toggle, vld0_[q_length-1], vld1_[q_length-1], high0_[q_length-1], high1_[q_length-1]};
 	
 // penalty setup logic:
 	integer p;
@@ -113,12 +114,15 @@ reg q_valid;								// query valid signal
 		begin
 			q_valid <= 1'b0;
 			p_valid <= 0;
+			q_length <= 0;
+			// do not reset the "wide" registers, it may slow down the design
 		end else
 		begin
 			if(ld_q)
 			begin
 				q_valid <= ld_q;
 				query_r <= query;
+				q_length <= output_select;
 			end
 
 			for(p= 0; p <`PREG_NUM; p= p+1)

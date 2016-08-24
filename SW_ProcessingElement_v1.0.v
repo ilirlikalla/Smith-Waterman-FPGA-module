@@ -174,7 +174,7 @@ reg toggle_s;						// toggle for 2nd stage
 			{1'b0, state_sc_1[3:2], idle}:
 				if(en0_in==1'b1)
 				begin // latch results:
-	//$display("here2");
+					//$display("here2");
 					en0_s <= 1'b1;
 					M_open_r <= M_open;
 					I_extend_r <= I_extend;
@@ -186,7 +186,7 @@ reg toggle_s;						// toggle for 2nd stage
 					state_sc_1 <= {state_sc_1[3:2], calculate};
 				end
 				else begin // idle:
-	//$display("here3");
+					//$display("here3");
 				//set output to zero: 		    
 					en0_s <= 1'b0;
 					M_open_r <= ZERO;

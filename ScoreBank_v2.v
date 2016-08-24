@@ -148,7 +148,6 @@ module ScoreBank_v2
 // --- input logic: ---
     
     // combinatiol part:
-
 	always@*
 	begin
 		ready = 0;
@@ -156,6 +155,7 @@ module ScoreBank_v2
 		ld_ = 0;
 		ld_query = 0;
 		
+		q_length = data_in[(2+ID_WIDTH)+:LEN_WIDTH];			// wire query's length to output_select
 		{match, mismatch, gap_open, gap_extend} = penalties;
 		ld_query = ld_sequence && data_in[1];
 		full = &full_ ;
@@ -177,7 +177,7 @@ module ScoreBank_v2
 		begin
 				
 			if(ld_sequence && (data_in[0:1] == 2'b01))
-				{query_valid, q_ID, q_length} <= data_in[1:2+ID_WIDTH +LEN_WIDTH-1];
+				{query_valid, q_ID} <= data_in[1:2+ID_WIDTH-1];
 		end
 	end
 	
