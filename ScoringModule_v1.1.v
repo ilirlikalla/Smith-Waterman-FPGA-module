@@ -10,7 +10,7 @@
 
 // parameter related macros:
 `define PREG_NUM (LENGTH/PREG_FREQ)	// number of penalty register groups
-`define set_reg(x) (x/`PREG_NUM)	// sets appropriate penalty register for each processing element
+`define set_reg(x) (x/PREG_FREQ)	// sets appropriate penalty register for each processing element
 module ScoringModule_v1_1
    #( parameter
 		SCORE_WIDTH = 12,			// result's width in bits
@@ -122,18 +122,21 @@ reg q_valid;								// query valid signal
 			begin
 				q_valid <= ld_q;
 				query_r <= query;
-				q_length <= output_select - 1;
+				q_length <= output_select - 1;	// fix length 			
 			end
 
 			for(p= 0; p <`PREG_NUM; p= p+1)
-				if((p==0) && ld_p)
+				if(p==0)
 				begin
-					// load penalies for the first PREG_NUM processing elements:
-					p_valid[p] <= ld_p;
-					match_r[p] <= match;
-					mismatch_r[p] <= mismatch;
-					gap_open_r[p] <= gap_open;
-					gap_extend_r[p] <= gap_extend;
+					if(ld_p)
+					begin
+						// load penalies for the first PREG_NUM processing elements:
+						p_valid[p] <= ld_p;
+						match_r[p] <= match;
+						mismatch_r[p] <= mismatch;
+						gap_open_r[p] <= gap_open;
+						gap_extend_r[p] <= gap_extend;
+					end
 				end else if(p_valid[p-1])
 				begin 
 					// propagate penalties:

@@ -21,7 +21,7 @@
 `define SCORE_WIDTH 12
 `define LENGTH 128				// module's length
 // --- ScoreBank macros: ---
-`define MODULES 4				// nr of modules per bank
+`define MODULES 8				// nr of modules per bank
 `define ID_WIDTH 48				// sequence ID field's width
 `define LEN_WIDTH 12 			// sequence length field's width
 `define IN_WIDTH (2 +`ID_WIDTH	\
@@ -34,8 +34,8 @@
 // `define TEST_FILE "data100.fa"
 // `define QUERY_FILE "query100.fa"
 `define DATA_PATH "../data/"
-`define TEST_FILE "data1.fa"
-`define QUERY_FILE "query1.fa"
+`define TEST_FILE "data40.fa"
+`define QUERY_FILE "query100.fa"
 
 module ScorieBank_v1_tb;
 
@@ -55,7 +55,7 @@ endfunction
 /* VARIABLES:  */
 	logic [7:0] char;
 	logic [1:0] base;
-	string q_str, str[100], db[100];			// strings of chars from the file kept here.
+	string q_str, str[500], db[500];			// strings of chars from the file kept here.
 	integer fd, outfile;						// file descriptors
 	integer seq_read= 0; 						// flags that indicate that all sequences are read from the TEST_FILE
 	integer seq_read_l;
@@ -172,7 +172,10 @@ begin: INIT_TB
 	
 	// load penalties:
 	ld_penalties = 1;
+	
+	$display("@%6dns: Penalties loaded!", $time);
 	#clk_period;
+	
 	ld_penalties = 0;
 
 	// read query from file and encode it to a bitstream:
@@ -190,7 +193,9 @@ begin: INIT_TB
 	data_in[(2+`ID_WIDTH)+:`LEN_WIDTH] = length;
 	data_in[(2+`ID_WIDTH +`LEN_WIDTH):`IN_WIDTH-1] = query;
 	ld_q = 1;
+	$display("@%6dns: Query loaded!", $time);
 	#clk_period;
+	
 	ld_q = 0;
 	
 	// read target sequences:
@@ -258,7 +263,7 @@ begin:SB_stim_comb
 	//ld = ld_l && ld_s;
 end
 
-bit [0:100]vflg  = 0;	// vflg(i) is set if that result is already read
+bit [0:500]vflg  = 0;	// vflg(i) is set if that result is already read
 integer j, r_id, r_result;
 //// --- get results: ---
 always@(posedge clk)
