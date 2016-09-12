@@ -9,6 +9,6 @@ This code models a Smith-Waterman alignment score pipeline. The design is adapte
 	./data 						-> contains the data used for the testbenches
 	./ScoreBank					-> contains the optimized Smith-Waterman pipeline, together with the necessary testbenches
 	./modelsim					-> modelsim projects for each design
-	./waves						-> waves for diffeernt modelsim	projects
+	./waves						-> waves for different modelsim	projects
 	./explored_designs			-> previous iterations of the modules
 	
