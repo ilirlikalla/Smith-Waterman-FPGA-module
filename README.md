@@ -7,7 +7,7 @@ This code models a Smith-Waterman alignment score pipeline. The design is adapte
 	./capi_sample_aligner 		-> contains of the sample CAPI aligner, which was built for test purposes
 	./CAPI_template 			-> template code for interfacing the ScoreBank with CAPI (could not finish this in time)
 	./data 						-> contains the data used for the testbenches
-	./ScoreBank					-> contains the optimised Smith-Waterman pipeline, together with the necessary testbenches
+	./ScoreBank					-> contains the optimized Smith-Waterman pipeline, together with the necessary testbenches
 	./modelsim					-> modelsim projects for each design
 	./waves						-> waves for diffeernt modelsim	projects
 	./explored_designs			-> previous iterations of the modules
