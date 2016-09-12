@@ -1,4 +1,4 @@
-# Smith-Waterman score calculation FPGA-module
+# Verilog code for calculating the Smith-Waterman score on FPGA
 This code models a Smith-Waterman alignment score pipeline. The design is adapted for FPGA implementations.
 
 # Folder structure:
