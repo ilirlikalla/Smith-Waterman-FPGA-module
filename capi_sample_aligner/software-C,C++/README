@@ -1,0 +1,16 @@
+# author: ilir likalla
+
+# folder structure:
+	
+	./app_versions 	=> contains previous versions of the program
+	./src	 		=> contains sources and the Makefile
+	./build			=> the Makefile builds here the program.
+	./include 		=> custom C headers
+
+# how to run the app:
+	
+	1. run modelsim simulation first. (use wave_app_X.do from "../../waves")
+	2. run(build if necessary) the pslse emulator in "../pslse-master/pslse"
+	3. run './main_test -q query -l library -t <<timeout_in_seconds>>', located in the folder "./build"
+
+# run the Makefile in "./src", if it's necessary to build the 'main_test' app

@@ -1,0 +1,36 @@
++---------------------------------------+
+| Power Service Layer Simulation Engine |
++---------------------------------------+
+
+This repository contains code for simulation and testing of a customer designed Accelerated Functional Unit (AFU) and it's accompanying application by
+simulating the connection to the Power Service Layer (PSL) as part of IBM's
+CAPI interconnect on Power8 systems.  The "libcxl" directory contains a
+simulation only version of the libcxl library functions for hardware provided
+at https://github.com/ibm-capi/libcxl.  That code is an abstraction layer that
+interfaces with kernel level "cxl" code for communicating with an AFU in real
+hardware.  The libcxl code server two purposes.  First, it provides a simple
+programming interface for accessing AFU devices.  Second, if code is written
+using this abstraction layer then the same code can be compiled with the
+alternate version of libcxl.c and libcxl.h found on this repository for
+co-simulation of the AFU on most industry standard Verilog simulators.
+
+
+
+*** DIRECTORIES ***
+
+afu_driver/verilog:	Contains the file top.v which is a top level wrapper
+			that will instantiate your AFU Verilog code.
+
+afu_driver/src:		Contains the code that will be needed by the Verilog
+			simulator.
+
+common:			Contains code used in multiple places.
+
+libcxl:			Contains the PSLSE version of the libcxl.c file in
+			addition to a sample pslse_server.dat file.
+
+pslse:			Contains the code for the PSLSE server.
+
+debug:			Contains code for parsing debug.log created by pslse.
+
+sample_app:		Contains shell code for a sample application.

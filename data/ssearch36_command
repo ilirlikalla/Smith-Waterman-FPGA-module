@@ -1,0 +1,7 @@
+# command to run ssearch36 for the QUERY=query100.fa, the LIBRARY=data100.fa and the OUTPUT_FILE=score.sc
+#-3 		-> comapre only forward strands
+#-R file -> write scores in "file"
+#-n		-> DNA/RNA query
+# commad:
+ssearch36 -3 -R score.sc -n query100.fa data100.fa 
+

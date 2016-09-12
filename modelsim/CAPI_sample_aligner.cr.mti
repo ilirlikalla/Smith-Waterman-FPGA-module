@@ -1,0 +1,106 @@
+/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/dma.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/dma.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module dma
+
+Top level modules:
+	dma
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/dw_parity.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/dw_parity.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module dw_parity
+
+Top level modules:
+	dw_parity
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/ScoringModule.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/ScoringModule.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module ScoringModule
+
+Top level modules:
+	ScoringModule
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/afu.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/afu.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module afu
+
+Top level modules:
+	afu
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/SW_ProcessingElement_v0.3.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/SW_ProcessingElement_v0.3.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module SW_ProcessingElement
+
+Top level modules:
+	SW_ProcessingElement
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/SW_ProcessingElement_v0.5.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/SW_ProcessingElement_v0.5.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module SW_ProcessingElement_v05
+
+Top level modules:
+	SW_ProcessingElement_v05
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/trace_array_template.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/trace_array_template.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module trace_array_template
+
+Top level modules:
+	trace_array_template
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/trace_array_muxout_template.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/trace_array_muxout_template.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module trace_array_muxout_template
+
+Top level modules:
+	trace_array_muxout_template
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/endian_swap.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/endian_swap.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module endian_swap
+
+Top level modules:
+	endian_swap
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/mmio.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/mmio.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module mmio
+
+Top level modules:
+	mmio
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/Scoringmodule_tb.sv {1 {vlog -work CAPI_aln -sv -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/Scoringmodule_tb.sv
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module ScoringModule_tb
+
+Top level modules:
+	ScoringModule_tb
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/pslse-master/afu_driver/verilog/top.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/pslse-master/afu_driver/verilog/top.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module top
+
+Top level modules:
+	top
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/job.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/job.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module job
+
+Top level modules:
+	job
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/ram.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/ram.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module ram
+
+Top level modules:
+	ram
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/parity.v {1 {vlog -work CAPI_aln -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/parity.v
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module parity
+
+Top level modules:
+	parity
+
+} {} {}}

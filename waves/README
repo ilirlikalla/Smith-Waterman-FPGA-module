@@ -1,0 +1,22 @@
+# author: ilir likalla
+
+# ScoreBank waves: 
+	
+					waveSB.do
+
+# Timesharing ScoringModule waves: 
+
+					wavesFD.do
+
+# sample CAPI aligner waves:
+					
+					wave_app_1.do
+					wave_app_2.do
+					wave_app_3.do
+
+# other waves for previous scoring modules:
+					
+					ScoringModule_waves.do
+					seq_wave.do
+					wave05.do -> three stage proceesing element
+					wave03.do -> two stage processing element

@@ -1,0 +1,63 @@
+# ssearch36 -3 -R score500.txt -n query100.fa data500.fa
+SSEARCH performs a Smith-Waterman search
+ version 36.3.8d Apr, 2016(preload9)
+Please cite:
+ T. F. Smith and M. S. Waterman, (1981) J. Mol. Biol. 147:195-197; 
+ W.R. Pearson (1991) Genomics 11:635-650
+
+Query: query100.fa
+  1>>>query - 128 nt (forward-only)
+Library: data500.fa
+    63872 residues in   499 sequences
+
+Statistics: (shuffled [500]) MLE statistics: Lambda= 0.1840;  K=0.1293
+ statistics sampled from 499 (499) to 500 sequences
+Algorithm: Smith-Waterman (SSE2, Michael Farrar 2006) (7.2 Nov 2010)
+Parameters: +5/-4 matrix (5:-4), open/ext: -12/-4
+ Scan time:  0.000
+
+The best scores are:                                      s-w bits E(499)
+db211                                          ( 128) [f]   78 23.7    0.62
+db428                                          ( 128) [f]   72 22.1     1.9
+
+>>db211                                                   (128 nt)
+ s-w opt:  78  Z-score: 97.7  bits: 23.7 E(499): 0.62
+Smith-Waterman score: 78; 66.7% identity (66.7% similar) in 51 nt overlap (9-55:62-110)
+
+                                     10        20        30        
+query                        GTGGAATGACGGATTGGATCTCTGACTATCTAGGAAAA
+                                     : ::: :  : : ::  : ::: :::::::
+db211  TACTGAGTAATACCAAACGTCTGTGTCCCTAGGGACTCCACCACT--CGATCAAGGAAAA
+              40        50        60        70          80         
+
+       40            50        60        70        80        90    
+query  GACG----CCCCGGTTTGTTTTAGGTTTGTGGCATTTTTGATAGCTTAAGGATCATGCGT
+       ::::    :  :::::::: :                                       
+db211  GACGTTACCGACGGTTTGTGTGGCCGGCCCGCTGACGCG                     
+      90       100       110       120                             
+
+>>db428                                                   (128 nt)
+ s-w opt:  72  Z-score: 89.1  bits: 22.1 E(499):  1.9
+Smith-Waterman score: 72; 74.1% identity (74.1% similar) in 27 nt overlap (43-69:11-37)
+
+             20        30        40        50        60        70  
+query  ATTGGATCTCTGACTATCTAGGAAAAGACGCCCCGGTTTGTTTTAGGTTTGTGGCATTTT
+                                     ::::: : :  :::::::::  : :::   
+db428                      ACTCTCTCACCCCCGATCTTCTTTAGGTTTTCGCCATCCA
+                                   10        20        30        40
+
+             80        90       100       110       120            
+query  TGATAGCTTAAGGATCATGCGTGGTCGCCGCAATTTCCGGAGTATCCTTACGAGGG    
+                                                                   
+db428  GGGAGCGCACTGTTCCCACCACATCACCGATTCACCGCTTGCGGTAGTAGAACGGCACTG
+               50        60        70        80        90       100
+
+
+
+128 residues in 1 query   sequences
+63872 residues in 499 library sequences
+ Tcomplib [36.3.8d Apr, 2016(preload9)] (8 proc in memory [0G])
+ start: Sun Sep  4 12:09:36 2016 done: Sun Sep  4 12:09:36 2016
+ Total Scan time:  0.000 Total Display time:  0.000
+
+Function used was SSEARCH [36.3.8d Apr, 2016(preload9)]

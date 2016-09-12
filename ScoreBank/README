@@ -1,0 +1,20 @@
+# author: ilir likalla
+
+# important files:
+	
+	ScoreBank_v1_tb.v	=> the testbench for the ScoreBank_v1.1.v
+	Feeder_tb.v			=> the testbench for the "time-shared" scoring module
+
+Simulation projects are located in "../modelsim"
+
+
+
+# Desing Hierarchy:
+
+ScoreBank_v1_tb.v
+	|
+	ScoreBank_v2 -----> SM_Feeder		   ---> fifo
+				 	|
+				 	|-> ScoringModule_v1_1 ---> SW_ProcessingElement_v1
+				 	|
+					|-> PrioEncoder		

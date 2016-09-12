@@ -1,0 +1,15 @@
+# author: ilir likalla
+
+# Main branches of the instantisation hierarchy:
+
+afu.v -> mmio.v
+	  -> dma.v
+	  -> job.v
+	  -> ScoringModule.v -> SW_ProcessingElement_v0.3.v
+
+
+# Two processing elements can be instatnitated:
+
+	1. SW_ProcessingElement (SW_ProcessingElement_v0.3.v) => 2-stage pipeline. Works but cannot run on 250MHz
+	2. SW_ProcessingElement_v05 (SW_ProcessingElement_v0.5.v) => 3-stage pipeline with data hazard unresolved, can run on 250Mhz
+

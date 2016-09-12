@@ -1,0 +1,16 @@
+@  2102ns:       >db1 score: 	         41
+@  2106ns:       >db2 score: 	         36
+@  2110ns:       >db3 score: 	         48
+@  2114ns:       >db4 score: 	         47
+@  2118ns:       >db5 score: 	         50
+@  2122ns:       >db6 score: 	         40
+@  2126ns:       >db7 score: 	         36
+@  2130ns:       >db8 score: 	         57
+@  2134ns:       >db9 score: 	         45
+@  2138ns:      >db10 score: 	         47
+@  2142ns:      >db11 score: 	         71
+@  2146ns:      >db12 score: 	         46
+@  2150ns:      >db13 score: 	         43
+@  2154ns:      >db14 score: 	         36
+@  2158ns:      >db15 score: 	         42
+@  2162ns:      >db16 score: 	         44

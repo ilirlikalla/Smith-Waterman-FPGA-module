@@ -1,0 +1,81 @@
+/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/Scoringmodule_v1_tb.sv {1 {vlog -work ScoreBank_work -sv -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/Scoringmodule_v1_tb.sv
+** Note: (vlog-1901) OptionFile "C:/users/ilir/Desktop/Thesis/CAPI/capi-memcpy/vlog.opt" not found. Ignored.
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module ScoringModule_v1_tb
+
+Top level modules:
+	ScoringModule_v1_tb
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv {1 {vlog -work ScoreBank_work -sv -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv
+** Note: (vlog-1901) OptionFile "C:/users/ilir/Desktop/Thesis/CAPI/capi-memcpy/vlog.opt" not found. Ignored.
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module ScorieBank_v1_tb
+
+Top level modules:
+	ScorieBank_v1_tb
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/PrioEncoder.v {1 {vlog -work ScoreBank_work -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/PrioEncoder.v
+** Note: (vlog-1901) OptionFile "C:/users/ilir/Desktop/Thesis/CAPI/capi-memcpy/vlog.opt" not found. Ignored.
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module PrioEncoder
+
+Top level modules:
+	PrioEncoder
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.0.v {1 {vlog -work work -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.0.v
+** Note: (vlog-1901) OptionFile "C:/users/ilir/Desktop/Thesis/CAPI/capi-memcpy/vlog.opt" not found. Ignored.
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module ScoringModule_v1
+
+Top level modules:
+	ScoringModule_v1
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v {1 {vlog -work ScoreBank_work -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v
+** Note: (vlog-1901) OptionFile "C:/users/ilir/Desktop/Thesis/CAPI/capi-memcpy/vlog.opt" not found. Ignored.
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module ScoreBank_v2
+
+Top level modules:
+	ScoreBank_v2
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/Feeder_tb.sv {1 {vlog -work ScoreBank_work -sv -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/Feeder_tb.sv
+** Note: (vlog-1901) OptionFile "C:/users/ilir/Desktop/Thesis/CAPI/capi-memcpy/vlog.opt" not found. Ignored.
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module Feeder_tb
+
+Top level modules:
+	Feeder_tb
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v {1 {vlog -work work -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+** Note: (vlog-1901) OptionFile "C:/users/ilir/Desktop/Thesis/CAPI/capi-memcpy/vlog.opt" not found. Ignored.
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module SW_ProcessingElement_v1
+
+Top level modules:
+	SW_ProcessingElement_v1
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v {1 {vlog -work ScoreBank_work -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+** Note: (vlog-1901) OptionFile "C:/users/ilir/Desktop/Thesis/CAPI/capi-memcpy/vlog.opt" not found. Ignored.
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module ScoringModule_v1_1
+
+Top level modules:
+	ScoringModule_v1_1
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/fifo.v {1 {vlog -work ScoreBank_work -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/fifo.v
+** Note: (vlog-1901) OptionFile "C:/users/ilir/Desktop/Thesis/CAPI/capi-memcpy/vlog.opt" not found. Ignored.
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module fifo
+
+Top level modules:
+	fifo
+
+} {} {}} /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SM_Feeder2.v {1 {vlog -work ScoreBank_work -stats=none /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SM_Feeder2.v
+** Note: (vlog-1901) OptionFile "C:/users/ilir/Desktop/Thesis/CAPI/capi-memcpy/vlog.opt" not found. Ignored.
+Model Technology ModelSim ALTERA vlog 10.4d Compiler 2015.12 Dec 30 2015
+-- Compiling module SM_feeder
+
+Top level modules:
+	SM_feeder
+
+} {} {}}

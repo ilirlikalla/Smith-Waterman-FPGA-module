@@ -1,0 +1,317 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+d/media/e/backup_PC/Documents/Southampton/Thesis/CAPI/aligner_src
+vafu
+Z0 !s110 1473673413
+!i10b 1
+!s100 LkaHD>f>HaM@T`?4NSlQ53
+I6L;GQ[b;PiA604Blo@4UU0
+Z1 VDg1SIo80bB@j0V0VzS_@n1
+Z2 d/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/modelsim
+w1473627758
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/afu.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/afu.v
+L0 7
+Z3 OV;L;10.4d;61
+r1
+!s85 0
+31
+Z4 !s108 1473673413.000000
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/afu.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/afu.v|
+!i113 1
+Z5 o-work CAPI_aln
+vdma
+R0
+!i10b 1
+!s100 Z3WHeBC[?ol@NUiJgmUPO2
+ID0^?WdF@O;:CmmCHXW`JR3
+R1
+R2
+Z6 w1449844002
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/dma.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/dma.v
+L0 3
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/dma.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/dma.v|
+!i113 1
+R5
+vdw_parity
+R0
+!i10b 1
+!s100 6H]F:b3YimDdRMG0@[W>c3
+I__5_L`BDcMDK1FlF<lBz11
+R1
+R2
+R6
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/dw_parity.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/dw_parity.v
+L0 3
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/dw_parity.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/dw_parity.v|
+!i113 1
+R5
+vendian_swap
+R0
+!i10b 1
+!s100 QNgPHCV_i^`9gHlJ9laIN1
+I16LA;1NjXC19j2F:j0]V33
+R1
+R2
+R6
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/endian_swap.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/endian_swap.v
+L0 3
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/endian_swap.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/endian_swap.v|
+!i113 1
+R5
+vjob
+R0
+!i10b 1
+!s100 ;@S7[HDRzJoePoELB05lz0
+I[2NjNT]z2BJjdXR5ZjD412
+R1
+R2
+w1468086294
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/job.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/job.v
+L0 3
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/job.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/job.v|
+!i113 1
+R5
+vmmio
+R0
+!i10b 1
+!s100 o^SDPE^=zf_IO]3B8B3FO2
+IQKECI6oHf9G3Z2WS@HSUQ0
+R1
+R2
+w1469819897
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/mmio.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/mmio.v
+L0 3
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/mmio.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/mmio.v|
+!i113 1
+R5
+vparity
+R0
+!i10b 1
+!s100 5mC9U;JGBYIQEPY`bTfQ12
+I1Bh;o<LJT7U3^<_DG[R?z3
+R1
+R2
+R6
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/parity.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/parity.v
+L0 3
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/parity.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/parity.v|
+!i113 1
+R5
+vram
+R0
+!i10b 1
+!s100 MI6j;5JY=l1YJN0kOi;0a3
+IM]1I:b9V0aPb?4NSGA7F@0
+R1
+R2
+R6
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/ram.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/ram.v
+L0 3
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/ram.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/ram.v|
+!i113 1
+R5
+vScoringModule
+R0
+!i10b 1
+!s100 P=Ilec19MBg1O5U4G>b5D3
+I[10K8E?JM@=UQmG4n;5cM2
+R1
+R2
+w1469116527
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/ScoringModule.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/ScoringModule.v
+L0 10
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/ScoringModule.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/ScoringModule.v|
+!i113 1
+R5
+n@scoring@module
+vScoringModule_tb
+DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
+R0
+!i10b 1
+!s100 Mf_i54DTaX:bTiM[gzh`B1
+IVkX42:VZo;ZMY<R2jImCV3
+R1
+!s105 Scoringmodule_tb_sv_unit
+S1
+R2
+w1469815173
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/Scoringmodule_tb.sv
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/Scoringmodule_tb.sv
+Z7 L0 19
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/Scoringmodule_tb.sv|
+!s90 -reportprogress|300|-work|CAPI_aln|-sv|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/Scoringmodule_tb.sv|
+!i113 1
+o-work CAPI_aln -sv
+n@scoring@module_tb
+vSW_ProcessingElement
+R0
+!i10b 1
+!s100 c<B`H6EbFNI6:az]@TA>_0
+I@7ED6:]AXId3llSlcb=ii0
+R1
+R2
+w1473629105
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/SW_ProcessingElement_v0.3.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/SW_ProcessingElement_v0.3.v
+L0 14
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/SW_ProcessingElement_v0.3.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/SW_ProcessingElement_v0.3.v|
+!i113 1
+R5
+n@s@w_@processing@element
+vSW_ProcessingElement_v05
+R0
+!i10b 1
+!s100 6R<]zokGiLjHmA<4a`?G91
+I912@g_o;BIB;`aUUV9khf1
+R1
+R2
+w1473672637
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/SW_ProcessingElement_v0.5.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/SW_ProcessingElement_v0.5.v
+L0 12
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/SW_ProcessingElement_v0.5.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/SW_ProcessingElement_v0.5.v|
+!i113 1
+R5
+n@s@w_@processing@element_v05
+vtop
+R0
+!i10b 1
+!s100 =E<Vf9VOioC<OTjgm9Hob2
+I7H6heDG3Gdj0MPznO?6K:1
+R1
+R2
+w1467051310
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/pslse-master/afu_driver/verilog/top.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/pslse-master/afu_driver/verilog/top.v
+R7
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/pslse-master/afu_driver/verilog/top.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/pslse-master/afu_driver/verilog/top.v|
+!i113 1
+R5
+vtrace_array_muxout_template
+R0
+!i10b 1
+!s100 @`^JF_3[G6gRJLX=[Vjog3
+IUQnlg<YjdRYWazXCL9oWC3
+R1
+R2
+R6
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/trace_array_muxout_template.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/trace_array_muxout_template.v
+L0 3
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/trace_array_muxout_template.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/trace_array_muxout_template.v|
+!i113 1
+R5
+vtrace_array_template
+R0
+!i10b 1
+!s100 O8`zgi8cmM?Q4@7V2VnPh1
+InIWSC=h[LPRObeYNM87n^3
+R1
+R2
+R6
+8/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/trace_array_template.v
+F/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/trace_array_template.v
+L0 6
+R3
+r1
+!s85 0
+31
+R4
+!s107 /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/trace_array_template.v|
+!s90 -reportprogress|300|-work|CAPI_aln|-stats=none|/media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/capi_sample_aligner/hdl-verliog/trace_array_template.v|
+!i113 1
+R5

@@ -1,0 +1,8 @@
+# author: ilir likalla
+
+# Projects:
+	
+	CAPI_sample_aligner.mpf	=> simulation of the sample aligner over CAPI
+	ScoreBanks.mpf			=> simulation of the ScoreBank
+	ScoringModule.mpf		=> simulation of the Scoring Module
+

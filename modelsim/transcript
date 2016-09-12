@@ -1,0 +1,262 @@
+# reading modelsim.ini
+# Loading project ScoringModule
+vsim ScoreBank_work.ScorieBank_v1_tb
+# vsim ScoreBank_work.ScorieBank_v1_tb 
+# Start time: 12:00:25 on Sep 12,2016
+# Loading sv_std.std
+# Loading ScoreBank_work.ScorieBank_v1_tb
+# Loading ScoreBank_work.ScoreBank_v2
+# Loading ScoreBank_work.PrioEncoder
+# Loading ScoreBank_work.ScoringModule_v1_1
+# Loading ScoreBank_work.SM_feeder
+# Loading ScoreBank_work.fifo
+# Loading ScoreBank_work.SW_ProcessingElement_v1
+# ** Warning: (vsim-PLI-3691) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv(183): Expected a system task, not a system function '$fscanf'.
+#    Time: 0 ps  Iteration: 0  Region: /ScorieBank_v1_tb/INIT_TB File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv
+# ** Warning: (vsim-PLI-3691) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv(184): Expected a system task, not a system function '$fscanf'.
+#    Time: 0 ps  Iteration: 0  Region: /ScorieBank_v1_tb/INIT_TB File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv
+# ** Warning: (vsim-PLI-3691) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv(206): Expected a system task, not a system function '$fscanf'.
+#    Time: 0 ps  Iteration: 0  Region: /ScorieBank_v1_tb/INIT_TB File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv
+# ** Warning: (vsim-PLI-3691) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv(210): Expected a system task, not a system function '$fscanf'.
+#    Time: 0 ps  Iteration: 0  Region: /ScorieBank_v1_tb/INIT_TB File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[0]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[0]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[0]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[0]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[0]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[1]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[1]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[1]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[1]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[1]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[2]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[2]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[2]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[2]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[2]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[3]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[3]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[3]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[3]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[3]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[4]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[4]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[4]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[4]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[4]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[5]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[5]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[5]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[5]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[5]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[6]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[6]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[6]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[6]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[6]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[7]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[7]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[7]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[7]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[7]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# Loading ./veriuser.sl
+do /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/waves/waveSB.do
+# ** Error: (vish-4014) No objects found matching '/ScorieBank_v1_tb/DUT/query'.
+# Executing ONERROR command at macro /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/waves/waveSB.do line 62
+# ** Error: (vish-4014) No objects found matching '/ScorieBank_v1_tb/DUT/result0_'.
+# Executing ONERROR command at macro /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/waves/waveSB.do line 66
+# ** Error: (vish-4014) No objects found matching '/ScorieBank_v1_tb/DUT/result1_'.
+# Executing ONERROR command at macro /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/waves/waveSB.do line 67
+# ** Error: (vish-4014) No objects found matching '/ScorieBank_v1_tb/DUT/feed_in'.
+# Executing ONERROR command at macro /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/waves/waveSB.do line 74
+run -all
+# @    20ns: Penalties loaded!
+# @    28ns: Query loaded!
+# @   566ns:       >db1 score: 	        133
+# @   570ns:       >db2 score: 	        106
+# @   574ns:       >db3 score: 	        135
+# @   578ns:       >db4 score: 	        106
+# @   582ns:      >db17 score: 	          5
+# @   582ns:       >db5 score: 	        160
+# @   586ns:      >db19 score: 	          5
+# @   586ns:       >db6 score: 	         80
+# @   590ns:      >db20 score: 	          5
+# @   590ns:       >db7 score: 	        105
+# @   594ns:       >db8 score: 	        100
+# @   594ns:      >db10 score: 	         78
+# @   598ns:       >db9 score: 	        102
+# @   606ns:      >db11 score: 	         60
+# @   610ns:      >db12 score: 	         50
+# @   614ns:      >db13 score: 	         58
+# @   618ns:      >db14 score: 	         88
+# @   622ns:      >db15 score: 	         67
+# @   626ns:      >db16 score: 	         33
+# Break key hit
+# Break in NamedBeginStat sc2_COMB at /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v line 296
+# Compile of Feeder_tb.sv was successful.
+# Compile of fifo.v was successful.
+# Compile of ScoringModule_v1.1.v was successful.
+# Compile of Scoringmodule_v1_tb.sv was successful.
+# Compile of SM_Feeder2.v was successful.
+# Compile of SW_ProcessingElement_v1.0.v was successful.
+# Compile of ScoringModule_v1.0.v was successful.
+# 7 compiles, 0 failed with no errors.
+restart
+# Closing VCD file "scoring_bank_v1.vcd"
+# ** Warning: (vsim-PLI-3691) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv(183): Expected a system task, not a system function '$fscanf'.
+#    Time: 0 ps  Iteration: 0  Region: /ScorieBank_v1_tb/INIT_TB File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv
+# ** Warning: (vsim-PLI-3691) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv(184): Expected a system task, not a system function '$fscanf'.
+#    Time: 0 ps  Iteration: 0  Region: /ScorieBank_v1_tb/INIT_TB File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv
+# ** Warning: (vsim-PLI-3691) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv(206): Expected a system task, not a system function '$fscanf'.
+#    Time: 0 ps  Iteration: 0  Region: /ScorieBank_v1_tb/INIT_TB File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv
+# ** Warning: (vsim-PLI-3691) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv(210): Expected a system task, not a system function '$fscanf'.
+#    Time: 0 ps  Iteration: 0  Region: /ScorieBank_v1_tb/INIT_TB File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[0]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[0]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[0]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[0]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[0]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[1]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[1]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[1]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[1]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[1]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[2]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[2]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[2]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[2]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[2]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[3]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[3]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[3]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[3]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[3]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[4]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[4]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[4]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[4]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[4]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[5]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[5]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[5]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[5]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[5]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[6]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[6]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[6]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[6]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[6]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v2.v(91): [PCDPC] - Port size (8) does not match connection size (12) for port 'output_select'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(35).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[7]/SM File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'M_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(30).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[7]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'I_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(31).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[7]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High0_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(32).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[7]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# ** Warning: (vsim-3015) /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoringModule_v1.1.v(167): [PCDPC] - Port size (12) does not match connection size (32) for port 'High1_in'. The port definition is at: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v(33).
+#    Time: 0 ps  Iteration: 0  Instance: /ScorieBank_v1_tb/DUT/genblk1[7]/SM/GEN_BLOCK[0]/genblk1/PE0 File: /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/SW_ProcessingElement_v1.0.v
+# Loading ./veriuser.sl
+run -all
+# @    20ns: Penalties loaded!
+# @    28ns: Query loaded!
+# @   566ns:       >db1 score: 	        133
+# @   570ns:       >db2 score: 	        106
+# @   574ns:       >db3 score: 	        135
+# @   578ns:       >db4 score: 	        106
+# @   582ns:      >db17 score: 	          5
+# @   582ns:       >db5 score: 	        160
+# @   586ns:      >db19 score: 	          5
+# @   586ns:       >db6 score: 	         80
+# @   590ns:      >db20 score: 	          5
+# @   590ns:       >db7 score: 	        105
+# @   594ns:       >db8 score: 	        100
+# @   594ns:      >db10 score: 	         78
+# @   598ns:       >db9 score: 	        102
+# @   606ns:      >db11 score: 	         60
+# @   610ns:      >db12 score: 	         50
+# @   614ns:      >db13 score: 	         58
+# @   618ns:      >db14 score: 	         88
+# @   622ns:      >db15 score: 	         67
+# @   626ns:      >db16 score: 	         33
+# @  1610ns:      >db18 score: 	        102
+# ** Note: $stop    : /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv(229)
+#    Time: 2878 ns  Iteration: 0  Instance: /ScorieBank_v1_tb
+# Break in NamedBeginStat INIT_TB at /media/e/backup_PC/Documents/Southampton/Thesis/hdl_src/ScoreBank/ScoreBank_v1_tb.sv line 229
+# End time: 12:01:42 on Sep 12,2016, Elapsed time: 0:01:17
+# Errors: 12, Warnings: 88

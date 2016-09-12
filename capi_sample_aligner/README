@@ -1,0 +1,10 @@
+# author: ilir likalla
+
+# folder structure:
+	
+	./hdl-verilog 	=> contains HDL files for the sample CAPI aligner
+	./sofware-C,C++	=> contains C sources, headers and executables of the sample app
+	./pslse-master	=> contains the PSLSE emulator, might require to be rebuilt
+	
+
+

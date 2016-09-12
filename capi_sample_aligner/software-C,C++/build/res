@@ -1,0 +1,60 @@
+# fasta36 query library
+FASTA searches a protein or DNA sequence data bank
+ version 36.3.8d Apr, 2016(preload9)
+Please cite:
+ W.R. Pearson & D.J. Lipman PNAS (1988) 85:2444-2448
+
+Query: query
+  1>>> - 32 nt
+Library: library
+      128 residues in     1 sequences
+
+Statistics: (shuffled [479]) MLE statistics: Lambda= 0.1915;  K= 0.286
+ statistics sampled from 1 (1) to 479 sequences
+Algorithm: FASTA (3.8 Nov 2011) [optimized]
+Parameters: +5/-4 matrix (5:-4), open/ext: -12/-4
+ ktup: 2, E-join: 0.25 (1), E-opt: 0.05 (0.5), width:  16
+ Scan time:  0.000
+
+The best scores are:                                      opt bits E(1)
+                                               ( 128) [f]   50 16.9   0.033
+                                               ( 128) [r]   36 13.0    0.39
+
+>>>library                                                (128 nt)
+ initn:  45 init1:  45 opt:  50  Z-score: 71.9  bits: 16.9 E(1): 0.033
+banded Smith-Waterman score: 50; 73.7% identity (73.7% similar) in 19 nt overlap (2-20:34-52)
+
+                                            10        20        30 
+                                    AGGGCGTCATTTAATGACTATCATGGTGCAA
+                                     : : : : : :::::::::           
+>libra GAGCCGTGTAATGACTACATTTAGACTATTGCGAGCCGTGTAATGACTACATTTAGACTA
+            10        20        30        40        50        60   
+
+                                                                   
+       T                                                           
+                                                                   
+>libra TTGCGAGCCGTGTAATGACTACATTTAGACTATTGCGAGCCGTGTAATGACTACATTTAG
+            70        80        90       100       110       120   
+
+>>>library                                                (128 nt)
+rev-comp initn:  36 init1:  36 opt:  36  Z-score: 51.0  bits: 13.0 E(1): 0.39
+banded Smith-Waterman score: 36; 66.7% identity (66.7% similar) in 18 nt overlap (23-6:33-50)
+
+                             30        20        10                
+-                           ATTGCACCATGATAGTCATTAAATGACGCCCT       
+                                     ::  :: : :  ::::::            
+>libra CGAGCCGTGTAATGACTACATTTAGACTATTGCGAGCCGTGTAATGACTACATTTAGACT
+             10        20        30        40        50        60  
+
+>libra ATTGCGAGCCGTGTAATGACTACATTTAGACTATTGCGAGCCGTGTAATGACTACATTTA
+             70        80        90       100       110       120  
+
+
+
+32 residues in 1 query   sequences
+128 residues in 1 library sequences
+ Tcomplib [36.3.8d Apr, 2016(preload9)] (8 proc in memory [0G])
+ start: Tue Jul 12 01:10:14 2016 done: Tue Jul 12 01:10:14 2016
+ Total Scan time:  0.000 Total Display time:  0.000
+
+Function used was FASTA [36.3.8d Apr, 2016(preload9)]

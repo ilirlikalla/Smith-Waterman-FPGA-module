@@ -1,0 +1,232 @@
+was here 1\nwas here 2\nwas here 3\n============= charTo2bit:===========
+
+i: 0, base: A, pos: 0 valb: 00 vala: 02
+i: 1, base: G, pos: 2 valb: 02 vala: 0e
+i: 2, base: G, pos: 4 valb: 0e vala: 3e
+i: 3, base: G, pos: 6 valb: 3e vala: fe
+i: 4, base: C, pos: 0 valb: 00 vala: 01
+i: 5, base: G, pos: 2 valb: 01 vala: 0d
+i: 6, base: T, pos: 4 valb: 0d vala: 0d
+i: 7, base: C, pos: 6 valb: 0d vala: 4d
+i: 8, base: A, pos: 0 valb: 00 vala: 02
+i: 9, base: T, pos: 2 valb: 02 vala: 02
+i: 10, base: T, pos: 4 valb: 02 vala: 02
+i: 11, base: T, pos: 6 valb: 02 vala: 02
+i: 12, base: A, pos: 0 valb: 00 vala: 02
+i: 13, base: A, pos: 2 valb: 02 vala: 0a
+i: 14, base: T, pos: 4 valb: 0a vala: 0a
+i: 15, base: G, pos: 6 valb: 0a vala: ca
+i: 16, base: A, pos: 0 valb: 00 vala: 02
+i: 17, base: C, pos: 2 valb: 02 vala: 06
+i: 18, base: T, pos: 4 valb: 06 vala: 06
+i: 19, base: A, pos: 6 valb: 06 vala: 86
+i: 20, base: T, pos: 0 valb: 00 vala: 00
+i: 21, base: C, pos: 2 valb: 00 vala: 04
+i: 22, base: A, pos: 4 valb: 04 vala: 24
+i: 23, base: T, pos: 6 valb: 24 vala: 24
+i: 24, base: G, pos: 0 valb: 00 vala: 03
+i: 25, base: G, pos: 2 valb: 03 vala: 0f
+i: 26, base: T, pos: 4 valb: 0f vala: 0f
+i: 27, base: G, pos: 6 valb: 0f vala: cf
+i: 28, base: C, pos: 0 valb: 00 vala: 01
+i: 29, base: A, pos: 2 valb: 01 vala: 09
+i: 30, base: A, pos: 4 valb: 09 vala: 29
+i: 31, base: T, pos: 6 valb: 29 vala: 29
+============= charTo2bit:===========
+
+i: 0, base: T, pos: 0 valb: 00 vala: 00
+i: 1, base: A, pos: 2 valb: 00 vala: 08
+i: 2, base: A, pos: 4 valb: 08 vala: 28
+i: 3, base: T, pos: 6 valb: 28 vala: 28
+i: 4, base: G, pos: 0 valb: 00 vala: 03
+i: 5, base: A, pos: 2 valb: 03 vala: 0b
+i: 6, base: C, pos: 4 valb: 0b vala: 1b
+i: 7, base: T, pos: 6 valb: 1b vala: 1b
+i: 8, base: A, pos: 0 valb: 00 vala: 02
+i: 9, base: T, pos: 2 valb: 02 vala: 02
+i: 10, base: C, pos: 4 valb: 02 vala: 12
+i: 11, base: A, pos: 6 valb: 12 vala: 92
+i: 12, base: A, pos: 0 valb: 00 vala: 02
+i: 13, base: A, pos: 2 valb: 02 vala: 0a
+i: 14, base: T, pos: 4 valb: 0a vala: 0a
+i: 15, base: G, pos: 6 valb: 0a vala: ca
+i: 16, base: A, pos: 0 valb: 00 vala: 02
+i: 17, base: C, pos: 2 valb: 02 vala: 06
+i: 18, base: T, pos: 4 valb: 06 vala: 06
+i: 19, base: A, pos: 6 valb: 06 vala: 86
+i: 20, base: T, pos: 0 valb: 00 vala: 00
+i: 21, base: C, pos: 2 valb: 00 vala: 04
+i: 22, base: A, pos: 4 valb: 04 vala: 24
+i: 23, base: T, pos: 6 valb: 24 vala: 24
+i: 24, base: G, pos: 0 valb: 00 vala: 03
+i: 25, base: G, pos: 2 valb: 03 vala: 0f
+i: 26, base: T, pos: 4 valb: 0f vala: 0f
+i: 27, base: G, pos: 6 valb: 0f vala: cf
+i: 28, base: C, pos: 0 valb: 00 vala: 01
+i: 29, base: A, pos: 2 valb: 01 vala: 09
+i: 30, base: A, pos: 4 valb: 09 vala: 29
+i: 31, base: T, pos: 6 valb: 29 vala: 29
+i: 32, base: A, pos: 0 valb: 00 vala: 02
+i: 33, base: C, pos: 2 valb: 02 vala: 06
+i: 34, base: C, pos: 4 valb: 06 vala: 16
+i: 35, base: C, pos: 6 valb: 16 vala: 56
+i: 36, base: G, pos: 0 valb: 00 vala: 03
+i: 37, base: C, pos: 2 valb: 03 vala: 07
+i: 38, base: A, pos: 4 valb: 07 vala: 27
+i: 39, base: G, pos: 6 valb: 27 vala: e7
+i: 40, base: T, pos: 0 valb: 00 vala: 00
+i: 41, base: A, pos: 2 valb: 00 vala: 08
+i: 42, base: A, pos: 4 valb: 08 vala: 28
+i: 43, base: A, pos: 6 valb: 28 vala: a8
+i: 44, base: T, pos: 0 valb: 00 vala: 00
+i: 45, base: T, pos: 2 valb: 00 vala: 00
+i: 46, base: A, pos: 4 valb: 00 vala: 20
+i: 47, base: C, pos: 6 valb: 20 vala: 60
+i: 48, base: T, pos: 0 valb: 00 vala: 00
+i: 49, base: G, pos: 2 valb: 00 vala: 0c
+i: 50, base: A, pos: 4 valb: 0c vala: 2c
+i: 51, base: T, pos: 6 valb: 2c vala: 2c
+i: 52, base: A, pos: 0 valb: 00 vala: 02
+i: 53, base: G, pos: 2 valb: 02 vala: 0e
+i: 54, base: T, pos: 4 valb: 0e vala: 0e
+i: 55, base: A, pos: 6 valb: 0e vala: 8e
+i: 56, base: C, pos: 0 valb: 00 vala: 01
+i: 57, base: C, pos: 2 valb: 01 vala: 05
+i: 58, base: A, pos: 4 valb: 05 vala: 25
+i: 59, base: C, pos: 6 valb: 25 vala: 65
+i: 60, base: G, pos: 0 valb: 00 vala: 03
+i: 61, base: T, pos: 2 valb: 03 vala: 03
+i: 62, base: T, pos: 4 valb: 03 vala: 03
+i: 63, base: A, pos: 6 valb: 03 vala: 83
+i: 64, base: A, pos: 0 valb: 00 vala: 02
+i: 65, base: G, pos: 2 valb: 02 vala: 0e
+i: 66, base: A, pos: 4 valb: 0e vala: 2e
+i: 67, base: A, pos: 6 valb: 2e vala: ae
+i: 68, base: T, pos: 0 valb: 00 vala: 00
+i: 69, base: A, pos: 2 valb: 00 vala: 08
+i: 70, base: T, pos: 4 valb: 08 vala: 08
+i: 71, base: C, pos: 6 valb: 08 vala: 48
+i: 72, base: A, pos: 0 valb: 00 vala: 02
+i: 73, base: T, pos: 2 valb: 02 vala: 02
+i: 74, base: T, pos: 4 valb: 02 vala: 02
+i: 75, base: A, pos: 6 valb: 02 vala: 82
+i: 76, base: T, pos: 0 valb: 00 vala: 00
+i: 77, base: T, pos: 2 valb: 00 vala: 00
+i: 78, base: A, pos: 4 valb: 00 vala: 20
+i: 79, base: G, pos: 6 valb: 20 vala: e0
+i: 80, base: A, pos: 0 valb: 00 vala: 02
+i: 81, base: C, pos: 2 valb: 02 vala: 06
+i: 82, base: T, pos: 4 valb: 06 vala: 06
+i: 83, base: A, pos: 6 valb: 06 vala: 86
+i: 84, base: T, pos: 0 valb: 00 vala: 00
+i: 85, base: G, pos: 2 valb: 00 vala: 0c
+i: 86, base: A, pos: 4 valb: 0c vala: 2c
+i: 87, base: T, pos: 6 valb: 2c vala: 2c
+i: 88, base: G, pos: 0 valb: 00 vala: 03
+i: 89, base: G, pos: 2 valb: 03 vala: 0f
+i: 90, base: A, pos: 4 valb: 0f vala: 2f
+i: 91, base: G, pos: 6 valb: 2f vala: ef
+i: 92, base: C, pos: 0 valb: 00 vala: 01
+i: 93, base: A, pos: 2 valb: 01 vala: 09
+i: 94, base: C, pos: 4 valb: 09 vala: 19
+i: 95, base: T, pos: 6 valb: 19 vala: 19
+i: 96, base: T, pos: 0 valb: 00 vala: 00
+i: 97, base: A, pos: 2 valb: 00 vala: 08
+i: 98, base: A, pos: 4 valb: 08 vala: 28
+i: 99, base: T, pos: 6 valb: 28 vala: 28
+i: 100, base: G, pos: 0 valb: 00 vala: 03
+i: 101, base: A, pos: 2 valb: 03 vala: 0b
+i: 102, base: C, pos: 4 valb: 0b vala: 1b
+i: 103, base: T, pos: 6 valb: 1b vala: 1b
+i: 104, base: A, pos: 0 valb: 00 vala: 02
+i: 105, base: T, pos: 2 valb: 02 vala: 02
+i: 106, base: C, pos: 4 valb: 02 vala: 12
+i: 107, base: A, pos: 6 valb: 12 vala: 92
+i: 108, base: A, pos: 0 valb: 00 vala: 02
+i: 109, base: A, pos: 2 valb: 02 vala: 0a
+i: 110, base: T, pos: 4 valb: 0a vala: 0a
+i: 111, base: G, pos: 6 valb: 0a vala: ca
+i: 112, base: C, pos: 0 valb: 00 vala: 01
+i: 113, base: C, pos: 2 valb: 01 vala: 05
+i: 114, base: T, pos: 4 valb: 05 vala: 05
+i: 115, base: A, pos: 6 valb: 05 vala: 85
+i: 116, base: T, pos: 0 valb: 00 vala: 00
+i: 117, base: C, pos: 2 valb: 00 vala: 04
+i: 118, base: G, pos: 4 valb: 04 vala: 34
+i: 119, base: T, pos: 6 valb: 34 vala: 34
+i: 120, base: A, pos: 0 valb: 00 vala: 02
+i: 121, base: G, pos: 2 valb: 02 vala: 0e
+i: 122, base: C, pos: 4 valb: 0e vala: 1e
+i: 123, base: G, pos: 6 valb: 1e vala: de
+i: 124, base: A, pos: 0 valb: 00 vala: 02
+i: 125, base: A, pos: 2 valb: 02 vala: 0a
+i: 126, base: T, pos: 4 valb: 0a vala: 0a
+i: 127, base: T, pos: 6 valb: 0a vala: 0a
+========== @Sequences: =============
+----result	@0x000000000138d080
+----sequences	@0x000000000138e480
+size= 128 Bytes
+ID: 0000000000:
+length: 0032
+data[ 0]: 0xfe
+data[ 1]: 0x4d
+data[ 2]: 0x02
+data[ 3]: 0xca
+data[ 4]: 0x86
+data[ 5]: 0x24
+data[ 6]: 0xcf
+data[ 7]: 0x29
+====================================
+ID: 0000000001:
+length: 0128
+data[ 0]: 0x28
+data[ 1]: 0x1b
+data[ 2]: 0x92
+data[ 3]: 0xca
+data[ 4]: 0x86
+data[ 5]: 0x24
+data[ 6]: 0xcf
+data[ 7]: 0x29
+data[ 8]: 0x56
+data[ 9]: 0xe7
+data[10]: 0xa8
+data[11]: 0x60
+data[12]: 0x2c
+data[13]: 0x8e
+data[14]: 0x65
+data[15]: 0x83
+data[16]: 0xae
+data[17]: 0x48
+data[18]: 0x82
+data[19]: 0xe0
+data[20]: 0x86
+data[21]: 0x2c
+data[22]: 0xef
+data[23]: 0x19
+data[24]: 0x28
+data[25]: 0x1b
+data[26]: 0x92
+data[27]: 0xca
+data[28]: 0x85
+data[29]: 0x34
+data[30]: 0xde
+data[31]: 0x0a
+====================================
+ceil test: 0.000000
+INFO:Connecting to host 'localhost' port 16384
+AFU opended!
+WED @0x000000000138f080
+AFU started!
+MMIO registers mapped!
+Trace Options register is 0000000081234567 after attach. Waiting for bit 32 to be a 1 (not including this read).
+Pre mmio state bit is 00000001
+Writing bit 0 of trace options register to 1 to end pre mmio stage
+AFU has started, waiting for AFU to finish...
+Trace Options register is 8000000001234567 shortly after start
+wed status: 0000
+wed status: 0100
+Post mmio state bit is 00000000
+Trace Options register is 8000000041234567 indicating post mmio stage. Dumping Trace Arrays....
+result: 102, biased: 2150(0x0866)
+INFO:detach response from from pslse
+AFU released!

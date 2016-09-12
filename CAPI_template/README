@@ -1,0 +1,9 @@
+# author: ilir likalla
+
+# important files:
+	
+	afu_control.v 	=> it is a template for the ScoreBank's AFU controler 
+	SM_Feeder.v		=> first iteration of the Feeder module, does not work properly (target registers get overwritten)
+
+	
+	All the other files have been cleaned from the extra tracing logic that was used in the "mem_cpy" example

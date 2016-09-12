@@ -1,0 +1,224 @@
+
+##
+=========== db1: ============
+Query:  1 AGGGCGTCATTTAATGACTATCATGGTGCAAT 32
+          ||||||...|||||||||||||||||||||||
+Ref  :  1 AGGGCGGGGTTTAATGACTATCATGGTGCAAT 32
+
+Score: 133
+Matches: 29 (90.6%)
+Mismatches: 3
+CIGAR: 32M
+
+============================
+
+##
+=========== db2: ============
+Query:  1 AGGGCGTCATTTAATGACTATCATGGTGCAAT 32
+          ||||||...|||||||.||.||||.|||||||
+Ref  :  1 AGGGCGGGGTTTAATGTCTGTCATAGTGCAAT 32
+
+Score: 106
+Matches: 26 (81.2%)
+Mismatches: 6
+CIGAR: 32M
+
+============================
+
+##
+=========== db3: ============
+Query:  6 GTCATTTAATGACTATCATGGTGCAAT 32
+          |||||||||||||||||||||||||||
+Ref  :  1 GTCATTTAATGACTATCATGGTGCAAT 27
+
+Score: 135
+Matches: 27 (100.0%)
+Mismatches: 0
+CIGAR: 27M
+
+============================
+
+##
+=========== db4: ============
+Query:  1 AGGGCGTCATTTAATGACTATCATGGTGCAAT 32
+          ||||||||||||.||.|..||.|.||||||||
+Ref  :  1 AGGGCGTCATTTTATCATAATGACGGTGCAAT 32
+
+Score: 106
+Matches: 26 (81.2%)
+Mismatches: 6
+CIGAR: 32M
+
+============================
+
+##
+=========== db5: ============
+Query:  1 AGGGCGTCATTTAATGACTATCATGGTGCAAT 32
+          ||||||||||||||||||||||||||||||||
+Ref  :  1 AGGGCGTCATTTAATGACTATCATGGTGCAAT 32
+
+Score: 160
+Matches: 32 (100.0%)
+Mismatches: 0
+CIGAR: 32M
+
+============================
+
+##
+=========== db6: ============
+Query: 17 ACTATCATGGTGCAAT 32
+          ||||||||||||||||
+Ref  :  1 ACTATCATGGTGCAAT 16
+
+Score: 80
+Matches: 16 (100.0%)
+Mismatches: 0
+CIGAR: 16M
+
+============================
+
+##
+=========== db7: ============
+Query:  2 GGGCGTCATTTAATGACTATCATGGTGCAA 31
+          |||.|||||||||.|||||||||..|.|||
+Ref  :  2 GGGGGTCATTTAAAGACTATCATTTTTCAA 31
+
+Score: 105
+Matches: 25 (83.3%)
+Mismatches: 5
+CIGAR: 30M
+
+============================
+
+##
+=========== db8: ============
+Query:  1 AGGGCGTCATTTAATGACTATCAT 24
+          |||||||||||||||||||| |||
+Ref  :  1 AGGGCGTCATTTAATGACTA-CAT 23
+
+Score: 103
+Matches: 23 (95.8%)
+Mismatches: 1
+CIGAR: 20M1I3M
+
+============================
+
+##
+=========== db9: ============
+Query:  9 ATTTAATGACTATCATGGTGCAAT 32
+          ||..||||||||||||||||||||
+Ref  :  9 ATCAAATGACTATCATGGTGCAAT 32
+
+Score: 102
+Matches: 22 (91.7%)
+Mismatches: 2
+CIGAR: 24M
+
+============================
+
+##
+=========== db10: ============
+Query:  1 AGGGCGTCATTTAATGACTATCA-TGGTGCAAT 32
+          |||||||||||| |.|.| .||| |||||||||
+Ref  :  1 AGGGCGTCATTT-AGGGC-GTCATTGGTGCAAT 31
+
+Score: 87
+Matches: 27 (81.8%)
+Mismatches: 6
+CIGAR: 12M1I5M1I4M1D9M
+
+============================
+
+##
+=========== db11: ============
+Query: 12 TAATGACTATCA 23
+          ||||||||||||
+Ref  :  1 TAATGACTATCA 12
+
+Score: 60
+Matches: 12 (100.0%)
+Mismatches: 0
+CIGAR: 12M
+
+============================
+
+##
+=========== db12: ============
+Query:  2 GGGCGTCATTTAATGACTATCAT 24
+          |.|.|.|.|.||||||||| |||
+Ref  :  2 GCGAGCCGTGTAATGACTA-CAT 23
+
+Score: 53
+Matches: 17 (73.9%)
+Mismatches: 6
+CIGAR: 19M1I3M
+
+============================
+
+##
+=========== db13: ============
+Query:  1 AGGGCGTCATTTAATGACTAT---CATGGTGC 29
+          ||||.||||...|||...|||   ||||||||
+Ref  :  1 AGGGGGTCAGGGAATACTTATAGCCATGGTGC 32
+
+Score: 62
+Matches: 22 (68.8%)
+Mismatches: 10
+CIGAR: 21M3D8M
+
+============================
+
+##
+=========== db14: ============
+Query:  1 AGGGCGTCATTTAATGACTATCATGGTGCAAT 32
+          ||.|||||.|||.||.|||.||||..||.|||
+Ref  :  1 AGAGCGTCTTTTTATTACTTTCATCCTGAAAT 32
+
+Score: 88
+Matches: 24 (75.0%)
+Mismatches: 8
+CIGAR: 32M
+
+============================
+
+##
+=========== db15: ============
+Query:  7 TCATTTAATGACTATCATGGTGCAAT 32
+          |||||....||||||.||||.|||.|
+Ref  :  7 TCATTATTAGACTATGATGGAGCACT 32
+
+Score: 67
+Matches: 19 (73.1%)
+Mismatches: 7
+CIGAR: 26M
+
+============================
+
+##
+=========== db16: ============
+Query:  8 CATTTAATGACT 19
+          ||.|.|||.|||
+Ref  :  6 CAGTAAATTACT 17
+
+Score: 33
+Matches: 9 (75.0%)
+Mismatches: 3
+CIGAR: 12M
+
+============================
+db1:	133
+db2:	106
+db3:	135
+db4:	106
+db5:	160
+db6:	80
+db7:	105
+db8:	103
+db9:	102
+db10:	87
+db11:	60
+db12:	53
+db13:	62
+db14:	88
+db15:	67
+db16:	33
